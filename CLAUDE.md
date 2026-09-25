@@ -26,6 +26,9 @@ Helper skills (also in `.claude/skills/`): `n8n-*` + `using-n8n-mcp-skills` (czl
 - New teammate setup: see `ONBOARDING.md`.
 - At session start: `git pull`. Before ending: write a `Memory/` handoff note, commit, push.
 
+## n8n connection
+`.mcp.json` registers the official n8n instance MCP (https://arahmandeaxo.app.n8n.cloud/mcp-server/http). Token comes from each person's `N8N_MCP_TOKEN` env var — never write tokens into files. Use the `using-n8n-mcp-skills` / `n8n-*` skills before calling n8n tools; export finished workflows to `n8n/workflows/`.
+
 ## Stack
 Lovable (UI + Supabase) · n8n (orchestration, REST/webhooks – not websockets) · Supabase (data) · Claude · optional Vercel/Docker for custom services.
 

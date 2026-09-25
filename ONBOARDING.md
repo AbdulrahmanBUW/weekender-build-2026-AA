@@ -34,6 +34,7 @@ Open the **cloned folder** as your project in Claude Code. Everything is in the 
   - `brag` + `brag-slim` (latent-spaces/brag) — "/brag" launch video (Sunday)
   - UI quality: `anti-ai-slop-ui-ux`, `component-reference-design`, `ui-ux-pro-max` (Vanszs/Anti-AI-UI) — use for Lovable prompts
   - helpers: `n8n-*` skills (build/validate n8n workflows), `hyperframes-*` (used by brag)
+- `.mcp.json` — connects Claude to our n8n Cloud instance. Ask Abdul to invite you to n8n, create **your own** token (n8n → Settings → Instance-level MCP → API key), then run `setx N8N_MCP_TOKEN "<token>"` and restart Claude. Never paste the token into chat or files.
 - `skills-lock.json` — pinned skill versions. To update: `npx skills update -p`.
 
 Quick check — ask your Claude: *"Read CLAUDE.md and 00-Home/Home.md, list the skills you have, and tell me what's on the task board for today."*
