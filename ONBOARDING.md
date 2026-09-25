@@ -15,6 +15,7 @@ Goal: **our build is live under its own URL by Sun 27.09 14:00.**
 | Obsidian | knowledge base | — |
 | GitHub CLI (optional) | issues/board from terminal | `gh --version` → `gh auth login` |
 | FFmpeg (only for Sunday's brag video) | launch video | `winget install -e --id Gyan.FFmpeg` → `ffmpeg -version` |
+| rtk (recommended) | cuts Claude token use on shell output | `winget install -e --id rtk-ai.rtk` → `rtk init -g` → restart Claude |
 | Docker Desktop (optional) | local Supabase DB | `npx supabase start` |
 
 ## 2. Clone
@@ -31,6 +32,7 @@ Open the **cloned folder** as your project in Claude Code. Everything is in the 
   - `security-audit` (cloudflare/security-audit-skill) — "security audit this codebase"
   - `archify` (tt-a1i/archify) — "use archify to diagram …"
   - `brag` + `brag-slim` (latent-spaces/brag) — "/brag" launch video (Sunday)
+  - UI quality: `anti-ai-slop-ui-ux`, `component-reference-design`, `ui-ux-pro-max` (Vanszs/Anti-AI-UI) — use for Lovable prompts
   - helpers: `n8n-*` skills (build/validate n8n workflows), `hyperframes-*` (used by brag)
 - `skills-lock.json` — pinned skill versions. To update: `npx skills update -p`.
 

@@ -10,6 +10,8 @@ Mandatory skills — installed project-level in `.claude/skills/` (pinned in `sk
 - `archify` (tt-a1i/archify) → diagrams to `docs/diagrams/`
 - `brag` / `brag-slim` (latent-spaces/brag) → launch video to `docs/launch/` (needs FFmpeg + `hyperframes-*` skills, both set up)
 
+UI quality skills (Vanszs/Anti-AI-UI): `anti-ai-slop-ui-ux`, `component-reference-design`, `ui-ux-pro-max` (vendored manually @fd2a142). **Use them whenever writing Lovable UI prompts or reviewing UI** — no purple gradients, generic Inter-everything, glassmorphism.
+
 Helper skills (also in `.claude/skills/`): `n8n-*` + `using-n8n-mcp-skills` (czlonkowski/n8n-skills — building/validating n8n workflows), `hyperframes-*` (heygen-com/hyperframes — used by brag).
 
 ## Database (Supabase)
@@ -37,3 +39,6 @@ Lovable (UI + Supabase) · n8n (orchestration, REST/webhooks – not websockets)
 - No secrets in any committed file (see `Rules/No secrets in repo.md`).
 - n8n exports → `n8n/workflows/`. Diagrams → `docs/diagrams/`. Audit → `docs/security/`.
 - Commit small with clear messages; pull before editing shared notes.
+
+## Token saving (optional)
+`rtk` (rtk-ai/rtk) compresses shell output for Claude. Per machine: `winget install -e --id rtk-ai.rtk`, then `rtk init -g` and restart Claude Code. Not required for the repo to work.

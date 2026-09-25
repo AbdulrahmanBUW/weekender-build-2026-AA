@@ -1,6 +1,18 @@
 {
   "version": 1,
   "skills": {
+    "Anti-AI-Slop UI/UX": {
+      "source": "Vanszs/Anti-AI-UI",
+      "sourceType": "github",
+      "skillPath": "Anti-AI-SLop/SKILL.md",
+      "computedHash": "9b3fb526631a90dbb9ed132c28b4e360ed3e08c63add0fc77b9d0702d67baebd"
+    },
+    "Component Reference Design": {
+      "source": "Vanszs/Anti-AI-UI",
+      "sourceType": "github",
+      "skillPath": "component-reference-design/SKILL.md",
+      "computedHash": "ebff049310daa8f7d850be34fe837ebe6136ed691270b3371d8f4e0d095a286e"
+    },
     "archify": {
       "source": "tt-a1i/archify",
       "sourceType": "github",
