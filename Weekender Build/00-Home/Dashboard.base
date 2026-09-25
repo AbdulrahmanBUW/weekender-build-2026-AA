@@ -1,0 +1,64 @@
+filters:
+  and:
+    - file.ext == "md"
+views:
+  - type: table
+    name: Open defects
+    filters:
+      and:
+        - file.inFolder("Defects")
+        - status != "fixed"
+        - status != "wontfix"
+    order:
+      - file.name
+      - severity
+      - status
+      - owner
+      - found_in
+  - type: table
+    name: Runs
+    filters:
+      and:
+        - file.inFolder("Runs")
+    order:
+      - file.name
+      - date
+      - result
+      - by
+      - build
+  - type: table
+    name: Decisions
+    filters:
+      and:
+        - file.inFolder("Decisions")
+    order:
+      - file.name
+      - status
+      - date
+      - deciders
+  - type: table
+    name: Rules
+    filters:
+      and:
+        - file.inFolder("Rules")
+    order:
+      - file.name
+      - severity
+      - source
+  - type: table
+    name: Concepts
+    filters:
+      and:
+        - file.inFolder("Concepts")
+    order:
+      - file.name
+      - tags
+  - type: table
+    name: Handoffs
+    filters:
+      and:
+        - file.inFolder("Memory")
+    order:
+      - file.name
+      - date
+      - by

@@ -19,3 +19,10 @@ docs/launch/*.mp4
 # os
 .DS_Store
 Thumbs.db
+
+# skills CLI duplicate copies (canonical copies live in .claude/skills)
+.agents/
+
+# supabase local
+supabase/.branches
+supabase/.temp

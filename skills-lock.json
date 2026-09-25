@@ -19,11 +19,107 @@
       "skillPath": "skills/brag-slim/SKILL.md",
       "computedHash": "bb21b91d59e00081d80b379e06fdb38526a6eadd70dec6c1c74c4f644edd7b19"
     },
+    "hyperframes-animation": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-animation/SKILL.md",
+      "computedHash": "388c7712fc6be0ef4805215d0eb23bef2ef5395b8c02ef9d4fe17590a90588b0"
+    },
+    "hyperframes-audio": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-audio/SKILL.md",
+      "computedHash": "a93c197869a7faa8f8a5421a9c1dcedc3d0fd93fe60010d70abc49eb79db9b8a"
+    },
+    "hyperframes-cli": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-cli/SKILL.md",
+      "computedHash": "d92017d4af95f729c0dadaa5835414fa8778ad3abadb5a2af21c0ac37cda3dbf"
+    },
+    "hyperframes-core": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-core/SKILL.md",
+      "computedHash": "72e6a7c9cf0a2d5eace329a24231f31976ec4e2b1e66c53acb4dd6be9fa66e64"
+    },
+    "hyperframes-creative": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-creative/SKILL.md",
+      "computedHash": "263464b5dd0b7bc18754fdf1177ffa54923ca1ebe4d7c01fe992eafc5efd20b8"
+    },
+    "hyperframes-keyframes": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-keyframes/SKILL.md",
+      "computedHash": "310e38f0f2012fc1beef0082e0758860309f432481c5cbc60b23d8f7753c5bf1"
+    },
+    "n8n-agents": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-agents/SKILL.md",
+      "computedHash": "6fdfae5ab18537dffe4ceeb6830b244ab920d85d5260846948d2a9ff4d60a34a"
+    },
+    "n8n-code-javascript": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-code-javascript/SKILL.md",
+      "computedHash": "5aadb50c963c1df2a83f6e5720a1c76dc0895ed96aaebc2f5cd49060eceade21"
+    },
+    "n8n-error-handling": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-error-handling/SKILL.md",
+      "computedHash": "d0fa9babced47d805acbb772a4cad1392c536bb724b2eb00063471bb81b23696"
+    },
+    "n8n-expression-syntax": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-expression-syntax/SKILL.md",
+      "computedHash": "2fa2fb1e5893d7ea0951ea5520f1c8534575d08f4d89e6d79527719b11246d2e"
+    },
+    "n8n-mcp-tools-expert": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-mcp-tools-expert/SKILL.md",
+      "computedHash": "21a8fa4a2767e7f39f84c1b4a865e7713f4b9d59c638b9631fc3510cab4ac1aa"
+    },
+    "n8n-node-configuration": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-node-configuration/SKILL.md",
+      "computedHash": "dd9c61ca01cfd48ce50b7af9657426f2dd33d7e19e20d547b596e5d5c99b314d"
+    },
+    "n8n-subworkflows": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-subworkflows/SKILL.md",
+      "computedHash": "3a2b8eb74c133b4b11227dcdd1e164873f44eca19c50eeeb537e9aa235fac5cb"
+    },
+    "n8n-validation-expert": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-validation-expert/SKILL.md",
+      "computedHash": "7d6dd073686e62943c6f3c274e461588b6f548baaeade9dbe868dcd2ec4a383f"
+    },
+    "n8n-workflow-patterns": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/n8n-workflow-patterns/SKILL.md",
+      "computedHash": "6903984d79738f740b93470c80645c4ee5cb5d3669b5c9a6bf804e9e3ec0d481"
+    },
     "security-audit": {
       "source": "cloudflare/security-audit-skill",
       "sourceType": "github",
       "skillPath": "skills/security-audit/SKILL.md",
       "computedHash": "e6b2e317de75da97e9de18d842982994803f3a67a4a6d8154a82323dc3de8528"
+    },
+    "using-n8n-mcp-skills": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "skillPath": "skills/using-n8n-mcp-skills/SKILL.md",
+      "computedHash": "27006065d0ec98fa07742bc91738715adac025cc48248d25860afe12427b6f4f"
     }
   }
 }

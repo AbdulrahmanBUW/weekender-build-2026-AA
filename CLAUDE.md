@@ -8,7 +8,15 @@ Two teammates (Abdul + teammate) share this repo. Event: Weekender Build, Dresde
 Mandatory skills — installed project-level in `.claude/skills/` (pinned in `skills-lock.json`):
 - `security-audit` (cloudflare/security-audit-skill) → write reports to `docs/security/`
 - `archify` (tt-a1i/archify) → diagrams to `docs/diagrams/`
-- `brag` / `brag-slim` (latent-spaces/brag) → launch video to `docs/launch/` (needs FFmpeg + Hyperframes; Sunday)
+- `brag` / `brag-slim` (latent-spaces/brag) → launch video to `docs/launch/` (needs FFmpeg + `hyperframes-*` skills, both set up)
+
+Helper skills (also in `.claude/skills/`): `n8n-*` + `using-n8n-mcp-skills` (czlonkowski/n8n-skills — building/validating n8n workflows), `hyperframes-*` (heygen-com/hyperframes — used by brag).
+
+## Database (Supabase)
+- Schema = `supabase/migrations/*.sql` (source of truth), demo data = `supabase/seed.sql`. Explained in vault `Concepts/Data Model.md`.
+- Local: `npx supabase start` (Docker) · `npx supabase db reset` (re-apply migrations + seed) · `npx supabase status`. Studio: http://127.0.0.1:54323
+- Change schema only via a new migration file (`npx supabase migration new <name>`), never by hand in a dashboard.
+- New `call_requests` rows trigger n8n via pg_net; URL + secret live in Supabase Vault (`n8n_new_request_url`, `n8n_webhook_secret`).
 
 ## Collaboration
 - Task board: https://github.com/users/AbdulrahmanBUW/projects/2 (repo AbdulrahmanBUW/weekender-build-2026-AA). Milestones = pod slots. Status: Backlog → Today → In progress → Review → Done.

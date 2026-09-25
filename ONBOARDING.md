@@ -14,7 +14,8 @@ Goal: **our build is live under its own URL by Sun 27.09 14:00.**
 | Claude Code (desktop app Code tab or CLI) | shared AI setup | `claude --version` |
 | Obsidian | knowledge base | — |
 | GitHub CLI (optional) | issues/board from terminal | `gh --version` → `gh auth login` |
-| FFmpeg (only for Sunday's brag video) | launch video | `ffmpeg -version` |
+| FFmpeg (only for Sunday's brag video) | launch video | `winget install -e --id Gyan.FFmpeg` → `ffmpeg -version` |
+| Docker Desktop (optional) | local Supabase DB | `npx supabase start` |
 
 ## 2. Clone
 ```bash
@@ -30,15 +31,15 @@ Open the **cloned folder** as your project in Claude Code. Everything is in the 
   - `security-audit` (cloudflare/security-audit-skill) — "security audit this codebase"
   - `archify` (tt-a1i/archify) — "use archify to diagram …"
   - `brag` + `brag-slim` (latent-spaces/brag) — "/brag" launch video (Sunday)
+  - helpers: `n8n-*` skills (build/validate n8n workflows), `hyperframes-*` (used by brag)
 - `skills-lock.json` — pinned skill versions. To update: `npx skills update -p`.
 
 Quick check — ask your Claude: *"Read CLAUDE.md and 00-Home/Home.md, list the skills you have, and tell me what's on the task board for today."*
 
 ## 4. Obsidian vault (knowledge base)
 1. Obsidian → **Open folder as vault** → select `Weekender Build/` **inside the clone**.
-2. Settings → Community plugins → Turn on → Browse → install **Git** (by Vinzent) → Enable.
-3. Git plugin settings: *Pull on startup* = on · *Auto commit-and-sync interval* = 5 · *Pull before push* = on.
-4. Templates are preconfigured (folder `Templates/`): use them for Rules, Concepts, Decisions, Runs, Defects, Memory.
+2. The Git plugin ships **preinstalled and preconfigured** in the vault — you only need to allow community plugins once (Settings → Community plugins → Turn on). Settings used: pull on startup, auto-pull every 5 min, auto commit-and-sync every 10 min.
+3. Open `00-Home/Home.md` — it has the dashboard, open decisions and the map of all notes. Templates are preconfigured (folder `Templates/`): use them for Rules, Concepts, Decisions, Runs, Defects, Memory.
 
 ## 5. First task for you
 Write your idea in `Weekender Build/Ideas/Idea B - (Teammate).md` (template is already there), commit & push.

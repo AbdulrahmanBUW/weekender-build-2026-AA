@@ -1,1 +1,4 @@
-{ "attachmentFolderPath": "Attachments", "newFileLocation": "current" }
+{
+  "attachmentFolderPath": "Attachments",
+  "newFileLocation": "current"
+}
