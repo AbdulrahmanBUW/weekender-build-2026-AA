@@ -26,8 +26,12 @@ Helper skills (also in `.claude/skills/`): `n8n-*` + `using-n8n-mcp-skills` (czl
 - New teammate setup: see `ONBOARDING.md`.
 - At session start: `git pull`. Before ending: write a `Memory/` handoff note, commit, push.
 
-## n8n connection
-`.mcp.json` registers the official n8n instance MCP (https://arahmandeaxo.app.n8n.cloud/mcp-server/http). Token comes from each person's `N8N_MCP_TOKEN` env var — never write tokens into files. Use the `using-n8n-mcp-skills` / `n8n-*` skills before calling n8n tools; export finished workflows to `n8n/workflows/`.
+## MCP connections (`.mcp.json`, shared)
+- `n8n` — official n8n instance MCP (https://arahmandeaxo.app.n8n.cloud/mcp-server/http): build/validate/test/publish workflows. Token: env `N8N_MCP_TOKEN`.
+- `n8n-mcp` — community server (czlonkowski/n8n-mcp) that the `n8n-*` skills are written for: node docs, templates, validation, workflow management via n8n API. Key: env `N8N_API_KEY` (n8n → Settings → n8n API).
+- `lovable` — official Lovable MCP (OAuth): projects, send prompts to the Lovable agent, read code/diffs, manage Knowledge.
+- Never write tokens into files. Use the `using-n8n-mcp-skills` / `n8n-*` skills before n8n work; export finished workflows to `n8n/workflows/`.
+- Lovable connectors we use: see vault `Concepts/Lovable Connectors - What We Use.md`.
 
 ## Stack
 Lovable (UI + Supabase) · n8n (orchestration, REST/webhooks – not websockets) · Supabase (data) · Claude · optional Vercel/Docker for custom services.
