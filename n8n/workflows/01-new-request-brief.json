@@ -1,37 +1,111 @@
 {
   "name": "HalloTermin 01 – New request → German call brief",
   "id": "peFxjt572HiUxu61",
-  "settings": { "executionOrder": "v1", "availableInMCP": true },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
   "nodes": [
     {
       "name": "New Call Request (from Supabase)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [240, 300],
-      "parameters": { "httpMethod": "POST", "path": "new-request", "authentication": "headerAuth", "responseMode": "responseNode" }
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-request",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived"
+      }
     },
     {
       "name": "Normalize Request",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
-      "position": [480, 300],
+      "position": [
+        480,
+        300
+      ],
       "parameters": {
         "mode": "manual",
         "includeOtherFields": false,
         "assignments": {
           "assignments": [
-            { "id": "req-id", "name": "request_id", "value": "={{ ($json.body?.record ?? $json.body ?? $json).id }}", "type": "string" },
-            { "id": "patient", "name": "patient_name", "value": "={{ ($json.body?.record ?? $json.body ?? $json).patient_name ?? \"\" }}", "type": "string" },
-            { "id": "dob", "name": "patient_dob", "value": "={{ ($json.body?.record ?? $json.body ?? $json).patient_dob ?? \"\" }}", "type": "string" },
-            { "id": "ins-type", "name": "insurance_type", "value": "={{ ($json.body?.record ?? $json.body ?? $json).insurance_type ?? \"\" }}", "type": "string" },
-            { "id": "ins-name", "name": "insurance_name", "value": "={{ ($json.body?.record ?? $json.body ?? $json).insurance_name ?? \"\" }}", "type": "string" },
-            { "id": "practice", "name": "practice_name", "value": "={{ ($json.body?.record ?? $json.body ?? $json).practice_name ?? \"\" }}", "type": "string" },
-            { "id": "phone", "name": "practice_phone", "value": "={{ ($json.body?.record ?? $json.body ?? $json).practice_phone ?? \"\" }}", "type": "string" },
-            { "id": "reason", "name": "reason_category", "value": "={{ ($json.body?.record ?? $json.body ?? $json).reason_category ?? \"other\" }}", "type": "string" },
-            { "id": "referral", "name": "has_referral", "value": "={{ ($json.body?.record ?? $json.body ?? $json).has_referral === true }}", "type": "boolean" },
-            { "id": "newpat", "name": "is_new_patient", "value": "={{ ($json.body?.record ?? $json.body ?? $json).is_new_patient !== false }}", "type": "boolean" },
-            { "id": "windows", "name": "time_windows", "value": "={{ ($json.body?.record ?? $json.body ?? $json).time_windows ?? [] }}", "type": "array" },
-            { "id": "consent", "name": "consent_ai_call", "value": "={{ ($json.body?.record ?? $json.body ?? $json).consent_ai_call === true }}", "type": "boolean" }
+            {
+              "id": "req-id",
+              "name": "request_id",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).id }}",
+              "type": "string"
+            },
+            {
+              "id": "patient",
+              "name": "patient_name",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).patient_name ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "dob",
+              "name": "patient_dob",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).patient_dob ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "ins-type",
+              "name": "insurance_type",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).insurance_type ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "ins-name",
+              "name": "insurance_name",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).insurance_name ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "practice",
+              "name": "practice_name",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).practice_name ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "phone",
+              "name": "practice_phone",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).practice_phone ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "reason",
+              "name": "reason_category",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).reason_category ?? \"other\" }}",
+              "type": "string"
+            },
+            {
+              "id": "referral",
+              "name": "has_referral",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).has_referral === true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "newpat",
+              "name": "is_new_patient",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).is_new_patient !== false }}",
+              "type": "boolean"
+            },
+            {
+              "id": "windows",
+              "name": "time_windows",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).time_windows ?? [] }}",
+              "type": "array"
+            },
+            {
+              "id": "consent",
+              "name": "consent_ai_call",
+              "value": "={{ ($json.body?.record ?? $json.body ?? $json).consent_ai_call === true }}",
+              "type": "boolean"
+            }
           ]
         }
       }
@@ -40,14 +114,49 @@
       "name": "Consent + Phone + Name Present?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
-      "position": [720, 300],
+      "position": [
+        720,
+        300
+      ],
       "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
           "conditions": [
-            { "id": "c-consent", "leftValue": "={{ $json.consent_ai_call }}", "rightValue": "", "operator": { "type": "boolean", "operation": "true", "singleValue": true } },
-            { "id": "c-phone", "leftValue": "={{ $json.practice_phone }}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty", "singleValue": true } },
-            { "id": "c-name", "leftValue": "={{ $json.patient_name }}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty", "singleValue": true } }
+            {
+              "id": "c-consent",
+              "leftValue": "={{ $json.consent_ai_call }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c-phone",
+              "leftValue": "={{ $json.practice_phone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c-name",
+              "leftValue": "={{ $json.patient_name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
           ],
           "combinator": "and"
         }
@@ -57,40 +166,204 @@
       "name": "Write German Call Brief (Claude)",
       "type": "@n8n/n8n-nodes-langchain.anthropic",
       "typeVersion": 1,
-      "position": [980, 200],
+      "position": [
+        980,
+        200
+      ],
       "parameters": {
         "resource": "text",
         "operation": "message",
-        "modelId": { "__rl": true, "mode": "id", "value": "claude-sonnet-5" },
-        "messages": { "values": [ { "role": "user", "content": "=Create the call brief for this appointment request:\nPatient: {{ $json.patient_name }}\nDate of birth: {{ $json.patient_dob || \"unknown\" }}\nInsurance: {{ $json.insurance_type }} {{ $json.insurance_name }}\nPractice: {{ $json.practice_name }}\nReason category: {{ $json.reason_category }}\nHas referral: {{ $json.has_referral }}\nNew patient: {{ $json.is_new_patient }}\nPre-approved time windows (the ONLY slots the agent may accept): {{ JSON.stringify($json.time_windows) }}" } ] },
+        "modelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "user",
+              "content": "=Create the call brief for this appointment request:\nPatient: {{ $json.patient_name }}\nDate of birth: {{ $json.patient_dob || \"unknown\" }}\nInsurance: {{ $json.insurance_type }} {{ $json.insurance_name }}\nPractice: {{ $json.practice_name }}\nReason category: {{ $json.reason_category }}\nHas referral: {{ $json.has_referral }}\nNew patient: {{ $json.is_new_patient }}\nPre-approved time windows (the ONLY slots the agent may accept): {{ JSON.stringify($json.time_windows) }}"
+            }
+          ]
+        },
         "simplify": true,
         "options": {
           "system": "You prepare phone-call briefs in German for an AI voice assistant that calls German doctor practices (Arztpraxen) on behalf of newcomers who do not speak German. Output ONLY the brief in German, plain text, no markdown, max 180 words, with these parts: 1) ERÖFFNUNG: one opening sentence the assistant says first, which MUST state it is a KI-Assistentin calling im Auftrag von the named patient, that the patient does not speak German yet, and the purpose. 2) FAKTEN: name, Geburtsdatum, Versicherung, Neupatient ja/nein, Überweisung ja/nein, Anliegen (map reason categories: first_visit=Erstuntersuchung, checkup=Vorsorgeuntersuchung, acute=Akuttermin, follow_up=Folgetermin, specialist=Facharzttermin). 3) ERLAUBTE ZEITFENSTER in German date format. 4) REGELN: accept only slots inside the windows; before ending, read back day, date, time and doctor and wait for confirmation; never describe symptoms; never pretend to be the patient; if the practice insists on the patient, offer a callback. Never invent facts that are not in the request.",
-          "maxTokens": 600,
-          "temperature": 0.3
+          "maxTokens": 600
         }
       }
     },
     {
-      "name": "Respond: Brief Ready",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.5,
-      "position": [1240, 200],
-      "parameters": { "respondWith": "json", "responseBody": "={{ { request_id: $(\"Normalize Request\").item.json.request_id, status: \"briefed\", call_brief_de: ($json.content ?? []).filter(c => c.type === \"text\").map(c => c.text).join(\"\\n\").trim() } }}", "options": { "responseCode": 200 } }
+      "name": "Save Brief to Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        200
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "call_requests",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Normalize Request').item.json.request_id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "briefed"
+            },
+            {
+              "fieldId": "call_brief_de",
+              "fieldValue": "={{ ($json.content ?? []).filter(c => c.type === 'text').map(c => c.text).join('\n').trim() }}"
+            }
+          ]
+        }
+      }
     },
     {
-      "name": "Respond: Invalid Request",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.5,
-      "position": [980, 420],
-      "parameters": { "respondWith": "json", "responseBody": "={{ { request_id: $json.request_id, status: \"failed\", error: \"missing consent, practice phone or patient name\" } }}", "options": { "responseCode": 400 } }
+      "name": "Log Event: brief_created",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        200
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "events",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "request_id",
+              "fieldValue": "={{ $('Normalize Request').item.json.request_id }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "n8n"
+            },
+            {
+              "fieldId": "type",
+              "fieldValue": "brief_created"
+            },
+            {
+              "fieldId": "payload",
+              "fieldValue": "={{ JSON.stringify({ workflow: $workflow.name, execution: $execution.id }) }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Mark Request Failed",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        980,
+        420
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "call_requests",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.request_id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "failed"
+            }
+          ]
+        }
+      }
     }
   ],
   "connections": {
-    "New Call Request (from Supabase)": { "main": [[{ "node": "Normalize Request", "type": "main", "index": 0 }]] },
-    "Normalize Request": { "main": [[{ "node": "Consent + Phone + Name Present?", "type": "main", "index": 0 }]] },
-    "Consent + Phone + Name Present?": { "main": [[{ "node": "Write German Call Brief (Claude)", "type": "main", "index": 0 }], [{ "node": "Respond: Invalid Request", "type": "main", "index": 0 }]] },
-    "Write German Call Brief (Claude)": { "main": [[{ "node": "Respond: Brief Ready", "type": "main", "index": 0 }]] }
+    "New Call Request (from Supabase)": {
+      "main": [
+        [
+          {
+            "node": "Normalize Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Request": {
+      "main": [
+        [
+          {
+            "node": "Consent + Phone + Name Present?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consent + Phone + Name Present?": {
+      "main": [
+        [
+          {
+            "node": "Write German Call Brief (Claude)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Request Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write German Call Brief (Claude)": {
+      "main": [
+        [
+          {
+            "node": "Save Brief to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Brief to Supabase": {
+      "main": [
+        [
+          {
+            "node": "Log Event: brief_created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
-  "_notes": "Credentials are not exported. Webhook needs Header Auth credential 'Supabase webhook secret' (header X-Webhook-Secret). Claude node uses n8n Gateway credits (auto-assigned)."
+  "_notes": "Credentials not exported. Webhook: Header Auth credential (header X-Webhook-Secret, same value as Supabase Vault n8n_webhook_secret). Supabase nodes: Supabase API credential (host + secret key). Claude: n8n Gateway credits. Async: responds on receipt, writes results back to Supabase (pg_net times out at 5s)."
 }

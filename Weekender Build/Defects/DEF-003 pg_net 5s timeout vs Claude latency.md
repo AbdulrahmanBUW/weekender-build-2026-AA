@@ -1,7 +1,7 @@
 ---
 type: defect
 date: 2026-09-25
-status: open
+status: fixed
 severity: major
 found_in: "[[RUN-005 First end-to-end DB to n8n to Claude]]"
 owner: claude
