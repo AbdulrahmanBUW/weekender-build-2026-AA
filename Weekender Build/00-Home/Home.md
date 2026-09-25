@@ -1,0 +1,28 @@
+# Weekender Build — Project Home
+
+> Dresden · 25–27 Sep 2026 · **Build live under own URL by Sun 27.09 14:00**
+
+## Deliverables (from weekenderbuild.de)
+- [ ] 1. Running build under own URL (Lovable)
+- [ ] 2. n8n workflow that moves data/tasks
+- [ ] 3. (Optional) at least one AI function — understand, structure, decide
+- [ ] 4. Live demo (Demo Session Sun 13:00)
+- [ ] 5. Monday-Morning Plan → [[Monday-Morning Plan]]
+
+## Mandatory repos
+- [ ] cloudflare/security-audit-skill → output in `docs/security/`
+- [ ] tt-a1i/archify → diagrams in `docs/diagrams/`
+- [ ] latent-spaces/brag → launch video in `docs/launch/`
+
+## Pod slots
+| Slot | When | Bring |
+|---|---|---|
+| #01 Kick-off | Fri 20:00 | 5-min pitch: what, for whom, hypothesis |
+| #02 Build-Check | Sat (rolling) | 7-min current build |
+| #03 Scope/Deploy-Check | Sat 19:30 | what stays, what goes |
+| #04 Demo-Probe | Sun 10:00 | 3-min demo |
+
+## Map
+- Ideas: [[Idea A - HalloTermin (Abdul)]] · [[Idea B - (Teammate)]] → merged into [[Merged Concept]]
+- Folders: `Rules/` (hard constraints) · `Concepts/` (domain + product concepts) · `Decisions/` (ADRs) · `Runs/` (test/demo runs) · `Defects/` (bugs) · `Memory/` (session handoffs, learnings)
+- Create notes from `Templates/` (Obsidian core Templates plugin, folder = `Templates`).

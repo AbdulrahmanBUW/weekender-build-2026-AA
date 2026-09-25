@@ -1,0 +1,21 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# obsidian per-user state
+Weekender Build/.obsidian/workspace*.json
+Weekender Build/.obsidian/cache
+Weekender Build/.trash/
+
+# node / build
+node_modules/
+dist/
+.vercel/
+
+# large media (brag renders) – share via drive/release instead
+docs/launch/*.mp4
+
+# os
+.DS_Store
+Thumbs.db
