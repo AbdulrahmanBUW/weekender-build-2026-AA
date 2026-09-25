@@ -2,6 +2,8 @@
 
 Dresden · 25–27 Sep 2026 · goal: **build live under own URL by Sun 14:00**.
 
+**Task board:** https://github.com/users/AbdulrahmanBUW/projects/2 · milestones = pod slots
+
 | Path | What |
 |---|---|
 | `Weekender Build/` | **Obsidian vault** = project KB (Home, Ideas, Rules, Concepts, Decisions, Runs, Defects, Memory) |
