@@ -2,10 +2,14 @@
 
 > Dresden · 25–27 Sep 2026 · **Build live under own URL by Sun 27.09 14:00**
 
+## Status (Fri 25.09, 22:15) → full guide: `ONBOARDING.md` in the repo root
+- ✅ Supabase live · ✅ n8n workflow 01 live (request → Claude brief → DB) · 🟡 Lovable shell only (paused) · ⏳ **Idea B → merge**
+- Latest handoff: [[2026-09-25 Handoff - Setup done, waiting for Idea B]]
+
 ## Deliverables (from weekenderbuild.de)
 - [ ] 1. Running build under own URL (Lovable)
-- [ ] 2. n8n workflow that moves data/tasks
-- [ ] 3. (Optional) at least one AI function — understand, structure, decide
+- [x] 2. n8n workflow that moves data/tasks (HalloTermin 01, may change after merge)
+- [x] 3. (Optional) at least one AI function — Claude writes the German call brief
 - [ ] 4. Live demo (Demo Session Sun 13:00)
 - [ ] 5. Monday-Morning Plan → [[Monday-Morning Plan]]
 

@@ -3,6 +3,9 @@
 Two teammates (Abdul + teammate) share this repo. Event: Weekender Build, Dresden, 25–27.09.2026.
 **Only success criterion: working build live under its own URL by Sun 27.09 14:00.** Scope ruthlessly.
 
+## Current status
+See `ONBOARDING.md` §0 and the newest note in vault `Memory/`. Live: Supabase `weekender-build` (ref ycyrtlzympxzlfcocazh), n8n workflow `HalloTermin 01` (id peFxjt572HiUxu61), Lovable project "HalloTermin Paper" (P1 only). Waiting on Idea B → merge before more UI work.
+
 ## Sunday deliverables
 1. Live build (Lovable) · 2. n8n workflow moving data/tasks · 3. optional AI function · 4. live demo · 5. Monday-Morning Plan.
 Mandatory skills — installed project-level in `.claude/skills/` (pinned in `skills-lock.json`):

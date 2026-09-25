@@ -12,9 +12,9 @@ Dresden · 25–27 Sep 2026 · goal: **build live under own URL by Sun 14:00**.
 | `docs/diagrams` · `docs/security` · `docs/launch` | archify · security-audit · brag outputs |
 | `CLAUDE.md` | shared instructions for both teammates' Claude sessions |
 | `.claude/skills/` | mandatory skills (security-audit, archify, brag, brag-slim), pinned in `skills-lock.json` |
-| `ONBOARDING.md` | **new teammate? start here** |
+| `ONBOARDING.md` | **START HERE: status, access, setup, how to vibecode** |
 
-The Lovable app lives in its own GitHub repo (Lovable creates it via its GitHub integration); link it here once created.
+The Lovable app is the Lovable project **"HalloTermin Paper"** (connected to our Supabase). Its GitHub sync is not connected yet; when it is, Lovable creates its own repo: link it here.
 
 ## Setup (each teammate)
 Follow **[ONBOARDING.md](ONBOARDING.md)** — clone, open in Claude Code (skills + CLAUDE.md come with the repo), open the vault in Obsidian with the Git plugin.
