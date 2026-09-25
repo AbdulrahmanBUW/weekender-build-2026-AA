@@ -5,7 +5,16 @@ Two teammates (Abdul + teammate) share this repo. Event: Weekender Build, Dresde
 
 ## Sunday deliverables
 1. Live build (Lovable) · 2. n8n workflow moving data/tasks · 3. optional AI function · 4. live demo · 5. Monday-Morning Plan.
-Mandatory skills to use: cloudflare/security-audit-skill, tt-a1i/archify, latent-spaces/brag.
+Mandatory skills — installed project-level in `.claude/skills/` (pinned in `skills-lock.json`):
+- `security-audit` (cloudflare/security-audit-skill) → write reports to `docs/security/`
+- `archify` (tt-a1i/archify) → diagrams to `docs/diagrams/`
+- `brag` / `brag-slim` (latent-spaces/brag) → launch video to `docs/launch/` (needs FFmpeg + Hyperframes; Sunday)
+
+## Collaboration
+- Task board: https://github.com/users/AbdulrahmanBUW/projects/2 (repo AbdulrahmanBUW/weekender-build-2026-AA). Milestones = pod slots. Status: Backlog → Today → In progress → Review → Done.
+- `gh` CLI can read/update issues and the board. Reference issues as `AbdulrahmanBUW/weekender-build-2026-AA#N`.
+- New teammate setup: see `ONBOARDING.md`.
+- At session start: `git pull`. Before ending: write a `Memory/` handoff note, commit, push.
 
 ## Stack
 Lovable (UI + Supabase) · n8n (orchestration, REST/webhooks – not websockets) · Supabase (data) · Claude · optional Vercel/Docker for custom services.
