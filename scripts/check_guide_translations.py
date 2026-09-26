@@ -6,7 +6,12 @@ root = pathlib.Path(__file__).resolve().parent.parent / "content" / "guides"
 def nums(t):
     # ISO dates in English (2026-09-26) may be written as 26.09.2026 in a translation
     t = re.sub(r"(\d{4})-(\d{2})-(\d{2})", lambda m: f"{m[1]} {m[2]} {m[3]} {m[3]}.{m[2]} {m[3]}.{m[2]}.{m[1]}", t)
-    return {n.replace(",", ".") for n in re.findall(r"\d+(?:[.,]\d+)?", t)}
+    found = {n.replace(",", ".") for n in re.findall(r"\d+(?:[.,]\d+)?", t)}
+    # 77,400 / 5,812.50 may be written 77 400 / 5 812,50 (ru, uk, tr) or 77.400 (de): accept the parts too
+    for n in re.findall(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?", t):
+        found |= set(n.split(",")) | {n.replace(",", "")}
+        found |= {p.replace(",", ".") for p in re.findall(r"\d+(?:[.,]\d+)?", n.replace(",", " "))}
+    return found
 def feats(t):
     return {"headings": len(re.findall(r"^## ", t, re.M)), "items": len(re.findall(r"^\s*(?:- |\d+\. )", t, re.M)),
             "urls": sorted(re.findall(r"\]\((https?://[^)]+)\)", t)), "emails": sorted(re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", t))}
