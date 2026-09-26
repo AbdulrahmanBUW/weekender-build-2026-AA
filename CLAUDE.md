@@ -15,6 +15,8 @@ Mandatory skills — installed project-level in `.claude/skills/` (pinned in `sk
 
 UI quality skills (Vanszs/Anti-AI-UI): `anti-ai-slop-ui-ux`, `component-reference-design`, `ui-ux-pro-max` (vendored manually @fd2a142). **Use them whenever writing Lovable UI prompts or reviewing UI** — no purple gradients, generic Inter-everything, glassmorphism.
 
+Video skills: `agentic-motion-graphics` (siyuanfeng636-cpu, pinned a0f146b) + `hyperframes-*` (heygen-com/hyperframes) → **motion-graphics videos only** (launch video, stage backup video; HTML/SVG/GSAP scenes rendered to MP4 with HyperFrames). The website's motion stays plain CSS/React in the Lovable repo (no GSAP there: no new npm packages).
+
 Helper skills (also in `.claude/skills/`): `n8n-*` + `using-n8n-mcp-skills` (czlonkowski/n8n-skills — building/validating n8n workflows), `hyperframes-*` (heygen-com/hyperframes — used by brag).
 
 ## Database (Supabase)

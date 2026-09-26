@@ -162,6 +162,14 @@
       "sourceType": "github",
       "skillPath": "skills/using-n8n-mcp-skills/SKILL.md",
       "computedHash": "27006065d0ec98fa07742bc91738715adac025cc48248d25860afe12427b6f4f"
+    },
+    "agentic-motion-graphics": {
+      "source": "siyuanfeng636-cpu/agentic-motion-graphics",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "ref": "a0f146b3f618",
+      "computedHash": "413936c9fe363785e4daf403365a3b8d434dbf4bd874bd40e9d2be01ed44a2fe",
+      "note": "vendored 26 Sep 2026 after review (scripts only call ffmpeg, OpenAI/ElevenLabs TTS via env keys, local Whisper); docs/assets images omitted"
     }
   }
 }
