@@ -1,7 +1,7 @@
 {
   "en": {
     "common": {
-      "appName": "Dresden mit Kind",
+      "appName": "Ankommen",
       "skipLink": "Skip to content",
       "navNewCall": "New call",
       "navFind": "Find a place",
@@ -14,7 +14,7 @@
       "languageNoMatch": "No language found.",
       "languageVoiceText": "voice + text",
       "languageTextOnly": "text only",
-      "languageBar": "Showing Dresden mit Kind in {language}.",
+      "languageBar": "Showing Ankommen in {language}.",
       "languageBarChange": "Change",
       "dismiss": "Dismiss",
       "continue": "Continue",
@@ -36,11 +36,12 @@
       "notFoundTitle": "This page doesn't exist.",
       "notFoundBody": "The link may be old or mistyped.",
       "notFoundLink": "Go to the start page",
-      "docTitleSuffix": "Dresden mit Kind",
-      "footerAbout": "Dresden mit Kind is a demo built at Weekender Build Dresden, September 2026. Our AI assistant always says it is an AI.",
+      "docTitleSuffix": "Ankommen",
+      "footerAbout": "Ankommen is a demo built at Weekender Build Dresden, September 2026. Our AI assistant always says it is an AI.",
       "footerListings": "Listings come from public websites. Please check before you visit.",
       "footerImpressum": "Imprint",
-      "footerPrivacy": "Privacy"
+      "footerPrivacy": "Privacy",
+      "appTagline": "Your guide to starting in Germany"
     },
     "nav": {
       "courses": "Courses & activities",
@@ -48,7 +49,7 @@
       "communities": "Communities",
       "services": "Health & services",
       "library": "Library",
-      "ask": "Ask for me",
+      "ask": "Call for me",
       "menu": "Menu",
       "language": "Interface language",
       "home": "Start page",
@@ -71,7 +72,7 @@
       "placesCount": "{count} places",
       "comingUp": "Coming up",
       "allEvents": "All events",
-      "howTitle": "How Ask for me works",
+      "howTitle": "How Call for me works",
       "stepFind": "Find",
       "stepFindText": "a course, a Kita or a doctor",
       "stepAsk": "Ask",
@@ -143,7 +144,15 @@
       "fxL4Sub": "Thursday, 14:00. Is that right?",
       "fxL5Sub": "Yes, that's right. Please bring indoor shoes.",
       "fxResult": "Trial lesson booked · Thu 14:00",
-      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova."
+      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova.",
+      "heroTitle": "Courses, events and help for your family in Dresden.",
+      "heroSubtitle": "Find activities for your child's age, what's on this week, parent groups and communities, and Kita, doctors and offices, all explained in your language.",
+      "heroCourses": "Browse courses & activities",
+      "heroEvents": "See upcoming events",
+      "libraryAll": "All guides",
+      "hlTitle": "We can also call for you",
+      "hlText": "Some questions still need a phone call in German. Tell our AI assistant what to ask, in your language. It calls, says first that it is an AI, and brings the answer back to you in your language.",
+      "hlFabHint": "The round microphone button in the corner starts it from any page."
     },
     "filters": {
       "label": "Filter the list",
@@ -193,7 +202,7 @@
       "suggest": "Suggest a place we are missing",
       "error": "We couldn't load the list.",
       "noPhone": "No phone number listed",
-      "askForMe": "Ask for me",
+      "askForMe": "Call for me",
       "demoListing": "Demo listing, not a real business",
       "agesNotListed": "Ages not listed",
       "agesMissing": "{count} places don't list ages",
@@ -341,8 +350,8 @@
       "askHintText": "Our AI assistant can call for you in German and bring the answer back in your language.",
       "askButton": "Ask the assistant to call",
       "relatedTitle": "Useful on this topic",
-      "aboutTitle": "About Dresden mit Kind",
-      "aboutText": "Dresden mit Kind is a guide for international families in Dresden: courses, events, communities and step-by-step guides in six languages. If a phone call is hard, our AI assistant calls in German for you and brings the answer back in your language."
+      "aboutTitle": "About Ankommen",
+      "aboutText": "Ankommen is a guide for international families in Dresden: courses, events, communities and step-by-step guides in six languages. If a phone call is hard, our AI assistant calls in German for you and brings the answer back in your language."
     },
     "ask": {
       "weWillCall": "We will call",
@@ -505,7 +514,7 @@
       "emailLabel": "Send the result to my email too",
       "emailHelp": "Optional. The result also appears on the next page.",
       "emailInvalid": "Please check the email address.",
-      "consent": "I ask the Dresden mit Kind AI assistant to make this call for me in German. It will say it is an AI at the start. It only shares the facts above and only agrees to times inside my limits. No audio is recorded; a text transcript is kept.",
+      "consent": "I ask the Ankommen AI assistant to make this call for me in German. It will say it is an AI at the start. It only shares the facts above and only agrees to times inside my limits. No audio is recorded; a text transcript is kept.",
       "consentRequired": "Please tick the box to continue.",
       "confirm": "Yes, call now",
       "changeSomething": "Change something",
@@ -612,7 +621,7 @@
       "openGuide": "Open the guide",
       "summaryInEnglish": "Summary in English",
       "calendarSummary": "{task} - {place}",
-      "calendarDescription": "Bring: {items}. Phone: {phone}. Booked by the Dresden mit Kind AI assistant.",
+      "calendarDescription": "Bring: {items}. Phone: {phone}. Booked by the Ankommen AI assistant.",
       "trialBooked": "Trial lesson booked",
       "kitaVisitBooked": "Kita visit booked",
       "courseTitle": "What the course said",
@@ -879,7 +888,7 @@
       "de": "German"
     },
     "landing": {
-      "docTitle": "Dresden mit Kind - we make the call in German for you",
+      "docTitle": "Ankommen - we make the call in German for you",
       "heroTitle": "Tell us what you need. We make the call in German.",
       "heroSubline": "Write or speak in your language. Our AI assistant phones the practice, office or landlord, says it is an AI, and shows you the whole call with subtitles in your language.",
       "heroCta": "Tell us what you need",
@@ -918,7 +927,7 @@
       "neverApprove": "Agree to something you didn't approve",
       "neverApproveDesc": "Anything outside your limits comes back to you first.",
       "languagesTitle": "Languages",
-      "languagesBody": "Dresden mit Kind understands and writes these languages: {list}.",
+      "languagesBody": "Ankommen understands and writes these languages: {list}.",
       "languagesVoiceNote": "Voice and text in all of them. Text only: دری.",
       "closingTitle": "Not sure whom to call?",
       "closingCta": "Find a place",
@@ -950,11 +959,14 @@
       "logLabel": "Conversation",
       "consentTitle": "How the call works",
       "noMoreChanges": "I can't take more changes by voice. Please press “Type instead”."
+    },
+    "fab": {
+      "label": "Call for me: our AI assistant calls in German for you"
     }
   },
   "de": {
     "common": {
-      "appName": "Dresden mit Kind",
+      "appName": "Ankommen",
       "skipLink": "Zum Inhalt springen",
       "navNewCall": "Neuer Anruf",
       "navFind": "Ort finden",
@@ -967,7 +979,7 @@
       "languageNoMatch": "Keine Sprache gefunden.",
       "languageVoiceText": "Stimme + Text",
       "languageTextOnly": "nur Text",
-      "languageBar": "Dresden mit Kind wird auf {language} angezeigt.",
+      "languageBar": "Ankommen wird auf {language} angezeigt.",
       "languageBarChange": "Ändern",
       "dismiss": "Ausblenden",
       "continue": "Weiter",
@@ -989,11 +1001,12 @@
       "notFoundTitle": "Diese Seite gibt es nicht.",
       "notFoundBody": "Der Link ist vielleicht alt oder falsch geschrieben.",
       "notFoundLink": "Zur Startseite",
-      "docTitleSuffix": "Dresden mit Kind",
-      "footerAbout": "Dresden mit Kind ist eine Demo, gebaut beim Weekender Build Dresden im September 2026. Unsere KI-Assistentin sagt immer, dass sie eine KI ist.",
+      "docTitleSuffix": "Ankommen",
+      "footerAbout": "Ankommen ist eine Demo, gebaut beim Weekender Build Dresden im September 2026. Unsere KI-Assistentin sagt immer, dass sie eine KI ist.",
       "footerListings": "Die Einträge stammen von öffentlichen Websites. Bitte prüfen Sie sie vor dem Besuch.",
       "footerImpressum": "Impressum",
-      "footerPrivacy": "Datenschutz"
+      "footerPrivacy": "Datenschutz",
+      "appTagline": "Ihr Wegweiser für den Start in Deutschland"
     },
     "nav": {
       "courses": "Kurse & Aktivitäten",
@@ -1001,7 +1014,7 @@
       "communities": "Gemeinschaften",
       "services": "Gesundheit & Dienste",
       "library": "Ratgeber",
-      "ask": "Für mich anfragen",
+      "ask": "Für mich anrufen",
       "menu": "Menü",
       "language": "Sprache der Oberfläche",
       "home": "Startseite",
@@ -1024,7 +1037,7 @@
       "placesCount": "{count} Orte",
       "comingUp": "Demnächst",
       "allEvents": "Alle Veranstaltungen",
-      "howTitle": "So funktioniert „Für mich anfragen“",
+      "howTitle": "So funktioniert „Für mich anrufen“",
       "stepFind": "Finden",
       "stepFindText": "einen Kurs, eine Kita oder einen Arzt",
       "stepAsk": "Fragen",
@@ -1096,7 +1109,15 @@
       "fxL4Sub": "Четверг, 14:00. Всё верно?",
       "fxL5Sub": "Да, верно. Пожалуйста, возьмите сменную обувь.",
       "fxResult": "Probestunde gebucht · Do 14:00",
-      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova."
+      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova.",
+      "heroTitle": "Kurse, Veranstaltungen und Hilfe für Ihre Familie in Dresden.",
+      "heroSubtitle": "Finden Sie Angebote für das Alter Ihres Kindes, Veranstaltungen dieser Woche, Elterngruppen und Gemeinschaften sowie Kitas, Ärzte und Ämter, alles in Ihrer Sprache erklärt.",
+      "heroCourses": "Kurse & Aktivitäten ansehen",
+      "heroEvents": "Kommende Veranstaltungen",
+      "libraryAll": "Alle Ratgeber",
+      "hlTitle": "Wir können auch für Sie anrufen",
+      "hlText": "Manche Fragen lassen sich nur mit einem Anruf auf Deutsch klären. Sagen Sie unserer KI-Assistentin in Ihrer Sprache, was sie fragen soll. Sie ruft an, sagt zuerst, dass sie eine KI ist, und bringt Ihnen die Antwort in Ihrer Sprache zurück.",
+      "hlFabHint": "Der runde Mikrofon-Knopf in der Ecke startet die Anfrage auf jeder Seite."
     },
     "filters": {
       "label": "Liste filtern",
@@ -1146,7 +1167,7 @@
       "suggest": "Einen fehlenden Ort vorschlagen",
       "error": "Wir konnten die Liste nicht laden.",
       "noPhone": "Keine Telefonnummer angegeben",
-      "askForMe": "Für mich anfragen",
+      "askForMe": "Für mich anrufen",
       "demoListing": "Demo-Eintrag, kein echtes Geschäft",
       "agesNotListed": "Alter nicht angegeben",
       "agesMissing": "{count} Orte ohne Altersangabe",
@@ -1294,8 +1315,8 @@
       "askHintText": "Unser KI-Assistent ruft für Sie auf Deutsch an und bringt die Antwort in Ihrer Sprache zurück.",
       "askButton": "Assistent anrufen lassen",
       "relatedTitle": "Passend zum Thema",
-      "aboutTitle": "Über Dresden mit Kind",
-      "aboutText": "Dresden mit Kind ist ein Wegweiser für internationale Familien in Dresden: Kurse, Veranstaltungen, Communities und Schritt-für-Schritt-Ratgeber in sechs Sprachen. Wenn ein Anruf schwerfällt, ruft unser KI-Assistent für Sie auf Deutsch an und bringt die Antwort in Ihrer Sprache zurück."
+      "aboutTitle": "Über Ankommen",
+      "aboutText": "Ankommen ist ein Wegweiser für internationale Familien in Dresden: Kurse, Veranstaltungen, Communities und Schritt-für-Schritt-Ratgeber in sechs Sprachen. Wenn ein Anruf schwerfällt, ruft unser KI-Assistent für Sie auf Deutsch an und bringt die Antwort in Ihrer Sprache zurück."
     },
     "ask": {
       "weWillCall": "Wir rufen hier an",
@@ -1458,7 +1479,7 @@
       "emailLabel": "Das Ergebnis auch an meine E-Mail senden",
       "emailHelp": "Optional. Das Ergebnis erscheint auch auf der nächsten Seite.",
       "emailInvalid": "Bitte prüfen Sie die E-Mail-Adresse.",
-      "consent": "Ich beauftrage die KI-Assistentin von Dresden mit Kind, diesen Anruf für mich auf Deutsch zu führen. Sie sagt am Anfang, dass sie eine KI ist. Sie gibt nur die Angaben oben weiter und sagt nur Zeiten innerhalb meiner Grenzen zu. Es wird kein Ton aufgenommen; ein Textprotokoll wird gespeichert.",
+      "consent": "Ich beauftrage die KI-Assistentin von Ankommen, diesen Anruf für mich auf Deutsch zu führen. Sie sagt am Anfang, dass sie eine KI ist. Sie gibt nur die Angaben oben weiter und sagt nur Zeiten innerhalb meiner Grenzen zu. Es wird kein Ton aufgenommen; ein Textprotokoll wird gespeichert.",
       "consentRequired": "Bitte setzen Sie den Haken, um fortzufahren.",
       "confirm": "Ja, jetzt anrufen",
       "changeSomething": "Etwas ändern",
@@ -1565,7 +1586,7 @@
       "openGuide": "Ratgeber öffnen",
       "summaryInEnglish": "Zusammenfassung auf Englisch",
       "calendarSummary": "{task} - {place}",
-      "calendarDescription": "Mitbringen: {items}. Telefon: {phone}. Gebucht von der KI-Assistentin von Dresden mit Kind.",
+      "calendarDescription": "Mitbringen: {items}. Telefon: {phone}. Gebucht von der KI-Assistentin von Ankommen.",
       "trialBooked": "Probestunde gebucht",
       "kitaVisitBooked": "Kita-Besuch vereinbart",
       "courseTitle": "Antwort vom Kurs",
@@ -1832,7 +1853,7 @@
       "de": "Deutsch"
     },
     "landing": {
-      "docTitle": "Dresden mit Kind - wir telefonieren für Sie auf Deutsch",
+      "docTitle": "Ankommen - wir telefonieren für Sie auf Deutsch",
       "heroTitle": "Sagen Sie uns, was Sie brauchen. Wir rufen auf Deutsch an.",
       "heroSubline": "Schreiben oder sprechen Sie in Ihrer Sprache. Unsere KI-Assistentin ruft die Praxis, das Amt oder den Vermieter an, sagt, dass sie eine KI ist, und zeigt Ihnen das ganze Gespräch mit Untertiteln in Ihrer Sprache.",
       "heroCta": "Sagen Sie uns, was Sie brauchen",
@@ -1871,7 +1892,7 @@
       "neverApprove": "Etwas zusagen, das Sie nicht erlaubt haben",
       "neverApproveDesc": "Alles außerhalb Ihrer Grenzen kommt zuerst zu Ihnen zurück.",
       "languagesTitle": "Sprachen",
-      "languagesBody": "Dresden mit Kind versteht und schreibt diese Sprachen: {list}.",
+      "languagesBody": "Ankommen versteht und schreibt diese Sprachen: {list}.",
       "languagesVoiceNote": "Stimme und Text in allen Sprachen. Nur Text: دری.",
       "closingTitle": "Nicht sicher, wen Sie anrufen sollen?",
       "closingCta": "Ort finden",
@@ -1903,11 +1924,14 @@
       "logLabel": "Gespräch",
       "consentTitle": "So läuft der Anruf ab",
       "noMoreChanges": "Weitere Änderungen kann ich per Sprache nicht mehr annehmen. Bitte drücken Sie „Lieber tippen“."
+    },
+    "fab": {
+      "label": "Für mich anrufen: Unsere KI-Assistentin ruft für Sie auf Deutsch an"
     }
   },
   "ru": {
     "common": {
-      "appName": "Dresden mit Kind",
+      "appName": "Ankommen",
       "skipLink": "Перейти к содержанию",
       "navNewCall": "Новый звонок",
       "navFind": "Найти место",
@@ -1920,7 +1944,7 @@
       "languageNoMatch": "Язык не найден.",
       "languageVoiceText": "голос + текст",
       "languageTextOnly": "только текст",
-      "languageBar": "Dresden mit Kind показан на языке: {language}.",
+      "languageBar": "Ankommen показан на языке: {language}.",
       "languageBarChange": "Изменить",
       "dismiss": "Скрыть",
       "continue": "Далее",
@@ -1942,11 +1966,12 @@
       "notFoundTitle": "Такой страницы нет.",
       "notFoundBody": "Возможно, ссылка устарела или в ней ошибка.",
       "notFoundLink": "На главную страницу",
-      "docTitleSuffix": "Dresden mit Kind",
-      "footerAbout": "Dresden mit Kind — демоверсия, созданная на Weekender Build Dresden в сентябре 2026 года. Наш ИИ-ассистент всегда говорит, что он ИИ.",
+      "docTitleSuffix": "Ankommen",
+      "footerAbout": "Ankommen — демоверсия, созданная на Weekender Build Dresden в сентябре 2026 года. Наш ИИ-ассистент всегда говорит, что он ИИ.",
       "footerListings": "Данные взяты с открытых сайтов. Пожалуйста, проверяйте их перед визитом.",
       "footerImpressum": "Выходные данные (Impressum)",
-      "footerPrivacy": "Конфиденциальность"
+      "footerPrivacy": "Конфиденциальность",
+      "appTagline": "Ваш путеводитель для старта в Германии"
     },
     "nav": {
       "courses": "Курсы и занятия",
@@ -1954,7 +1979,7 @@
       "communities": "Сообщества",
       "services": "Здоровье и услуги",
       "library": "Справочник",
-      "ask": "Спросите за меня",
+      "ask": "Позвоните за меня",
       "menu": "Меню",
       "language": "Язык интерфейса",
       "home": "Главная страница",
@@ -1977,7 +2002,7 @@
       "placesCount": "Мест: {count}",
       "comingUp": "Ближайшие мероприятия",
       "allEvents": "Все мероприятия",
-      "howTitle": "Как работает «Спросите за меня»",
+      "howTitle": "Как работает «Позвоните за меня»",
       "stepFind": "Найдите",
       "stepFindText": "курс, детский сад или врача",
       "stepAsk": "Спросите",
@@ -2049,7 +2074,15 @@
       "fxL4Sub": "Четверг, 14:00. Всё верно?",
       "fxL5Sub": "Да, верно. Пожалуйста, возьмите сменную обувь.",
       "fxResult": "Записаны на пробное занятие · чт 14:00",
-      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova."
+      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova.",
+      "heroTitle": "Курсы, мероприятия и помощь для вашей семьи в Дрездене.",
+      "heroSubtitle": "Найдите занятия для возраста вашего ребёнка, мероприятия этой недели, родительские группы и сообщества, а также детские сады, врачей и ведомства — всё с объяснениями на вашем языке.",
+      "heroCourses": "Смотреть курсы и занятия",
+      "heroEvents": "Ближайшие мероприятия",
+      "libraryAll": "Все памятки",
+      "hlTitle": "Мы также можем позвонить за вас",
+      "hlText": "Некоторые вопросы до сих пор решаются только звонком на немецком. Скажите нашему ИИ-ассистенту на своём языке, что нужно спросить. Он позвонит, сразу скажет, что он ИИ, и вернёт вам ответ на вашем языке.",
+      "hlFabHint": "Круглая кнопка с микрофоном в углу запускает запрос с любой страницы."
     },
     "filters": {
       "label": "Фильтры списка",
@@ -2099,7 +2132,7 @@
       "suggest": "Предложить место, которого у нас нет",
       "error": "Не удалось загрузить список.",
       "noPhone": "Номер телефона не указан",
-      "askForMe": "Спросите за меня",
+      "askForMe": "Позвоните за меня",
       "demoListing": "Демо-запись, не настоящая организация",
       "agesNotListed": "Возраст не указан",
       "agesMissing": "Без указания возраста: {count}",
@@ -2247,8 +2280,8 @@
       "askHintText": "Наш AI-помощник позвонит за вас на немецком и передаст ответ на вашем языке.",
       "askButton": "Попросить помощника позвонить",
       "relatedTitle": "Полезно по теме",
-      "aboutTitle": "О проекте Dresden mit Kind",
-      "aboutText": "Dresden mit Kind — путеводитель для иностранных семей в Дрездене: кружки, события, сообщества и пошаговые памятки на шести языках. Если звонить трудно, наш AI-помощник позвонит за вас на немецком и передаст ответ на вашем языке."
+      "aboutTitle": "О проекте Ankommen",
+      "aboutText": "Ankommen — путеводитель для иностранных семей в Дрездене: кружки, события, сообщества и пошаговые памятки на шести языках. Если звонить трудно, наш AI-помощник позвонит за вас на немецком и передаст ответ на вашем языке."
     },
     "ask": {
       "weWillCall": "Куда мы позвоним",
@@ -2411,7 +2444,7 @@
       "emailLabel": "Отправить результат и на мою почту",
       "emailHelp": "Необязательно. Результат также появится на следующей странице.",
       "emailInvalid": "Пожалуйста, проверьте адрес электронной почты.",
-      "consent": "Я прошу ИИ-ассистента Dresden mit Kind позвонить за меня по-немецки. В начале он скажет, что он ИИ. Он сообщит только данные, указанные выше, и согласится только на время в моих рамках. Аудио не записывается; сохраняется текстовая расшифровка.",
+      "consent": "Я прошу ИИ-ассистента Ankommen позвонить за меня по-немецки. В начале он скажет, что он ИИ. Он сообщит только данные, указанные выше, и согласится только на время в моих рамках. Аудио не записывается; сохраняется текстовая расшифровка.",
       "consentRequired": "Чтобы продолжить, поставьте отметку.",
       "confirm": "Да, позвонить сейчас",
       "changeSomething": "Что-то изменить",
@@ -2518,7 +2551,7 @@
       "openGuide": "Открыть памятку",
       "summaryInEnglish": "Краткое содержание на английском",
       "calendarSummary": "{task} - {place}",
-      "calendarDescription": "Взять с собой: {items}. Телефон: {phone}. Записано ИИ-ассистентом Dresden mit Kind.",
+      "calendarDescription": "Взять с собой: {items}. Телефон: {phone}. Записано ИИ-ассистентом Ankommen.",
       "trialBooked": "Вы записаны на пробное занятие",
       "kitaVisitBooked": "Визит в детский сад назначен",
       "courseTitle": "Что ответили организаторы курса",
@@ -2785,7 +2818,7 @@
       "de": "немецкий"
     },
     "landing": {
-      "docTitle": "Dresden mit Kind - мы позвоним за вас по-немецки",
+      "docTitle": "Ankommen - мы позвоним за вас по-немецки",
       "heroTitle": "Скажите, что вам нужно. Мы позвоним по-немецки.",
       "heroSubline": "Пишите или говорите на своём языке. Наш ИИ-ассистент звонит во врачебную практику, в учреждение или арендодателю, говорит, что он ИИ, и показывает вам весь разговор с субтитрами на вашем языке.",
       "heroCta": "Расскажите, что нужно",
@@ -2824,7 +2857,7 @@
       "neverApprove": "Соглашаться на то, что вы не одобрили",
       "neverApproveDesc": "Всё, что выходит за ваши рамки, сначала возвращается к вам.",
       "languagesTitle": "Языки",
-      "languagesBody": "Dresden mit Kind понимает эти языки и пишет на них: {list}.",
+      "languagesBody": "Ankommen понимает эти языки и пишет на них: {list}.",
       "languagesVoiceNote": "Голос и текст на всех языках. Только текст: دری.",
       "closingTitle": "Не знаете, куда звонить?",
       "closingCta": "Найти место",
@@ -2856,11 +2889,14 @@
       "logLabel": "Разговор",
       "consentTitle": "Как пройдёт звонок",
       "noMoreChanges": "Больше изменений голосом я принять не могу. Пожалуйста, нажмите «Написать текстом»."
+    },
+    "fab": {
+      "label": "Позвоните за меня: наш ИИ-ассистент позвонит за вас по-немецки"
     }
   },
   "uk": {
     "common": {
-      "appName": "Dresden mit Kind",
+      "appName": "Ankommen",
       "skipLink": "Перейти до вмісту",
       "navNewCall": "Новий дзвінок",
       "navFind": "Знайти установу",
@@ -2873,7 +2909,7 @@
       "languageNoMatch": "Мову не знайдено.",
       "languageVoiceText": "голос + текст",
       "languageTextOnly": "лише текст",
-      "languageBar": "Dresden mit Kind показано мовою: {language}.",
+      "languageBar": "Ankommen показано мовою: {language}.",
       "languageBarChange": "Змінити",
       "dismiss": "Приховати",
       "continue": "Далі",
@@ -2895,11 +2931,12 @@
       "notFoundTitle": "Такої сторінки немає.",
       "notFoundBody": "Можливо, посилання застаріле або містить помилку.",
       "notFoundLink": "На головну сторінку",
-      "docTitleSuffix": "Dresden mit Kind",
-      "footerAbout": "Dresden mit Kind — демоверсія, створена на Weekender Build Dresden у вересні 2026 року. Наш ШІ-асистент завжди каже, що він ШІ.",
+      "docTitleSuffix": "Ankommen",
+      "footerAbout": "Ankommen — демоверсія, створена на Weekender Build Dresden у вересні 2026 року. Наш ШІ-асистент завжди каже, що він ШІ.",
       "footerListings": "Дані взято з відкритих вебсайтів. Будь ласка, перевіряйте їх перед візитом.",
       "footerImpressum": "Вихідні дані (Impressum)",
-      "footerPrivacy": "Конфіденційність"
+      "footerPrivacy": "Конфіденційність",
+      "appTagline": "Ваш путівник для старту в Німеччині"
     },
     "nav": {
       "courses": "Курси та заняття",
@@ -2907,7 +2944,7 @@
       "communities": "Спільноти",
       "services": "Здоров’я та послуги",
       "library": "Довідник",
-      "ask": "Запитайте за мене",
+      "ask": "Зателефонуйте за мене",
       "menu": "Меню",
       "language": "Мова інтерфейсу",
       "home": "Головна сторінка",
@@ -2930,7 +2967,7 @@
       "placesCount": "Місць: {count}",
       "comingUp": "Незабаром",
       "allEvents": "Усі події",
-      "howTitle": "Як працює «Запитайте за мене»",
+      "howTitle": "Як працює «Зателефонуйте за мене»",
       "stepFind": "Знайдіть",
       "stepFindText": "курс, садочок або лікаря",
       "stepAsk": "Запитайте",
@@ -3002,7 +3039,15 @@
       "fxL4Sub": "Четвер, 14:00. Усе правильно?",
       "fxL5Sub": "Так, правильно. Будь ласка, візьміть змінне взуття.",
       "fxResult": "Пробне заняття заброньовано · чт 14:00",
-      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova."
+      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova.",
+      "heroTitle": "Курси, події та допомога для вашої родини в Дрездені.",
+      "heroSubtitle": "Знайдіть заняття для віку вашої дитини, події цього тижня, батьківські групи та спільноти, а також садочки, лікарів і установи — усе з поясненнями вашою мовою.",
+      "heroCourses": "Переглянути курси та заняття",
+      "heroEvents": "Найближчі події",
+      "libraryAll": "Усі довідники",
+      "hlTitle": "Ми також можемо зателефонувати за вас",
+      "hlText": "Деякі питання досі вирішуються лише дзвінком німецькою. Скажіть нашому ШІ-асистенту своєю мовою, що треба запитати. Він зателефонує, одразу скаже, що він ШІ, і поверне вам відповідь вашою мовою.",
+      "hlFabHint": "Кругла кнопка з мікрофоном у кутку запускає запит з будь-якої сторінки."
     },
     "filters": {
       "label": "Фільтри списку",
@@ -3052,7 +3097,7 @@
       "suggest": "Запропонувати місце, якого в нас немає",
       "error": "Не вдалося завантажити список.",
       "noPhone": "Номер телефону не вказано",
-      "askForMe": "Запитайте за мене",
+      "askForMe": "Зателефонуйте за мене",
       "demoListing": "Демозапис, не справжня організація",
       "agesNotListed": "Вік не вказано",
       "agesMissing": "Без зазначення віку: {count}",
@@ -3200,8 +3245,8 @@
       "askHintText": "Наш AI-помічник зателефонує за вас німецькою і передасть відповідь вашою мовою.",
       "askButton": "Попросити помічника зателефонувати",
       "relatedTitle": "Корисно на цю тему",
-      "aboutTitle": "Про проєкт Dresden mit Kind",
-      "aboutText": "Dresden mit Kind — путівник для іноземних родин у Дрездені: гуртки, події, спільноти та покрокові пам’ятки шістьма мовами. Якщо телефонувати важко, наш AI-помічник зателефонує за вас німецькою і передасть відповідь вашою мовою."
+      "aboutTitle": "Про проєкт Ankommen",
+      "aboutText": "Ankommen — путівник для іноземних родин у Дрездені: гуртки, події, спільноти та покрокові пам’ятки шістьма мовами. Якщо телефонувати важко, наш AI-помічник зателефонує за вас німецькою і передасть відповідь вашою мовою."
     },
     "ask": {
       "weWillCall": "Куди ми зателефонуємо",
@@ -3364,7 +3409,7 @@
       "emailLabel": "Надіслати результат і на мою пошту",
       "emailHelp": "Необов’язково. Результат також буде на наступній сторінці.",
       "emailInvalid": "Будь ласка, перевірте адресу електронної пошти.",
-      "consent": "Я прошу ШІ-асистента Dresden mit Kind зателефонувати за мене німецькою. На початку він скаже, що він ШІ. Він повідомить лише наведені вище дані й погодиться лише на час у вказаних мною межах. Аудіо не записується; зберігається текстова розшифровка.",
+      "consent": "Я прошу ШІ-асистента Ankommen зателефонувати за мене німецькою. На початку він скаже, що він ШІ. Він повідомить лише наведені вище дані й погодиться лише на час у вказаних мною межах. Аудіо не записується; зберігається текстова розшифровка.",
       "consentRequired": "Щоб продовжити, поставте позначку.",
       "confirm": "Так, телефонуйте зараз",
       "changeSomething": "Щось змінити",
@@ -3471,7 +3516,7 @@
       "openGuide": "Відкрити довідник",
       "summaryInEnglish": "Підсумок англійською",
       "calendarSummary": "{task} - {place}",
-      "calendarDescription": "Взяти: {items}. Телефон: {phone}. Записано ШІ-асистентом Dresden mit Kind.",
+      "calendarDescription": "Взяти: {items}. Телефон: {phone}. Записано ШІ-асистентом Ankommen.",
       "trialBooked": "Пробне заняття заброньовано",
       "kitaVisitBooked": "Візит до садочка призначено",
       "courseTitle": "Що відповіли на курсі",
@@ -3738,7 +3783,7 @@
       "de": "німецька"
     },
     "landing": {
-      "docTitle": "Dresden mit Kind - ми телефонуємо німецькою за вас",
+      "docTitle": "Ankommen - ми телефонуємо німецькою за вас",
       "heroTitle": "Скажіть, що вам потрібно. Ми зателефонуємо німецькою.",
       "heroSubline": "Пишіть або говоріть своєю мовою. Наш ШІ-асистент телефонує до практики, установи чи орендодавця, каже, що він ШІ, і показує вам усю розмову із субтитрами вашою мовою.",
       "heroCta": "Розкажіть, що потрібно",
@@ -3777,7 +3822,7 @@
       "neverApprove": "Погоджуватися на те, чого ви не схвалили",
       "neverApproveDesc": "Усе, що виходить за ваші межі, спершу повертається до вас.",
       "languagesTitle": "Мови",
-      "languagesBody": "Dresden mit Kind розуміє ці мови й пише ними: {list}.",
+      "languagesBody": "Ankommen розуміє ці мови й пише ними: {list}.",
       "languagesVoiceNote": "Голос і текст для всіх. Лише текст: دری.",
       "closingTitle": "Не знаєте, куди телефонувати?",
       "closingCta": "Знайти установу",
@@ -3809,11 +3854,14 @@
       "logLabel": "Розмова",
       "consentTitle": "Як відбуватиметься дзвінок",
       "noMoreChanges": "Більше змін голосом я прийняти не можу. Будь ласка, натисніть «Написати текстом»."
+    },
+    "fab": {
+      "label": "Зателефонуйте за мене: наш ШІ-асистент зателефонує за вас німецькою"
     }
   },
   "ar": {
     "common": {
-      "appName": "Dresden mit Kind",
+      "appName": "Ankommen",
       "skipLink": "انتقل إلى المحتوى",
       "navNewCall": "مكالمة جديدة",
       "navFind": "ابحث عن جهة",
@@ -3826,7 +3874,7 @@
       "languageNoMatch": "لم نجد هذه اللغة.",
       "languageVoiceText": "صوت + نص",
       "languageTextOnly": "نص فقط",
-      "languageBar": "يُعرض Dresden mit Kind باللغة {language}.",
+      "languageBar": "يُعرض Ankommen باللغة {language}.",
       "languageBarChange": "تغيير",
       "dismiss": "إخفاء",
       "continue": "متابعة",
@@ -3848,11 +3896,12 @@
       "notFoundTitle": "هذه الصفحة غير موجودة.",
       "notFoundBody": "ربما يكون الرابط قديمًا أو فيه خطأ.",
       "notFoundLink": "العودة إلى الصفحة الرئيسية",
-      "docTitleSuffix": "Dresden mit Kind",
-      "footerAbout": "موقع Dresden mit Kind نسخة تجريبية بُنيت خلال Weekender Build Dresden في سبتمبر 2026. ويقول مساعدنا بالذكاء الاصطناعي دائمًا إنه ذكاء اصطناعي.",
+      "docTitleSuffix": "Ankommen",
+      "footerAbout": "موقع Ankommen نسخة تجريبية بُنيت خلال Weekender Build Dresden في سبتمبر 2026. ويقول مساعدنا بالذكاء الاصطناعي دائمًا إنه ذكاء اصطناعي.",
       "footerListings": "المعلومات مأخوذة من مواقع عامة. يُرجى التحقق منها قبل الزيارة.",
       "footerImpressum": "بيانات الناشر (Impressum)",
-      "footerPrivacy": "الخصوصية"
+      "footerPrivacy": "الخصوصية",
+      "appTagline": "دليلك لبداية جديدة في ألمانيا"
     },
     "nav": {
       "courses": "دورات وأنشطة",
@@ -3860,7 +3909,7 @@
       "communities": "مجتمعات",
       "services": "الصحة والخدمات",
       "library": "مكتبة الأدلة",
-      "ask": "اسألوا نيابةً عني",
+      "ask": "اتصلوا نيابةً عني",
       "menu": "القائمة",
       "language": "لغة الواجهة",
       "home": "الصفحة الرئيسية",
@@ -3883,7 +3932,7 @@
       "placesCount": "عدد الأماكن: {count}",
       "comingUp": "الفعاليات القادمة",
       "allEvents": "كل الفعاليات",
-      "howTitle": "كيف تعمل خدمة «اسألوا نيابةً عني»",
+      "howTitle": "كيف تعمل خدمة «اتصلوا نيابةً عني»",
       "stepFind": "ابحث",
       "stepFindText": "دورة أو روضة أو طبيبًا",
       "stepAsk": "اسأل",
@@ -3955,7 +4004,15 @@
       "fxL4Sub": "الخميس، الساعة 14:00. هل هذا صحيح؟",
       "fxL5Sub": "نعم، صحيح. يُرجى إحضار حذاء للارتداء داخل المبنى.",
       "fxResult": "تم حجز درس تجريبي · الخميس 14:00",
-      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova."
+      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova.",
+      "heroTitle": "دورات وفعاليات ومساعدة لعائلتكم في دريسدن.",
+      "heroSubtitle": "اعثروا على أنشطة تناسب عمر طفلكم، وفعاليات هذا الأسبوع، ومجموعات الأهل والمجتمعات، وعلى الروضات والأطباء والدوائر الرسمية، مع شرح كل شيء بلغتكم.",
+      "heroCourses": "تصفّحوا الدورات والأنشطة",
+      "heroEvents": "الفعاليات القادمة",
+      "libraryAll": "كل الأدلة",
+      "hlTitle": "ويمكننا أيضًا الاتصال نيابةً عنكم",
+      "hlText": "ما زالت بعض الأسئلة تحتاج إلى مكالمة بالألمانية. أخبروا مساعدنا بالذكاء الاصطناعي بلغتكم بما يجب أن يسأل عنه. سيتصل، ويقول أولًا إنه ذكاء اصطناعي، ثم يعيد إليكم الجواب بلغتكم.",
+      "hlFabHint": "زر الميكروفون الدائري في الزاوية يبدأ الطلب من أي صفحة."
     },
     "filters": {
       "label": "تصفية القائمة",
@@ -4005,7 +4062,7 @@
       "suggest": "اقترح مكانًا غير موجود لدينا",
       "error": "لم نتمكن من تحميل القائمة.",
       "noPhone": "لا يوجد رقم هاتف",
-      "askForMe": "اسألوا نيابةً عني",
+      "askForMe": "اتصلوا نيابةً عني",
       "demoListing": "إدراج تجريبي، وليس جهة حقيقية",
       "agesNotListed": "الأعمار غير مذكورة",
       "agesMissing": "أماكن بلا أعمار محددة: {count}",
@@ -4153,8 +4210,8 @@
       "askHintText": "يتصل مساعدنا الذكي نيابةً عنك باللغة الألمانية وينقل إليك الإجابة بلغتك.",
       "askButton": "اطلب من المساعد أن يتصل",
       "relatedTitle": "مفيد حول هذا الموضوع",
-      "aboutTitle": "عن Dresden mit Kind",
-      "aboutText": "Dresden mit Kind دليل للعائلات الدولية في دريسدن: دورات وفعاليات ومجتمعات وأدلة خطوة بخطوة بست لغات. وإذا كان الاتصال الهاتفي صعبًا، يتصل مساعدنا الذكي نيابةً عنك باللغة الألمانية وينقل إليك الإجابة بلغتك."
+      "aboutTitle": "عن Ankommen",
+      "aboutText": "Ankommen دليل للعائلات الدولية في دريسدن: دورات وفعاليات ومجتمعات وأدلة خطوة بخطوة بست لغات. وإذا كان الاتصال الهاتفي صعبًا، يتصل مساعدنا الذكي نيابةً عنك باللغة الألمانية وينقل إليك الإجابة بلغتك."
     },
     "ask": {
       "weWillCall": "الجهة التي سنتصل بها",
@@ -4317,7 +4374,7 @@
       "emailLabel": "أرسل النتيجة إلى بريدي الإلكتروني أيضًا",
       "emailHelp": "اختياري. تظهر النتيجة أيضًا في الصفحة التالية.",
       "emailInvalid": "يُرجى التحقق من عنوان البريد الإلكتروني.",
-      "consent": "أطلب من مساعد Dresden mit Kind بالذكاء الاصطناعي أن يُجري هذه المكالمة بالألمانية نيابةً عني. سيقول في البداية إنه ذكاء اصطناعي. لن يشارك إلا المعلومات المذكورة أعلاه، ولن يوافق إلا على أوقات ضمن حدودي. لا يُسجَّل أي صوت، ويُحفظ نص مكتوب للمكالمة.",
+      "consent": "أطلب من مساعد Ankommen بالذكاء الاصطناعي أن يُجري هذه المكالمة بالألمانية نيابةً عني. سيقول في البداية إنه ذكاء اصطناعي. لن يشارك إلا المعلومات المذكورة أعلاه، ولن يوافق إلا على أوقات ضمن حدودي. لا يُسجَّل أي صوت، ويُحفظ نص مكتوب للمكالمة.",
       "consentRequired": "يُرجى وضع علامة في المربع للمتابعة.",
       "confirm": "نعم، اتصل الآن",
       "changeSomething": "تعديل شيء",
@@ -4424,7 +4481,7 @@
       "openGuide": "افتح الدليل",
       "summaryInEnglish": "الملخص بالإنجليزية",
       "calendarSummary": "{task} - {place}",
-      "calendarDescription": "أحضر: {items}. الهاتف: {phone}. حجزه مساعد Dresden mit Kind بالذكاء الاصطناعي.",
+      "calendarDescription": "أحضر: {items}. الهاتف: {phone}. حجزه مساعد Ankommen بالذكاء الاصطناعي.",
       "trialBooked": "تم حجز درس تجريبي",
       "kitaVisitBooked": "تم تحديد موعد لزيارة الروضة",
       "courseTitle": "جواب الدورة",
@@ -4691,7 +4748,7 @@
       "de": "الألمانية"
     },
     "landing": {
-      "docTitle": "Dresden mit Kind - نتصل بالألمانية نيابةً عنك",
+      "docTitle": "Ankommen - نتصل بالألمانية نيابةً عنك",
       "heroTitle": "أخبرنا بما تحتاج، ونحن نُجري المكالمة بالألمانية.",
       "heroSubline": "اكتب أو تحدّث بلغتك. يتصل مساعدنا بالذكاء الاصطناعي بالعيادة أو الدائرة الحكومية أو المؤجّر، ويقول إنه ذكاء اصطناعي، ويعرض لك المكالمة كاملة مع ترجمة بلغتك.",
       "heroCta": "أخبرنا بما تحتاج",
@@ -4730,7 +4787,7 @@
       "neverApprove": "الموافقة على شيء لم تأذن به",
       "neverApproveDesc": "أي شيء خارج حدودك يعود إليك أولًا.",
       "languagesTitle": "اللغات",
-      "languagesBody": "يفهم Dresden mit Kind هذه اللغات ويكتب بها: {list}.",
+      "languagesBody": "يفهم Ankommen هذه اللغات ويكتب بها: {list}.",
       "languagesVoiceNote": "صوت ونص في جميعها. نص فقط: دری.",
       "closingTitle": "لا تعرف بمن تتصل؟",
       "closingCta": "ابحث عن جهة",
@@ -4762,11 +4819,14 @@
       "logLabel": "المحادثة",
       "consentTitle": "كيف ستجري المكالمة",
       "noMoreChanges": "لا يمكنني قبول مزيد من التعديلات بالصوت. يُرجى الضغط على «اكتب بدلًا من التحدث»."
+    },
+    "fab": {
+      "label": "اتصلوا نيابةً عني: مساعدنا بالذكاء الاصطناعي يتصل نيابةً عنكم بالألمانية"
     }
   },
   "tr": {
     "common": {
-      "appName": "Dresden mit Kind",
+      "appName": "Ankommen",
       "skipLink": "İçeriğe geç",
       "navNewCall": "Yeni arama",
       "navFind": "Yer bul",
@@ -4779,7 +4839,7 @@
       "languageNoMatch": "Dil bulunamadı.",
       "languageVoiceText": "ses + yazı",
       "languageTextOnly": "yalnızca yazı",
-      "languageBar": "Dresden mit Kind {language} dilinde gösteriliyor.",
+      "languageBar": "Ankommen {language} dilinde gösteriliyor.",
       "languageBarChange": "Değiştir",
       "dismiss": "Kapat",
       "continue": "Devam",
@@ -4801,11 +4861,12 @@
       "notFoundTitle": "Bu sayfa yok.",
       "notFoundBody": "Bağlantı eski ya da hatalı yazılmış olabilir.",
       "notFoundLink": "Ana sayfaya git",
-      "docTitleSuffix": "Dresden mit Kind",
-      "footerAbout": "Dresden mit Kind, Eylül 2026’da Weekender Build Dresden’de yapılmış bir demodur. Yapay zekâ asistanımız her zaman yapay zekâ olduğunu söyler.",
+      "docTitleSuffix": "Ankommen",
+      "footerAbout": "Ankommen, Eylül 2026’da Weekender Build Dresden’de yapılmış bir demodur. Yapay zekâ asistanımız her zaman yapay zekâ olduğunu söyler.",
       "footerListings": "Kayıtlar herkese açık web sitelerinden alınmıştır. Lütfen gitmeden önce kontrol edin.",
       "footerImpressum": "Künye (Impressum)",
-      "footerPrivacy": "Gizlilik"
+      "footerPrivacy": "Gizlilik",
+      "appTagline": "Almanya'da yeni başlangıcınız için rehberiniz"
     },
     "nav": {
       "courses": "Kurslar ve aktiviteler",
@@ -4813,7 +4874,7 @@
       "communities": "Topluluklar",
       "services": "Sağlık ve hizmetler",
       "library": "Rehberler",
-      "ask": "Benim için sor",
+      "ask": "Benim için arayın",
       "menu": "Menü",
       "language": "Arayüz dili",
       "home": "Ana sayfa",
@@ -4836,7 +4897,7 @@
       "placesCount": "{count} yer",
       "comingUp": "Yakında",
       "allEvents": "Tüm etkinlikler",
-      "howTitle": "“Benim için sor” nasıl çalışır",
+      "howTitle": "“Benim için arayın” nasıl çalışır",
       "stepFind": "Bulun",
       "stepFindText": "bir kurs, bir Kita ya da bir doktor",
       "stepAsk": "Sorun",
@@ -4908,7 +4969,15 @@
       "fxL4Sub": "Perşembe, saat 14:00. Doğru mu?",
       "fxL5Sub": "Evet, doğru. Lütfen içeride giyilecek ayakkabı getirin.",
       "fxResult": "Deneme dersi ayrıldı · Per 14:00",
-      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova."
+      "fxStepCallLine": "Hier ist die KI-Assistentin von Maria Ivanova.",
+      "heroTitle": "Dresden’de aileniz için kurslar, etkinlikler ve destek.",
+      "heroSubtitle": "Çocuğunuzun yaşına uygun aktiviteleri, bu haftanın etkinliklerini, veli gruplarını ve toplulukları, ayrıca Kita’ları, doktorları ve resmî daireleri bulun. Hepsi sizin dilinizde açıklanıyor.",
+      "heroCourses": "Kurslara ve aktivitelere göz atın",
+      "heroEvents": "Yaklaşan etkinlikler",
+      "libraryAll": "Tüm rehberler",
+      "hlTitle": "Sizin yerinize arayabiliriz de",
+      "hlText": "Bazı sorular hâlâ Almanca bir telefon görüşmesi gerektiriyor. Yapay zekâ asistanımıza ne sorması gerektiğini kendi dilinizde söyleyin. Arar, önce bir yapay zekâ olduğunu söyler ve cevabı size kendi dilinizde getirir.",
+      "hlFabHint": "Köşedeki yuvarlak mikrofon düğmesi, isteği her sayfadan başlatır."
     },
     "filters": {
       "label": "Listeyi filtrele",
@@ -4958,7 +5027,7 @@
       "suggest": "Listede olmayan bir yer önerin",
       "error": "Listeyi yükleyemedik.",
       "noPhone": "Telefon numarası belirtilmemiş",
-      "askForMe": "Benim için sor",
+      "askForMe": "Benim için arayın",
       "demoListing": "Demo kaydı, gerçek bir işletme değil",
       "agesNotListed": "Yaş belirtilmemiş",
       "agesMissing": "Yaş belirtmeyen {count} yer",
@@ -5106,8 +5175,8 @@
       "askHintText": "Yapay zekâ asistanımız sizin için Almanca arar ve cevabı sizin dilinizde iletir.",
       "askButton": "Asistandan aramasını isteyin",
       "relatedTitle": "Bu konuyla ilgili",
-      "aboutTitle": "Dresden mit Kind hakkında",
-      "aboutText": "Dresden mit Kind, Dresden'deki uluslararası aileler için bir rehberdir: altı dilde kurslar, etkinlikler, topluluklar ve adım adım rehberler. Telefonla aramak zor geliyorsa yapay zekâ asistanımız sizin için Almanca arar ve cevabı sizin dilinizde iletir."
+      "aboutTitle": "Ankommen hakkında",
+      "aboutText": "Ankommen, Dresden'deki uluslararası aileler için bir rehberdir: altı dilde kurslar, etkinlikler, topluluklar ve adım adım rehberler. Telefonla aramak zor geliyorsa yapay zekâ asistanımız sizin için Almanca arar ve cevabı sizin dilinizde iletir."
     },
     "ask": {
       "weWillCall": "Arayacağımız yer",
@@ -5270,7 +5339,7 @@
       "emailLabel": "Sonucu e-postama da gönder",
       "emailHelp": "İsteğe bağlı. Sonuç bir sonraki sayfada da görünür.",
       "emailInvalid": "Lütfen e-posta adresini kontrol edin.",
-      "consent": "Dresden mit Kind’in yapay zekâ asistanından bu aramayı benim adıma Almanca yapmasını istiyorum. Başta yapay zekâ olduğunu söyleyecek. Yalnızca yukarıdaki bilgileri paylaşacak ve yalnızca sınırlarım içindeki saatleri kabul edecek. Ses kaydı yapılmaz; görüşmenin yazılı metni saklanır.",
+      "consent": "Ankommen’in yapay zekâ asistanından bu aramayı benim adıma Almanca yapmasını istiyorum. Başta yapay zekâ olduğunu söyleyecek. Yalnızca yukarıdaki bilgileri paylaşacak ve yalnızca sınırlarım içindeki saatleri kabul edecek. Ses kaydı yapılmaz; görüşmenin yazılı metni saklanır.",
       "consentRequired": "Devam etmek için lütfen kutuyu işaretleyin.",
       "confirm": "Evet, şimdi ara",
       "changeSomething": "Bir şeyi değiştir",
@@ -5377,7 +5446,7 @@
       "openGuide": "Rehberi açın",
       "summaryInEnglish": "İngilizce özet",
       "calendarSummary": "{task} - {place}",
-      "calendarDescription": "Getirin: {items}. Telefon: {phone}. Dresden mit Kind’in yapay zekâ asistanı tarafından alındı.",
+      "calendarDescription": "Getirin: {items}. Telefon: {phone}. Ankommen’in yapay zekâ asistanı tarafından alındı.",
       "trialBooked": "Deneme dersi ayrıldı",
       "kitaVisitBooked": "Kita ziyareti ayarlandı",
       "courseTitle": "Kursun yanıtı",
@@ -5644,7 +5713,7 @@
       "de": "Almanca"
     },
     "landing": {
-      "docTitle": "Dresden mit Kind - sizin için Almanca arıyoruz",
+      "docTitle": "Ankommen - sizin için Almanca arıyoruz",
       "heroTitle": "Neye ihtiyacınız olduğunu söyleyin. Almanca aramayı biz yapalım.",
       "heroSubline": "Kendi dilinizde yazın ya da konuşun. Yapay zekâ asistanımız muayenehaneyi, resmî daireyi ya da ev sahibini arar, yapay zekâ olduğunu söyler ve tüm görüşmeyi size kendi dilinizde altyazıyla gösterir.",
       "heroCta": "Neye ihtiyacınız olduğunu yazın",
@@ -5683,7 +5752,7 @@
       "neverApprove": "Onaylamadığınız bir şeyi kabul etmek",
       "neverApproveDesc": "Sınırlarınızın dışındaki her şey önce size geri gelir.",
       "languagesTitle": "Diller",
-      "languagesBody": "Dresden mit Kind şu dilleri anlar ve bu dillerde yazar: {list}.",
+      "languagesBody": "Ankommen şu dilleri anlar ve bu dillerde yazar: {list}.",
       "languagesVoiceNote": "Hepsinde ses ve yazı. Yalnızca yazı: دری.",
       "closingTitle": "Kimi arayacağınızdan emin değil misiniz?",
       "closingCta": "Yer bul",
@@ -5715,6 +5784,9 @@
       "logLabel": "Konuşma",
       "consentTitle": "Arama nasıl yapılacak",
       "noMoreChanges": "Sesle daha fazla değişiklik alamıyorum. Lütfen “Konuşmak yerine yazın” düğmesine basın."
+    },
+    "fab": {
+      "label": "Benim için arayın: yapay zekâ asistanımız sizin yerinize Almanca arar"
     }
   }
 }
