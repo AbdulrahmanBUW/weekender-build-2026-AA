@@ -11,7 +11,7 @@ by: claude (abdul's session)
 - **The whole loop works on the live site**: [[RUN-026 Live site E2E call]] (Russian request → German call → trial lesson booked → Russian summary).
 - Plan v3 section G now holds the prompts exactly as they were sent (P1b … P16) and a build-status box at the top: [[Frontend and UX Plan v3 (merged)]].
 - 183 RU/UK/AR translation fixes (AI review, not yet read by a native speaker), relay accessibility fixes, Deepgram opt-out of model training.
-- Lovable settings: URL `dresden-mit-kind`, badge hidden, visitor analytics **off**, auto-fix off. Knowledge v3.1 saved. **64.8 Lovable credits left.**
+- Lovable settings: URL `ankommen-dresden` (was `dresden-mit-kind`), badge hidden, visitor analytics **off**, auto-fix off. Knowledge v3.1 saved. **64.8 Lovable credits left.**
 
 ## In progress
 - Anastasia: **UI improvements** (board card). Abdul: Impressum details, public-repo decision, 14 incomplete service listings (SQL in chat).
@@ -21,7 +21,7 @@ by: claude (abdul's session)
 2. **Small text changes cost nothing:** edit `docs/i18n/ui-strings.json` in the team repo (or ask Claude Code), run the split command from `docs/i18n/README.md` into the `hallotermin-paper` clone and push. Lovable picks it up; then click **Publish → Publish changes**.
 3. **Layout/design changes:** in Lovable, Agent mode, one clear change per message. The rules Lovable must follow are in Knowledge and in `AGENTS.md` of the Lovable repo. Good first prompt: **P12 (polish, accessibility and RTL audit)** in Plan v3 section G, not sent yet.
 4. **After every change you like: Publish → Publish changes** (free). Keep ≥ 30 credits for Sunday morning.
-5. **Test a call** (needs Abdul's laptop, where the relay runs): Olgas Musikstudio → Ask for me → Call now → Start the call → speak German as the receptionist. Before the rehearsal reset the demo badge: `update resources set last_checked_at = null, last_check_outcome = null where subcategory = 'demo';`
+5. **Test a call** (needs Abdul's laptop, where the relay runs): Olgas Musikstudio → Call for me → Call now → Start the call → speak German as the receptionist. Before the rehearsal reset the demo badge: `update resources set last_checked_at = null, last_check_outcome = null where subcategory = 'demo';`
 
 ## Never do
 - Never enable **Lovable Cloud**, never click **"Try to fix"** in Lovable's security panel (it writes database changes; the one critical finding is our known demo-mode trade-off).
