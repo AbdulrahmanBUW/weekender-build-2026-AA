@@ -1,0 +1,298 @@
+{
+  "name": "HalloTermin 06 – Call result in user language",
+  "id": "6jDZNKyT6kScVgmU",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "nodes": [
+    {
+      "name": "Call Result Request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        304
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "call-result",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      }
+    },
+    {
+      "name": "Prepare Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        304
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// Prepare the result prompt: validate ids, format the booked slot for the user's locale (Europe/Berlin).\nconst b = $json.body || {};\nconst UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\nif (!UUID.test(String(b.call_id)) || !UUID.test(String(b.request_id))) throw new Error('invalid call_id/request_id');\nconst LANG = { en: 'English', ar: 'Arabic', tr: 'Turkish', uk: 'Ukrainian', ru: 'Russian', fa: 'Persian (Farsi)', prs: 'Dari (Afghan Persian)', hi: 'Hindi', es: 'Spanish', fr: 'French', pl: 'Polish', vi: 'Vietnamese', zh: 'Chinese (Simplified)', de: 'German' };\nconst LOCALE = { prs: 'fa-AF', fa: 'fa-IR', zh: 'zh-CN', hi: 'hi-IN', ar: 'ar', en: 'en-GB' };\nconst lang = LANG[b.user_language] ? b.user_language : 'en';\nconst locale = LOCALE[lang] || lang;\nlet slotUser = '', slotDe = '';\nif (b.booked_slot) {\n  const dt = DateTime.fromISO(String(b.booked_slot), { setZone: true }).setZone('Europe/Berlin');\n  if (dt.isValid) {\n    const fmt = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };\n    slotUser = dt.setLocale(locale).toLocaleString(fmt);\n    slotDe = dt.setLocale('de-DE').toLocaleString(fmt) + ' Uhr';\n  }\n}\nconst bring = Array.isArray(b.bring_items) ? b.bring_items.map(x => String(x).slice(0, 80)).slice(0, 10) : [];\nconst outcome = String(b.outcome || '');\nconst user = [\n  'Target language: ' + LANG[lang] + ' (' + lang + ')',\n  'Outcome code: ' + outcome,\n  'Booked time (already formatted for the user, copy exactly if relevant): ' + (slotUser || 'none'),\n  'Booked time in German: ' + (slotDe || 'none'),\n  'Structured result (JSON): ' + JSON.stringify(b.result ?? null).slice(0, 1500),\n  'English summary from the call: ' + String(b.summary_en || '').slice(0, 1500),\n  'German items to bring (JSON): ' + JSON.stringify(bring)\n].join('\\n');\nreturn { json: { call_id: b.call_id, request_id: b.request_id, outcome, lang, bring, user_prompt: user } };\n"
+      }
+    },
+    {
+      "name": "Write Result in User Language (Claude)",
+      "type": "@n8n/n8n-nodes-langchain.anthropic",
+      "typeVersion": 1,
+      "position": [
+        720,
+        304
+      ],
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "user",
+              "content": "={{ $json.user_prompt }}"
+            }
+          ]
+        },
+        "simplify": true,
+        "options": {
+          "system": "You write the result of a phone call for a newcomer in Germany, in THEIR language, at CEFR B1 level: short sentences, friendly, concrete. Our AI assistant called the organisation in German on the user's behalf (the organisation did NOT call the user); write from that perspective, addressing the user as 'you'. Use only the facts given (outcome, booked time, structured result, English summary); never invent anything. If a booked time is given, include it exactly as provided (already formatted for the user's locale, Europe/Berlin time). Say clearly what happened and what the user should do next (max 4 sentences, max 80 words). No health details. For each German item to bring, give its meaning in the user's language (e.g. Versichertenkarte = health insurance card). Reply with ONLY a JSON object: {\"summary_user\": \"...\", \"bring_items_user\": [{\"de\": \"<German item exactly as given>\", \"meaning_user\": \"...\"}]}.",
+          "maxTokens": 1000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
+    },
+    {
+      "name": "Parse Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        304
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// Parse Claude JSON -> summary_user + bring_items_user; decide the request status update.\nconst prep = $('Prepare Result').item.json;\nconst raw = ($json.content ?? []).filter(c => c.type === 'text').map(c => c.text).join('\\n').trim();\nconst m = raw.match(/\\{[\\s\\S]*\\}/);\nif (!m) throw new Error('no JSON in result');\nconst t = JSON.parse(m[0]);\nconst summary = String(t.summary_user || '').trim().slice(0, 1200);\nif (!summary) throw new Error('empty summary_user');\nconst items = (Array.isArray(t.bring_items_user) ? t.bring_items_user : [])\n  .filter(i => i && i.de)\n  .slice(0, 10)\n  .map(i => ({ de: String(i.de).slice(0, 80), meaning_user: String(i.meaning_user || '').slice(0, 160) }));\n// only final successful outcomes move the request; needs_user/rejected/failed are never overwritten (URL filter)\nconst STATUS_FOR = { booked: 'booked', completed: 'completed' };\nreturn { json: { call_id: prep.call_id, request_id: prep.request_id, outcome: prep.outcome, lang: prep.lang,\n  summary_user: summary, bring_items_user: items, new_status: STATUS_FOR[prep.outcome] || '' } };\n"
+      }
+    },
+    {
+      "name": "Save Summary (PATCH calls)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1200,
+        304
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/calls?id=eq.{{ $json.call_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ summary_user: $json.summary_user, bring_items_user: $json.bring_items_user }) }}",
+        "options": {}
+      }
+    },
+    {
+      "name": "Booked or Completed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1440,
+        304
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $('Parse Result').item.json.new_status }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "name": "Set Request Status (only if not final)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1680,
+        208
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/call_requests?id=eq.{{ $('Parse Result').item.json.request_id }}&status=in.(submitted,briefed,calling)",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ status: $('Parse Result').item.json.new_status }) }}",
+        "options": {}
+      }
+    },
+    {
+      "name": "Log Event: result_translated",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1920,
+        304
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/events",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ request_id: $('Parse Result').item.json.request_id, source: 'n8n', type: 'result_translated', payload: { call_id: $('Parse Result').item.json.call_id, outcome: $('Parse Result').item.json.outcome, language: $('Parse Result').item.json.lang, status_set: $('Parse Result').item.json.new_status || null, workflow: $workflow.name, execution: $execution.id } }) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Call Result Request": {
+      "main": [
+        [
+          {
+            "node": "Prepare Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Result": {
+      "main": [
+        [
+          {
+            "node": "Write Result in User Language (Claude)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Result in User Language (Claude)": {
+      "main": [
+        [
+          {
+            "node": "Parse Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Result": {
+      "main": [
+        [
+          {
+            "node": "Save Summary (PATCH calls)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Summary (PATCH calls)": {
+      "main": [
+        [
+          {
+            "node": "Booked or Completed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Booked or Completed?": {
+      "main": [
+        [
+          {
+            "node": "Set Request Status (only if not final)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Event: result_translated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Request Status (only if not final)": {
+      "main": [
+        [
+          {
+            "node": "Log Event: result_translated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "_notes": "Triggered by pg_net when calls.outcome changes (Vault n8n_call_result_url). Payload {call_id, request_id, outcome, booked_slot, bring_items, result, summary_en, user_language}. Request status moves to booked/completed only from submitted/briefed/calling (never overwrites needs_user/rejected/failed). Credentials not exported. Webhooks 01/05/06: Header Auth credential (header X-Webhook-Secret, same value as Supabase Vault n8n_webhook_secret). HTTP Request nodes: predefined credential 'Supabase API' (supabaseApi). Claude: n8n Gateway credits (anthropicApi)."
+}

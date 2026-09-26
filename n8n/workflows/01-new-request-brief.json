@@ -1,5 +1,5 @@
 {
-  "name": "HalloTermin 01 – New request → German call brief",
+  "name": "HalloTermin 01 – New task → German call brief",
   "id": "peFxjt572HiUxu61",
   "settings": {
     "executionOrder": "v1",
@@ -12,111 +12,38 @@
       "typeVersion": 2.1,
       "position": [
         240,
-        300
+        304
       ],
       "parameters": {
         "httpMethod": "POST",
         "path": "new-request",
         "authentication": "headerAuth",
-        "responseMode": "onReceived"
+        "responseMode": "onReceived",
+        "options": {}
       }
     },
     {
-      "name": "Normalize Request",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.5,
+      "name": "Prepare Task Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         480,
-        300
+        304
       ],
       "parameters": {
-        "mode": "manual",
-        "includeOtherFields": false,
-        "assignments": {
-          "assignments": [
-            {
-              "id": "req-id",
-              "name": "request_id",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).id }}",
-              "type": "string"
-            },
-            {
-              "id": "patient",
-              "name": "patient_name",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).patient_name ?? \"\" }}",
-              "type": "string"
-            },
-            {
-              "id": "dob",
-              "name": "patient_dob",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).patient_dob ?? \"\" }}",
-              "type": "string"
-            },
-            {
-              "id": "ins-type",
-              "name": "insurance_type",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).insurance_type ?? \"\" }}",
-              "type": "string"
-            },
-            {
-              "id": "ins-name",
-              "name": "insurance_name",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).insurance_name ?? \"\" }}",
-              "type": "string"
-            },
-            {
-              "id": "practice",
-              "name": "practice_name",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).practice_name ?? \"\" }}",
-              "type": "string"
-            },
-            {
-              "id": "phone",
-              "name": "practice_phone",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).practice_phone ?? \"\" }}",
-              "type": "string"
-            },
-            {
-              "id": "reason",
-              "name": "reason_category",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).reason_category ?? \"other\" }}",
-              "type": "string"
-            },
-            {
-              "id": "referral",
-              "name": "has_referral",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).has_referral === true }}",
-              "type": "boolean"
-            },
-            {
-              "id": "newpat",
-              "name": "is_new_patient",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).is_new_patient !== false }}",
-              "type": "boolean"
-            },
-            {
-              "id": "windows",
-              "name": "time_windows",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).time_windows ?? [] }}",
-              "type": "array"
-            },
-            {
-              "id": "consent",
-              "name": "consent_ai_call",
-              "value": "={{ ($json.body?.record ?? $json.body ?? $json).consent_ai_call === true }}",
-              "type": "boolean"
-            }
-          ]
-        }
-      }
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// HalloTermin 01 - Prepare task brief (runs once per item)\n// ============================================================\n// TASK TEMPLATES - the ONE place to add/change a task type in workflow 01.\n// To add a type: add a key here (same key in DB check call_requests_task_type_check,\n// workflow 04 schema enum + ESSENTIALS, and the voice relay), then republish.\n//   mode: 'appointment' -> agent may accept a slot inside the time windows (read-back first)\n//         'information' -> ask and record only, never agree to anything binding\n//   needsWindows: true -> brief lists ERLAUBTE ZEITFENSTER (if none given, falls back to information)\n// ============================================================\nconst TASK_TEMPLATES = {\n  doctor_appointment: {\n    label_de: 'Arzttermin', mode: 'appointment', needsWindows: true,\n    purpose_de: 'einen Termin in der Arztpraxis vereinbaren',\n    may_de: 'Einen Termin annehmen, der vollständig in einem erlaubten Zeitfenster liegt, nach Rückbestätigung (Tag, Datum, Uhrzeit, Arzt/Ärztin).',\n    ask_de: 'Was soll mitgebracht werden (z. B. Versichertenkarte, Überweisung)?',\n    never_de: 'Keine Symptome oder Krankheiten nennen oder erfragen; keine medizinische Beratung.'\n  },\n  authority_appointment: {\n    label_de: 'Behördentermin', mode: 'appointment', needsWindows: true,\n    purpose_de: 'einen Termin bei der Behörde vereinbaren',\n    may_de: 'Einen Termin in einem erlaubten Zeitfenster annehmen (nach Rückbestätigung). Wenn telefonisch keine Termine vergeben werden: erfragen und notieren, wie man bucht (Online-Portal, Adresse, Öffnungszeiten) und welche Unterlagen nötig sind.',\n    ask_de: 'Welche Unterlagen müssen mitgebracht werden?',\n    never_de: 'Keine Angaben zu Staatsangehörigkeit oder Aufenthaltsstatus machen, die nicht in den FAKTEN stehen; keine Anträge telefonisch stellen.'\n  },\n  landlord_request: {\n    label_de: 'Anliegen an Vermieter/Hausverwaltung', mode: 'appointment', needsWindows: true,\n    purpose_de: 'ein Problem in der Wohnung melden und einen Termin für die Reparatur/Besichtigung vereinbaren',\n    may_de: 'Einen Besuchs-/Reparaturtermin in einem erlaubten Zeitfenster annehmen (nach Rückbestätigung).',\n    ask_de: 'Wer kommt, und muss die Mieterin/der Mieter etwas vorbereiten?',\n    never_de: 'Keine Zusagen zu Miete, Mieterhöhung, Kosten, Kündigung oder Vertragsänderungen.'\n  },\n  contract_question: {\n    label_de: 'Frage zu einem Vertrag', mode: 'information', needsWindows: false,\n    purpose_de: 'eine Auskunft zu einem Vertrag einholen',\n    may_de: 'NUR Informationen erfragen und notieren: wie man kündigt, Kündigungsfrist, wohin/in welcher Form (schriftlich, online) die Kündigung geschickt wird.',\n    ask_de: 'Kündigungsfrist, Form der Kündigung, Adresse/Portal, nötige Angaben.',\n    never_de: 'NIEMALS am Telefon kündigen, unterschreiben, einen Vertrag abschließen, verlängern oder ändern oder einem Angebot zustimmen. Wenn angeboten: freundlich ablehnen, die Person erledigt das selbst schriftlich.'\n  },\n  bank_enquiry: {\n    label_de: 'Anfrage bei einer Bank', mode: 'appointment', needsWindows: true,\n    purpose_de: 'einen Beratungstermin vereinbaren oder erfragen, welche Unterlagen nötig sind (z. B. Konto/Basiskonto eröffnen)',\n    may_de: 'Einen Termin in einem erlaubten Zeitfenster annehmen (nach Rückbestätigung); sonst die Liste der nötigen Unterlagen notieren.',\n    ask_de: 'Welche Unterlagen werden benötigt?',\n    never_de: 'Keine Kontonummern, PINs, TANs oder Passwörter nennen; keine Verträge abschließen.'\n  },\n  pharmacy_question: {\n    label_de: 'Frage an eine Apotheke', mode: 'information', needsWindows: false,\n    purpose_de: 'nachfragen, ob ein Produkt vorrätig ist, und es ggf. zur Abholung reservieren',\n    may_de: 'Fragen, ob das genannte Produkt vorrätig ist, Preis und Abholzeit notieren; das Produkt zur Abholung reservieren lassen, wenn möglich.',\n    ask_de: 'Vorrätig ja/nein, Preis, bis wann abholbar, Rezept nötig?',\n    never_de: 'Nie sagen, wofür das Mittel ist; keine medizinische Beratung annehmen oder geben.'\n  },\n  restaurant_booking: {\n    label_de: 'Tischreservierung', mode: 'appointment', needsWindows: true,\n    purpose_de: 'einen Tisch reservieren',\n    may_de: 'Einen Tisch für die angegebene Personenzahl in einem erlaubten Zeitfenster annehmen (nach Rückbestätigung).',\n    ask_de: 'Auf welchen Namen, bis wann muss man spätestens da sein?',\n    never_de: 'Keine Anzahlung oder Kreditkartendaten zusagen.'\n  },\n  other_call: {\n    label_de: 'Sonstiger Anruf', mode: 'information', needsWindows: false,\n    purpose_de: 'eine Auskunft einholen',\n    may_de: 'Nur Informationen erfragen und notieren. Nur wenn ERLAUBTE ZEITFENSTER angegeben sind, darf ein Termin darin angenommen werden (nach Rückbestätigung).',\n    ask_de: 'Die Antwort auf das Anliegen, möglichst konkret (Zeiten, Preise, nächste Schritte).',\n    never_de: 'Keine Verträge, Käufe oder verbindlichen Zusagen.'\n  }\n};\nconst REASON_DE = { first_visit: 'Erstuntersuchung', checkup: 'Vorsorgeuntersuchung', acute: 'Akuttermin', follow_up: 'Folgetermin', specialist: 'Facharzttermin', other: 'Termin' };\nconst LANG_NAME = { en: 'Englisch', ar: 'Arabisch', tr: 'Türkisch', uk: 'Ukrainisch', ru: 'Russisch', fa: 'Persisch', prs: 'Dari', hi: 'Hindi', es: 'Spanisch', fr: 'Französisch', pl: 'Polnisch', vi: 'Vietnamesisch', zh: 'Chinesisch', de: 'Deutsch' };\n\n// ---- D5.4 sensitive re-check: health / special-category terms (DE, EN, TR, AR, UK/RU basics) ----\nconst HEALTH_RE = /(?<!\\p{L})(?:(?:schmerz|kopfschmerz|bauchschmerz|fieber|husten|übelkeit|erbrechen|durchfall|ausschlag|schwanger|depressi|angststörung|panikattack|diabet|krebs|tumor|infektion|entzündung|allergi|asthma|blutung|migräne|grippe|covid|symptom|diagnos|psychiat|psychisch|psychother|headache|stomachache|stomach ache|nausea|vomit|diarrh|pregnan|depress|anxiety|cancer|infection|inflammation|allerg|bleeding|migraine|fever|cough|painful|ağrı|ateş|öksürük|hamile|kanser|біль|боль|температур|кашель|вагітн|беремен)\\p{L}*|(?:flu|hiv|rash|pain|pains|corona|sick|ill|krank|kranke|krankheit)(?!\\p{L}))/giu;\nconst HEALTH_RE_AR = /(ألم|آلام|حمى|سعال|حامل|سرطان|اكتئاب|إسهال|صداع)/gu;\nfunction hasHealth(s) { HEALTH_RE.lastIndex = 0; HEALTH_RE_AR.lastIndex = 0; return !!s && (HEALTH_RE.test(s) || HEALTH_RE_AR.test(s)); }\nfunction stripHealth(s) {\n  if (!s) return s;\n  return String(s).replace(HEALTH_RE, '').replace(HEALTH_RE_AR, '').replace(/\\s{2,}/g, ' ').replace(/\\s+([,.;:!?])/g, '$1').trim();\n}\n\nconst r = $json.body?.record ?? $json.body ?? $json;\nconst taskType = TASK_TEMPLATES[r.task_type] ? r.task_type : 'other_call';\nconst tpl = TASK_TEMPLATES[taskType];\nconst isPharmacy = taskType === 'pharmacy_question';\nconst lang = LANG_NAME[r.user_language] ? r.user_language : 'en';\n\nlet goalUser = (r.goal_user ?? '').toString().slice(0, 200);\nlet constraints = (r.constraints && typeof r.constraints === 'object' && !Array.isArray(r.constraints)) ? { ...r.constraints } : {};\nlet facts = Array.isArray(r.allowed_facts) ? r.allowed_facts.filter(f => f && f.value != null).map(f => ({ key: String(f.key ?? '').slice(0, 40), label: String(f.label ?? f.key ?? '').slice(0, 60), value: String(f.value).slice(0, 80) })) : [];\nconst strippedFields = [];\n\n// Pharmacy exception (D5.6): the medicine fact is kept; goal must not say why.\nif (hasHealth(goalUser)) { goalUser = stripHealth(goalUser); strippedFields.push('goal_user'); }\nif (constraints.notes_de && hasHealth(constraints.notes_de)) { delete constraints.notes_de; strippedFields.push('constraints.notes_de'); }\nconst keptFacts = [];\nfor (const f of facts) {\n  const isMedicineFact = isPharmacy && /medic|medik|medicine|product|produkt/i.test(f.key + ' ' + f.label);\n  if (!isMedicineFact && (hasHealth(f.value) || hasHealth(f.label))) { strippedFields.push('allowed_facts.' + (f.key || 'fact')); continue; }\n  keptFacts.push(f);\n}\nfacts = keptFacts;\n\nconst name = (r.patient_name ?? '').toString().trim();\nconst phone = (r.practice_phone ?? '').toString().trim();\nconst windows = Array.isArray(r.time_windows) ? r.time_windows.slice(0, 3) : [];\nconst reason = r.reason_category ?? '';\n\n// ---- validation ----\nconst errors = [];\nif (r.consent_ai_call !== true) errors.push('no_consent');\nif (!phone) errors.push('no_phone');\nif (!name) errors.push('no_name');\nif (taskType === 'doctor_appointment' && !reason) errors.push('no_reason_category');\n\n// ---- mode: appointment only if windows exist ----\nconst mode = (tpl.mode === 'appointment' || taskType === 'other_call') && windows.length ? 'appointment' : 'information';\n\nconst factLines = [];\nfactLines.push('Name der Person: ' + name);\nif (taskType === 'doctor_appointment') {\n  factLines.push('Geburtsdatum: ' + (r.patient_dob || 'unbekannt'));\n  const ins = r.insurance_type === 'pkv' ? 'privat' : r.insurance_type === 'gkv' ? 'gesetzlich' : 'unbekannt';\n  factLines.push('Versicherung: ' + ins + (r.insurance_name ? ', ' + r.insurance_name : ''));\n  factLines.push('Neupatient: ' + (r.is_new_patient !== false ? 'ja' : 'nein'));\n  factLines.push('Überweisung: ' + (r.has_referral === true ? 'ja' : 'nein'));\n  factLines.push('Anliegen (Kategorie): ' + (REASON_DE[reason] || 'Termin'));\n}\nfor (const f of facts) factLines.push(f.label + ': ' + f.value);\nconst c = constraints;\nif (c.party_size) factLines.push('Personenzahl: ' + c.party_size);\nif (c.budget_max_eur) factLines.push('Budget max.: ' + c.budget_max_eur + ' EUR');\nif (c.deadline) factLines.push('Frist: ' + c.deadline);\nif (c.notes_de) factLines.push('Hinweis: ' + String(c.notes_de).slice(0, 200));\n\nconst system = [\n  'Du schreibst kurze deutsche Anruf-Briefings für eine KI-Sprachassistentin, die im Auftrag von Menschen anruft, die (noch) kein Deutsch sprechen.',\n  'Antworte NUR im folgenden Format, reiner Text, kein Markdown, insgesamt max. 190 Wörter:',\n  'Zeile 1: \"ZIEL: <ein deutscher Satz, max. 25 Wörter, was erreicht werden soll>\"',\n  'Dann die Abschnitte:',\n  'ERÖFFNUNG: genau ein bis zwei Sätze nach diesem Muster (warm, natürlich): \"Guten Tag! Hier ist die KI-Assistentin von <Name>. Ich rufe für <Name> an, weil <Name> noch nicht so gut Deutsch spricht, und <Anliegen>.\" Das Wort \"KI-Assistentin\" MUSS im ersten Satz stehen. Geschlechtsneutral formulieren (Namen statt sie/er).',\n  'FAKTEN: nur die unten gelieferten Fakten, als Stichpunkte mit \"- \". Nichts erfinden, nichts ergänzen.',\n  'ERLAUBTE ZEITFENSTER: nur bei Modus Termin, deutsches Datumsformat (z. B. Di, 29.09.2026, 08:00–12:00 Uhr). Bei Modus Auskunft: \"keine – nur Auskunft einholen\".',\n  'ZU ERFRAGEN: was notiert werden soll.',\n  'REGELN: 1) Sofort bestätigen, eine KI zu sein, wenn gefragt. 2) Nur Fakten aus FAKTEN teilen; sonst: \"Das kann ich leider nicht sagen, die Person meldet sich dazu gern selbst.\" 3) Modus Termin: nur Zeiten innerhalb der Fenster annehmen und vor dem Ende Tag, Datum, Uhrzeit (und ggf. Name) wiederholen und Bestätigung abwarten. Modus Auskunft: nichts Verbindliches zusagen, nur fragen und notieren. 4) Nie so tun, als sei man die Person. 5) Keine Gesundheitsdetails, Symptome, Religion, Herkunft. 6) Wenn nur die Person selbst sprechen darf: Rückruf anbieten.',\n  'Füge die aufgabenspezifischen Regeln (DARF / NIE) sinngemäß in REGELN ein.'\n].join('\\n');\n\nconst user = [\n  'Aufgabentyp: ' + tpl.label_de + ' (' + taskType + ')',\n  'Modus: ' + (mode === 'appointment' ? 'Termin' : 'Auskunft'),\n  'Anliegen allgemein: ' + tpl.purpose_de,\n  'Ziel in der Sprache der Person (' + LANG_NAME[lang] + '), sinngemäß ins Deutsche übertragen, ohne Gesundheitsdetails: ' + (goalUser || '(nicht angegeben)'),\n  'Organisation: ' + (r.practice_name || 'unbekannt') + (r.organisation_category ? ' (' + r.organisation_category + ')' : ''),\n  'FAKTEN:',\n  ...factLines.map(l => '- ' + l),\n  'Zeitfenster (JSON, Europe/Berlin): ' + (mode === 'appointment' ? JSON.stringify(windows) : '[]'),\n  'DARF: ' + tpl.may_de,\n  'ZU ERFRAGEN: ' + tpl.ask_de,\n  'NIE: ' + tpl.never_de\n].join('\\n');\n\nreturn {\n  json: {\n    request_id: r.id,\n    task_type: taskType,\n    mode,\n    patient_name: name,\n    valid: errors.length === 0,\n    errors,\n    goal_user: goalUser || null,\n    constraints,\n    allowed_facts: facts,\n    sensitive_stripped: strippedFields.length > 0,\n    stripped_fields: strippedFields,\n    system_prompt: system,\n    user_prompt: user\n  }\n};\n"
+      },
+      "notes": "TASK_TEMPLATES map lives here (one entry per task_type). Also: validation + D5.4 sensitive re-check."
     },
     {
-      "name": "Consent + Phone + Name Present?",
+      "name": "Valid Task?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
         720,
-        300
+        304
       ],
       "parameters": {
         "conditions": {
@@ -128,38 +55,19 @@
           },
           "conditions": [
             {
-              "id": "c-consent",
-              "leftValue": "={{ $json.consent_ai_call }}",
+              "id": "c1",
+              "leftValue": "={{ $json.valid }}",
               "rightValue": "",
               "operator": {
                 "type": "boolean",
                 "operation": "true",
                 "singleValue": true
               }
-            },
-            {
-              "id": "c-phone",
-              "leftValue": "={{ $json.practice_phone }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "c-name",
-              "leftValue": "={{ $json.patient_name }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
             }
           ],
           "combinator": "and"
-        }
+        },
+        "options": {}
       }
     },
     {
@@ -167,8 +75,8 @@
       "type": "@n8n/n8n-nodes-langchain.anthropic",
       "typeVersion": 1,
       "position": [
-        980,
-        200
+        992,
+        208
       ],
       "parameters": {
         "resource": "text",
@@ -182,62 +90,72 @@
           "values": [
             {
               "role": "user",
-              "content": "=Create the call brief for this appointment request:\nPatient: {{ $json.patient_name }}\nDate of birth: {{ $json.patient_dob || \"unknown\" }}\nInsurance: {{ $json.insurance_type }} {{ $json.insurance_name }}\nPractice: {{ $json.practice_name }}\nReason category: {{ $json.reason_category }}\nHas referral: {{ $json.has_referral }}\nNew patient: {{ $json.is_new_patient }}\nPre-approved time windows (the ONLY slots the agent may accept): {{ JSON.stringify($json.time_windows) }}"
+              "content": "={{ $json.user_prompt }}"
             }
           ]
         },
         "simplify": true,
         "options": {
-          "system": "You prepare phone-call briefs in German for an AI voice assistant that calls German doctor practices (Arztpraxen) on behalf of newcomers who do not speak German. Output ONLY the brief in German, plain text, no markdown, max 180 words, with these parts: 1) ERÖFFNUNG: one opening sentence the assistant says first, which MUST state it is a KI-Assistentin calling im Auftrag von the named patient, that the patient does not speak German yet, and the purpose. 2) FAKTEN: name, Geburtsdatum, Versicherung, Neupatient ja/nein, Überweisung ja/nein, Anliegen (map reason categories: first_visit=Erstuntersuchung, checkup=Vorsorgeuntersuchung, acute=Akuttermin, follow_up=Folgetermin, specialist=Facharzttermin). 3) ERLAUBTE ZEITFENSTER in German date format. 4) REGELN: accept only slots inside the windows; before ending, read back day, date, time and doctor and wait for confirmation; never describe symptoms; never pretend to be the patient; if the practice insists on the patient, offer a callback. Never invent facts that are not in the request.",
-          "maxTokens": 600
+          "system": "={{ $json.system_prompt }}\nWICHTIG: Schreibe knapp. REGELN als kurze Stichpunkte, je höchstens 15 Wörter, höchstens 8 Regeln. Der Text muss vollständig sein (nicht mitten im Satz enden).",
+          "maxTokens": 1400
         }
-      }
+      },
+      "onError": "continueErrorOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000
     },
     {
-      "name": "Save Brief to Supabase",
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
+      "name": "Parse Brief + Re-check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         1240,
-        200
+        208
       ],
       "parameters": {
-        "resource": "row",
-        "operation": "update",
-        "tableId": "call_requests",
-        "filterType": "manual",
-        "matchType": "allFilters",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "id",
-              "condition": "eq",
-              "keyValue": "={{ $('Normalize Request').item.json.request_id }}"
-            }
-          ]
-        },
-        "dataToSend": "defineBelow",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "status",
-              "fieldValue": "briefed"
-            },
-            {
-              "fieldId": "call_brief_de",
-              "fieldValue": "={{ ($json.content ?? []).filter(c => c.type === 'text').map(c => c.text).join('\n').trim() }}"
-            }
-          ]
-        }
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// Parse Claude output -> goal_de + call_brief_de, re-check health terms, enforce AI disclosure.\nconst prep = $('Prepare Task Brief').item.json;\nconst text = ($json.content ?? []).filter(c => c.type === 'text').map(c => c.text).join('\\n').trim()\n  || String($json.text ?? $json.output ?? '').trim();\nif (!text) throw new Error('Claude returned no brief text');\n\nconst HEALTH_RE = /(?<!\\p{L})(?:(?:schmerz|kopfschmerz|bauchschmerz|fieber|husten|übelkeit|erbrechen|durchfall|ausschlag|schwanger|depressi|angststörung|panikattack|diabet|krebs|tumor|infektion|entzündung|allergi|asthma|blutung|migräne|grippe|covid|symptom|diagnos|psychiat|psychisch|psychother)\\p{L}*|(?:krank|kranke|krankheit|corona)(?!\\p{L}))/giu;\n\nconst m = text.match(/^\\s*ZIEL:\\s*(.+)$/m);\nlet goalDe = (m ? m[1] : '').trim().slice(0, 300);\nlet brief = text.replace(/^\\s*ZIEL:.*$/m, '').trim();\nconst stripped = [...prep.stripped_fields];\n\nif (prep.task_type !== 'pharmacy_question') {\n  HEALTH_RE.lastIndex = 0;\n  if (HEALTH_RE.test(goalDe)) { HEALTH_RE.lastIndex = 0; goalDe = goalDe.replace(HEALTH_RE, '').replace(/\\s{2,}/g, ' ').trim(); stripped.push('goal_de'); }\n}\n\n// Disclosure rule (Plan v2 F6 warm default): \"KI-Assistentin\" must be in the opening.\nconst opening = (brief.match(/ERÖFFNUNG:\\s*([^\\n]+)/) || [])[1] || '';\nif (!/KI-Assistentin/.test(opening)) {\n  const warm = 'ERÖFFNUNG: Guten Tag! Hier ist die KI-Assistentin von ' + prep.patient_name + '. Ich rufe für ' + prep.patient_name + ' an, weil ' + prep.patient_name + ' noch nicht so gut Deutsch spricht.';\n  brief = opening ? brief.replace(/ERÖFFNUNG:\\s*[^\\n]+/, warm) : warm + '\\n' + brief;\n}\nif (!goalDe) goalDe = 'Anliegen: ' + prep.task_type;\n\nconst events = [{ request_id: prep.request_id, source: 'n8n', type: 'brief_created', payload: { workflow: $workflow.name, execution: $execution.id, task_type: prep.task_type, mode: prep.mode } }];\nif (stripped.length) events.push({ request_id: prep.request_id, source: 'n8n', type: 'sensitive_stripped', payload: { fields: stripped, count: stripped.length } });\n\nreturn { json: { request_id: prep.request_id, goal_de: goalDe, call_brief_de: brief, goal_user: prep.goal_user, constraints: prep.constraints, allowed_facts: prep.allowed_facts, events } };\n"
       }
     },
     {
-      "name": "Log Event: brief_created",
+      "name": "Save Brief (PATCH call_requests)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
         1480,
-        200
+        208
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/call_requests?id=eq.{{ $json.request_id }}&status=in.(submitted,briefed)",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ status: 'briefed', goal_de: $json.goal_de, call_brief_de: $json.call_brief_de, goal_user: $json.goal_user, constraints: $json.constraints, allowed_facts: $json.allowed_facts }) }}",
+        "options": {}
+      }
+    },
+    {
+      "name": "Log Events (brief_created, sensitive_stripped)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1720,
+        208
       ],
       "parameters": {
         "method": "POST",
@@ -257,7 +175,7 @@
         "sendBody": true,
         "contentType": "json",
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ request_id: $('Normalize Request').item.json.request_id, source: 'n8n', type: 'brief_created', payload: { workflow: $workflow.name, execution: $execution.id } }) }}",
+        "jsonBody": "={{ JSON.stringify($('Parse Brief + Re-check').item.json.events) }}",
         "options": {}
       }
     },
@@ -266,8 +184,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        980,
-        420
+        992,
+        480
       ],
       "parameters": {
         "resource": "row",
@@ -280,7 +198,7 @@
             {
               "keyName": "id",
               "condition": "eq",
-              "keyValue": "={{ $json.request_id }}"
+              "keyValue": "={{ $('Prepare Task Brief').item.json.request_id }}"
             }
           ]
         },
@@ -301,25 +219,25 @@
       "main": [
         [
           {
-            "node": "Normalize Request",
+            "node": "Prepare Task Brief",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Normalize Request": {
+    "Prepare Task Brief": {
       "main": [
         [
           {
-            "node": "Consent + Phone + Name Present?",
+            "node": "Valid Task?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Consent + Phone + Name Present?": {
+    "Valid Task?": {
       "main": [
         [
           {
@@ -341,18 +259,36 @@
       "main": [
         [
           {
-            "node": "Save Brief to Supabase",
+            "node": "Parse Brief + Re-check",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Request Failed",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Save Brief to Supabase": {
+    "Parse Brief + Re-check": {
       "main": [
         [
           {
-            "node": "Log Event: brief_created",
+            "node": "Save Brief (PATCH call_requests)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Brief (PATCH call_requests)": {
+      "main": [
+        [
+          {
+            "node": "Log Events (brief_created, sensitive_stripped)",
             "type": "main",
             "index": 0
           }
@@ -360,5 +296,5 @@
       ]
     }
   },
-  "_notes": "Credentials not exported. Webhook: Header Auth credential (header X-Webhook-Secret, same value as Supabase Vault n8n_webhook_secret). Supabase nodes: Supabase API credential (host + secret key). Claude: n8n Gateway credits. Async: responds on receipt, writes results back to Supabase (pg_net times out at 5s)."
+  "_notes": "Credentials not exported. Webhooks 01/05/06: Header Auth credential (header X-Webhook-Secret, same value as Supabase Vault n8n_webhook_secret). HTTP Request nodes: predefined credential 'Supabase API' (supabaseApi). Claude: n8n Gateway credits (anthropicApi). Task types: edit TASK_TEMPLATES in 'Prepare Task Brief' (vault: Concepts/Task Types - How to extend). Responds on receipt (pg_net 5 s timeout)."
 }
