@@ -233,37 +233,32 @@
     },
     {
       "name": "Log Event: brief_created",
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
       "position": [
         1480,
         200
       ],
       "parameters": {
-        "resource": "row",
-        "operation": "create",
-        "tableId": "events",
-        "dataToSend": "defineBelow",
-        "fieldsUi": {
-          "fieldValues": [
+        "method": "POST",
+        "url": "https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/events",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
             {
-              "fieldId": "request_id",
-              "fieldValue": "={{ $('Normalize Request').item.json.request_id }}"
-            },
-            {
-              "fieldId": "source",
-              "fieldValue": "n8n"
-            },
-            {
-              "fieldId": "type",
-              "fieldValue": "brief_created"
-            },
-            {
-              "fieldId": "payload",
-              "fieldValue": "={{ JSON.stringify({ workflow: $workflow.name, execution: $execution.id }) }}"
+              "name": "Prefer",
+              "value": "return=minimal"
             }
           ]
-        }
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ request_id: $('Normalize Request').item.json.request_id, source: 'n8n', type: 'brief_created', payload: { workflow: $workflow.name, execution: $execution.id } }) }}",
+        "options": {}
       }
     },
     {

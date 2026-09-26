@@ -1,7 +1,7 @@
 ---
 type: defect
 date: 2026-09-26
-status: open
+status: fixed
 severity: minor
 found_in: "[[RUN-007 Newcomer crawler first run]]"
 owner: claude
@@ -19,4 +19,4 @@ Supabase node → Row → Create → table `events`, field `payload` = `={{ JSON
 
 ## Fix
 - Workflow 02: fixed. The event is now written with an **HTTP Request** node (predefined credential `supabaseApi`) POSTing `{source, type, request_id, payload}` as a real JSON body to `/rest/v1/events`. Verified: `jsonb_typeof = object`. Event 12 was repaired with `update events set payload = (payload #>> '{}')::jsonb where id = 12;`.
-- **Still open for workflow 01** ("Log Event: brief_created"): switch it to the same HTTP pattern, then repair old rows with `update events set payload = (payload #>> '{}')::jsonb where jsonb_typeof(payload) = 'string';`.
+- Workflow 01: fixed 26.09 — "Log Event: brief_created" is now an HTTP Request (supabaseApi credential) with a real JSON body; verified `jsonb_typeof = object` (E2E 5). Old rows repaired (2). All 20 events are objects.
