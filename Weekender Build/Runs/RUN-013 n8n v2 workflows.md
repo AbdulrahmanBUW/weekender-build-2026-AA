@@ -41,3 +41,6 @@ Build and verify the n8n side of [[Frontend and UX Plan v2]] section H: 01 gener
 ## Defects found
 - [[DEF-010 Haiku alias rejected via n8n Gateway]]
 - [[DEF-011 Webhook secret visible in n8n execution data]]
+
+## Update 26.09 — intake on Claude Haiku 4.5
+Workflow 04 main model switched from `claude-sonnet-5` to `claude-haiku-4-5-20251001` (republished). Latency **3.9–9 s** (was 8–21 s). Quality check (Arabic children's-doctor request, UTF-8 body): task_type doctor_appointment, organisation + phone + 3 morning windows extracted, 3 follow-up questions in natural Arabic (reason, new patient, insurance), correct German opening with KI disclosure. Note: test with UTF-8 file bodies (`--data-binary @file`) — Windows command-line arguments garble Arabic.

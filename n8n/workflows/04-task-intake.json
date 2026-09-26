@@ -100,7 +100,7 @@
       }
     },
     {
-      "name": "Claude Sonnet 5",
+      "name": "Claude Haiku 4.5",
       "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
       "typeVersion": 1.6,
       "position": [
@@ -111,7 +111,7 @@
         "model": {
           "__rl": true,
           "mode": "id",
-          "value": "claude-sonnet-5"
+          "value": "claude-haiku-4-5-20251001"
         },
         "options": {
           "maxTokensToSample": 2000
@@ -292,7 +292,7 @@
         ]
       ]
     },
-    "Claude Sonnet 5": {
+    "Claude Haiku 4.5": {
       "ai_languageModel": [
         [
           {
