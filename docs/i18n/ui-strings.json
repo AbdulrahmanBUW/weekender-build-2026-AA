@@ -928,6 +928,28 @@
       "impressumTitle": "Imprint (Impressum)",
       "privacyTitle": "Privacy notice",
       "germanBinding": "The legally binding version of this page is the German text."
+    },
+    "voice": {
+      "start": "Speak",
+      "startHelp": "Press once and tell me what you need, in your language.",
+      "typeInstead": "Type instead",
+      "greeting": "Hello! What should I ask for you? Tell me in your own words.",
+      "greetingPlace": "Hello! I'll call {place} for you. What should I ask them?",
+      "listening": "Listening…",
+      "thinking": "One moment…",
+      "speaking": "Speaking…",
+      "didntHear": "I didn't catch that. Please say it again.",
+      "summaryTimes": "I will only agree to these times: {times}.",
+      "clickToCall": "If everything is right, press “Yes, call for me in German”. To change something, press “Speak” and tell me.",
+      "stillMissing": "One thing is still missing. Please add it on the card.",
+      "callNow": "Yes, call for me in German",
+      "noVoice": "Your browser has no voice for this language. I'll show my questions as text.",
+      "stop": "Stop",
+      "aiLabel": "AI assistant",
+      "youLabel": "You",
+      "logLabel": "Conversation",
+      "consentTitle": "How the call works",
+      "noMoreChanges": "I can't take more changes by voice. Please press “Type instead”."
     }
   },
   "de": {
@@ -1859,6 +1881,28 @@
       "impressumTitle": "Impressum",
       "privacyTitle": "Datenschutzerklärung",
       "germanBinding": "Rechtlich verbindlich ist der deutsche Text."
+    },
+    "voice": {
+      "start": "Sprechen",
+      "startHelp": "Drücken Sie einmal und sagen Sie mir in Ihrer Sprache, was Sie brauchen.",
+      "typeInstead": "Lieber tippen",
+      "greeting": "Guten Tag! Was soll ich für Sie fragen? Sagen Sie es mir in Ihren eigenen Worten.",
+      "greetingPlace": "Guten Tag! Ich rufe für Sie bei {place} an. Was soll ich dort fragen?",
+      "listening": "Ich höre zu…",
+      "thinking": "Einen Moment…",
+      "speaking": "Ich spreche…",
+      "didntHear": "Das habe ich nicht verstanden. Bitte sagen Sie es noch einmal.",
+      "summaryTimes": "Ich stimme nur diesen Zeiten zu: {times}.",
+      "clickToCall": "Wenn alles stimmt, drücken Sie „Ja, rufen Sie für mich auf Deutsch an“. Wenn Sie etwas ändern möchten, drücken Sie „Sprechen“ und sagen Sie es mir.",
+      "stillMissing": "Eine Angabe fehlt noch. Bitte ergänzen Sie sie auf der Karte.",
+      "callNow": "Ja, rufen Sie für mich auf Deutsch an",
+      "noVoice": "Ihr Browser hat keine Stimme für diese Sprache. Ich zeige meine Fragen als Text.",
+      "stop": "Stopp",
+      "aiLabel": "KI-Assistentin",
+      "youLabel": "Sie",
+      "logLabel": "Gespräch",
+      "consentTitle": "So läuft der Anruf ab",
+      "noMoreChanges": "Weitere Änderungen kann ich per Sprache nicht mehr annehmen. Bitte drücken Sie „Lieber tippen“."
     }
   },
   "ru": {
@@ -2790,6 +2834,28 @@
       "impressumTitle": "Выходные данные (Impressum)",
       "privacyTitle": "Политика конфиденциальности",
       "germanBinding": "Юридически обязательной является немецкая версия этой страницы."
+    },
+    "voice": {
+      "start": "Говорить",
+      "startHelp": "Нажмите один раз и расскажите на своём языке, что вам нужно.",
+      "typeInstead": "Написать текстом",
+      "greeting": "Здравствуйте! Что мне спросить за вас? Расскажите своими словами.",
+      "greetingPlace": "Здравствуйте! Я позвоню за вас в {place}. Что мне у них спросить?",
+      "listening": "Слушаю…",
+      "thinking": "Одну минуту…",
+      "speaking": "Говорю…",
+      "didntHear": "Не удалось расслышать. Пожалуйста, повторите.",
+      "summaryTimes": "Я соглашусь только на это время: {times}.",
+      "clickToCall": "Если всё верно, нажмите «Да, позвоните за меня по-немецки». Чтобы что-то изменить, нажмите «Говорить» и скажите мне.",
+      "stillMissing": "Кое-чего ещё не хватает. Пожалуйста, добавьте это в карточку.",
+      "callNow": "Да, позвоните за меня по-немецки",
+      "noVoice": "В вашем браузере нет голоса для этого языка. Я буду показывать вопросы текстом.",
+      "stop": "Остановить",
+      "aiLabel": "ИИ-ассистент",
+      "youLabel": "Вы",
+      "logLabel": "Разговор",
+      "consentTitle": "Как пройдёт звонок",
+      "noMoreChanges": "Больше изменений голосом я принять не могу. Пожалуйста, нажмите «Написать текстом»."
     }
   },
   "uk": {
@@ -3721,6 +3787,28 @@
       "impressumTitle": "Вихідні дані (Impressum)",
       "privacyTitle": "Політика конфіденційності",
       "germanBinding": "Юридично обов'язковою є німецька версія цієї сторінки."
+    },
+    "voice": {
+      "start": "Говорити",
+      "startHelp": "Натисніть один раз і розкажіть своєю мовою, що вам потрібно.",
+      "typeInstead": "Написати текстом",
+      "greeting": "Добрий день! Що мені запитати за вас? Розкажіть своїми словами.",
+      "greetingPlace": "Добрий день! Я зателефоную за вас до {place}. Що мені в них запитати?",
+      "listening": "Слухаю…",
+      "thinking": "Хвилинку…",
+      "speaking": "Говорю…",
+      "didntHear": "Не вдалося розчути. Будь ласка, повторіть.",
+      "summaryTimes": "Я погоджуся лише на цей час: {times}.",
+      "clickToCall": "Якщо все правильно, натисніть «Так, зателефонуйте за мене німецькою». Щоб щось змінити, натисніть «Говорити» і скажіть мені.",
+      "stillMissing": "Ще дечого бракує. Будь ласка, додайте це в картку.",
+      "callNow": "Так, зателефонуйте за мене німецькою",
+      "noVoice": "У вашому браузері немає голосу для цієї мови. Я показуватиму запитання текстом.",
+      "stop": "Зупинити",
+      "aiLabel": "ШІ-асистент",
+      "youLabel": "Ви",
+      "logLabel": "Розмова",
+      "consentTitle": "Як відбуватиметься дзвінок",
+      "noMoreChanges": "Більше змін голосом я прийняти не можу. Будь ласка, натисніть «Написати текстом»."
     }
   },
   "ar": {
@@ -4652,6 +4740,28 @@
       "impressumTitle": "بيانات الناشر (Impressum)",
       "privacyTitle": "إشعار الخصوصية",
       "germanBinding": "النص الألماني هو النسخة الملزمة قانونياً لهذه الصفحة."
+    },
+    "voice": {
+      "start": "تحدّث",
+      "startHelp": "يُرجى الضغط مرة واحدة وإخباري بلغتك بما تحتاج إليه.",
+      "typeInstead": "اكتب بدلًا من التحدث",
+      "greeting": "مرحبًا! ماذا تودّ أن أسأل نيابةً عنك؟ يُرجى إخباري بكلماتك.",
+      "greetingPlace": "مرحبًا! سأتصل بـ {place} نيابةً عنك. ماذا تودّ أن أسألهم؟",
+      "listening": "أستمع…",
+      "thinking": "لحظة من فضلك…",
+      "speaking": "أتحدث…",
+      "didntHear": "لم أسمع ذلك جيدًا. يُرجى تكراره مرة أخرى.",
+      "summaryTimes": "لن أوافق إلا على هذه الأوقات: {times}.",
+      "clickToCall": "إذا كان كل شيء صحيحًا، يُرجى الضغط على «نعم، اتصلوا نيابةً عني بالألمانية». ولتغيير أي شيء، يُرجى الضغط على «تحدّث» وإخباري بذلك.",
+      "stillMissing": "ما زالت هناك معلومة ناقصة. يُرجى إضافتها في البطاقة.",
+      "callNow": "نعم، اتصلوا نيابةً عني بالألمانية",
+      "noVoice": "لا يتوفر في متصفحك صوت لهذه اللغة. سأعرض أسئلتي نصًّا مكتوبًا.",
+      "stop": "إيقاف",
+      "aiLabel": "مساعد الذكاء الاصطناعي",
+      "youLabel": "أنت",
+      "logLabel": "المحادثة",
+      "consentTitle": "كيف ستجري المكالمة",
+      "noMoreChanges": "لا يمكنني قبول مزيد من التعديلات بالصوت. يُرجى الضغط على «اكتب بدلًا من التحدث»."
     }
   },
   "tr": {
@@ -5583,6 +5693,28 @@
       "impressumTitle": "Künye (Impressum)",
       "privacyTitle": "Gizlilik bildirimi",
       "germanBinding": "Bu sayfanın yasal olarak bağlayıcı sürümü Almanca metindir."
+    },
+    "voice": {
+      "start": "Konuşun",
+      "startHelp": "Bir kez basın ve neye ihtiyacınız olduğunu kendi dilinizde söyleyin.",
+      "typeInstead": "Konuşmak yerine yazın",
+      "greeting": "Merhaba! Sizin için ne sorayım? Lütfen bana kendi sözlerinizle anlatın.",
+      "greetingPlace": "Merhaba! Sizin için şu yeri arayacağım: {place}. Onlara ne sorayım?",
+      "listening": "Dinliyorum…",
+      "thinking": "Bir saniye…",
+      "speaking": "Konuşuyorum…",
+      "didntHear": "Bunu anlayamadım. Lütfen tekrar söyleyin.",
+      "summaryTimes": "Yalnızca şu saatleri kabul edeceğim: {times}.",
+      "clickToCall": "Her şey doğruysa “Evet, benim için Almanca arayın” düğmesine basın. Bir şeyi değiştirmek için “Konuşun” düğmesine basıp bana söyleyin.",
+      "stillMissing": "Bir bilgi hâlâ eksik. Lütfen karta ekleyin.",
+      "callNow": "Evet, benim için Almanca arayın",
+      "noVoice": "Tarayıcınızda bu dil için bir ses yok. Sorularımı yazılı olarak göstereceğim.",
+      "stop": "Durdur",
+      "aiLabel": "Yapay zekâ asistanı",
+      "youLabel": "Siz",
+      "logLabel": "Konuşma",
+      "consentTitle": "Arama nasıl yapılacak",
+      "noMoreChanges": "Sesle daha fazla değişiklik alamıyorum. Lütfen “Konuşmak yerine yazın” düğmesine basın."
     }
   }
 }
