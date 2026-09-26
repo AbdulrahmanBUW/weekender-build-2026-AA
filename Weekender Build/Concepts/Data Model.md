@@ -1,7 +1,7 @@
 ---
 type: concept
 tags: [stack, database]
-sources: ["supabase/migrations/20260925190000_init_schema.sql"]
+sources: ["supabase/migrations/20260925190000_init_schema.sql", "supabase/migrations/20260926090000_newcomer_resources.sql"]
 ---
 # Data Model (Supabase / Postgres)
 
@@ -53,6 +53,50 @@ erDiagram
   }
 ```
 
+## Newcomer resources (added 26.09, migration `20260926090000_newcomer_resources.sql`)
+Idea-independent reference data for Dresden newcomers, filled by n8n workflow 02. Details: [[Newcomer Resources - Crawler]].
+
+```mermaid
+erDiagram
+  resources {
+    uuid id PK
+    text category "auslaenderbehoerde | doctor | pharmacy | bank | community | other"
+    text subcategory "hausarzt, kinderarzt, zahnarzt, welcome_center ..."
+    text name
+    text address
+    text district
+    text city "default Dresden"
+    float8 lat
+    float8 lng
+    text phone
+    text website
+    text_arr languages
+    text opening_hours
+    text notes_en
+    text source "brave | firecrawl | manual"
+    text source_url
+    timestamptz retrieved_at
+    text dedupe_key UK "generated: category|lower(name)|lower(address)"
+  }
+  guides {
+    uuid id PK
+    text slug UK
+    text topic
+    text city
+    text title_en
+    text summary_en
+    jsonb checklist "array of strings"
+    text content_md
+    jsonb sources "array of {url,title,retrieved_at}"
+    timestamptz updated_at
+  }
+```
+
+- No foreign keys to the call tables, so these tables survive any merge.
+- Upsert keys: `resources?on_conflict=dedupe_key`, `guides?on_conflict=slug` (PostgREST header `Prefer: resolution=merge-duplicates`).
+- Also a unique index on `(category, lower(name), coalesce(lower(address),''))`.
+- Not in the Realtime publication (static reference data).
+
 ## Status lifecycle (`request_status`)
 `submitted` → (n8n) `briefed` → `calling` → `booked` | `needs_user` | `rejected` | `failed`
 
@@ -63,6 +107,8 @@ erDiagram
 | calls | read | insert/update |
 | transcript_lines | read (Realtime) | insert per utterance |
 | events | read | insert every automation step |
+| resources | read only (RLS select; insert/update/delete revoked) | upsert (workflow 02) |
+| guides | read only (RLS select; insert/update/delete revoked) | upsert (workflow 02) |
 
 ## Guardrails built into the schema
 - `consent_ai_call` must be true (check + RLS) → [[AI Disclosure]]

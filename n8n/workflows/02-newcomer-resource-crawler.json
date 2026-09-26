@@ -1,0 +1,732 @@
+{
+  "name": "Newcomer 02 – Resource crawler (Dresden)",
+  "nodes": [
+    {
+      "id": "6c1f006d-bcef-4e82-9da4-3a2863f03964",
+      "name": "Run Crawler (manual)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "3eb2213b-2f94-41e4-95b4-0b4a65e24d5b",
+      "name": "Place Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Place searches (Brave place_search). LIMIT = 0 runs all jobs; set e.g. 4 for a cheap test run.\n// exclude is tested on name, categories and address. 'theaterstra' drops the old ABH address (office moved to Lingnerallee 3 in May 2026).\nconst LIMIT = 0;\nconst DOC = 'doctor|physician|medical|clinic|practice|health|general_practitioner|pediatric|gyn|dentist|dental';\nconst jobs = [\n  { query: 'Ausländerbehörde Dresden', category: 'auslaenderbehoerde', subcategory: 'auslaenderbehoerde', name_match: 'ausländerbehörde|auslaenderbehoerde|ausländerangelegenheiten|foreigners', exclude: 'e\\.v\\.|verein|theaterstra', max: 3 },\n  { query: 'englischsprachiger Hausarzt Dresden', category: 'doctor', subcategory: 'hausarzt', cat_match: DOC, exclude: 'apotheke|pharmacy', max: 8 },\n  { query: 'Apotheke Dresden Neustadt', category: 'pharmacy', subcategory: 'apotheke', cat_match: 'pharmacy|drugstore|chemist', name_match: 'apotheke|pharmacy', max: 8 },\n  { query: 'Ostsächsische Sparkasse Dresden Filiale', category: 'bank', subcategory: 'sparkasse', name_match: 'sparkasse', max: 6 },\n  { query: 'Hausarzt Dresden English speaking', category: 'doctor', subcategory: 'hausarzt', cat_match: DOC, exclude: 'apotheke|pharmacy', max: 8 },\n  { query: 'Kinderarzt Dresden', category: 'doctor', subcategory: 'kinderarzt', cat_match: DOC, exclude: 'apotheke|pharmacy', max: 8 },\n  { query: 'Frauenarzt Dresden englisch', category: 'doctor', subcategory: 'frauenarzt', cat_match: DOC, exclude: 'apotheke|pharmacy', max: 8 },\n  { query: 'Zahnarzt Dresden English', category: 'doctor', subcategory: 'zahnarzt', cat_match: DOC, exclude: 'apotheke|pharmacy', max: 8 },\n  { query: 'Apotheke Dresden Altstadt', category: 'pharmacy', subcategory: 'apotheke', cat_match: 'pharmacy|drugstore|chemist', name_match: 'apotheke|pharmacy', max: 8 },\n  { query: 'Deutsche Bank Dresden', category: 'bank', subcategory: 'deutsche_bank', name_match: 'deutsche bank', max: 4 },\n  { query: 'Commerzbank Dresden', category: 'bank', subcategory: 'commerzbank', name_match: 'commerzbank', max: 4 },\n  { query: 'Welcome Center Dresden', category: 'community', subcategory: 'welcome_center', name_match: 'welcome|willkommen|international', max: 4 },\n  { query: 'Migrationsberatung Dresden', category: 'community', subcategory: 'migrant_counselling', name_match: 'migration|beratung|caritas|diakonie|awo|ausländerrat|auslaenderrat|integration', max: 6 },\n  { query: 'Sprachcafé Dresden', category: 'community', subcategory: 'language_cafe', name_match: 'sprach|language|tandem|begegnung|international', max: 5 },\n  { query: 'TU Dresden International Office', category: 'community', subcategory: 'international_office', name_match: 'international|tu dresden|technische universität|studentenwerk', max: 3 },\n  { query: 'International Community Dresden Treffpunkt', category: 'community', subcategory: 'international_community', name_match: 'international|expat|community|begegnung|verein', max: 5 }\n];\nconst list = LIMIT > 0 ? jobs.slice(0, LIMIT) : jobs;\nreturn list.map(j => ({ json: j }));\n"
+      }
+    },
+    {
+      "id": "ed2ef59d-9aa7-41ab-b434-7cd5eaf1111c",
+      "name": "Brave Place Search",
+      "type": "@brave/n8n-nodes-brave-search.braveSearch",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        300
+      ],
+      "parameters": {
+        "operation": "place_search",
+        "query": "={{ $json.query }}",
+        "location": "dresden germany"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "70f7ea89-fd61-42f9-9de7-89325fd5928b",
+      "name": "Map Places to Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Turn Brave place results into rows for public.resources (uniform keys for PostgREST bulk upsert).\nconst jobs = $('Place Jobs').all().map(i => i.json);\nconst now = new Date().toISOString();\nconst rows = [];\nconst seen = new Set();\nconst failed = [];\nconst perJob = [];\nconst fmtDays = d => (Array.isArray(d) ? d : []).map(day => (Array.isArray(day) ? day : [day])\n  .filter(Boolean).map(s => (s.abbr_name || '') + ' ' + (s.opens || '?') + '-' + (s.closes || '?')).join(', ')).filter(Boolean).join('; ');\n$input.all().forEach((item, i) => {\n  const pi = item.pairedItem && typeof item.pairedItem.item === 'number' ? item.pairedItem.item : i;\n  const job = jobs[pi] || jobs[i] || {};\n  const res = item.json || {};\n  if (res.error || !Array.isArray(res.results)) {\n    failed.push({ query: job.query, error: String((res.error && (res.error.message || res.error)) || 'no results array').slice(0, 200) });\n    return;\n  }\n  const nameRe = job.name_match ? new RegExp(job.name_match, 'i') : null;\n  const catRe = job.cat_match ? new RegExp(job.cat_match, 'i') : null;\n  const exRe = job.exclude ? new RegExp(job.exclude, 'i') : null;\n  let kept = 0;\n  for (const r of res.results) {\n    if (kept >= (job.max || 8)) break;\n    const name = (r.title || '').trim();\n    const address = ((r.postal_address && r.postal_address.displayAddress) || '').trim();\n    if (!name) continue;\n    const pc = address.match(/\\b(01[0-3]\\d\\d)\\b/);\n    if (!pc) continue; // only Dresden postcodes (010xx-013xx)\n    const cats = ((r.categories || []).join(' ') + ' ' + (r.icon_category || '')).trim();\n    if (nameRe && !nameRe.test(name)) continue;\n    if (catRe && cats && !catRe.test(cats)) continue;\n    if (exRe && (exRe.test(name) || exRe.test(cats) || exRe.test(address))) continue;\n    const key = job.category + '|' + name.toLowerCase() + '|' + address.toLowerCase();\n    if (seen.has(key)) continue;\n    seen.add(key);\n    kept++;\n    const after = address.split(pc[1])[1];\n    const districtRaw = after ? after.replace(/^[\\s,]+/, '').replace(/,\\s*Germany$/i, '').replace(/^Dresden-/i, '').trim() : '';\n    const district = districtRaw && districtRaw.toLowerCase() !== 'dresden' ? districtRaw : null;\n    const coords = Array.isArray(r.coordinates) ? r.coordinates : [];\n    const hours = r.opening_hours ? fmtDays(r.opening_hours.days) : '';\n    rows.push({\n      category: job.category,\n      subcategory: job.subcategory || null,\n      name,\n      address: address || null,\n      district,\n      city: 'Dresden',\n      lat: typeof coords[0] === 'number' ? coords[0] : null,\n      lng: typeof coords[1] === 'number' ? coords[1] : null,\n      phone: (r.contact && r.contact.telephone) || null,\n      website: r.url || null,\n      languages: null,\n      opening_hours: hours || null,\n      notes_en: 'Found via Brave place search \"' + job.query + '\" on ' + now.slice(0, 10) + '. Public business listing only. Languages spoken, opening hours and phone are NOT verified and may change: check with the place before you go.',\n      source: 'brave',\n      source_url: r.url || ('https://search.brave.com/search?q=' + encodeURIComponent(name + ' ' + address)),\n      retrieved_at: now\n    });\n  }\n  perJob.push({ query: job.query, kept, found: res.results.length });\n});\nconst byCategory = {};\nrows.forEach(r => { byCategory[r.category] = (byCategory[r.category] || 0) + 1; });\nreturn [{ json: { rows, stats: { rows: rows.length, byCategory, perJob, failed } } }];\n"
+      }
+    },
+    {
+      "id": "5d43962b-5f6b-48d0-adb7-f55a1183e7e2",
+      "name": "Upsert Resources",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/resources?on_conflict=dedupe_key",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates,return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.rows) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "supabaseApi": {
+          "id": "lkfnOpZKYzhFFny1",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "id": "5e63361c-6a45-4a85-8f3e-2ff978c95abd",
+      "name": "Guide Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Guide topics: Brave web search (trusted sources only) -> Firecrawl scrape top URLs -> Claude.\n// LIMIT = 0 runs all guides; set 1 for a cheap test run. MAX_URLS = pages scraped per guide.\nconst LIMIT = 0;\nconst MAX_URLS = 2;\nconst guides = [\n  { slug: 'auslaenderbehoerde-dresden-appointment', topic: 'auslaenderbehoerde', title_hint: 'Foreigners office (Ausländerbehörde) Dresden: appointment and documents',\n    query: 'Ausländerbehörde Dresden Termin Unterlagen site:dresden.de', allow: ['dresden.de'] },\n  { slug: 'bank-account-documents', topic: 'bank', title_hint: 'Opening a bank account in Germany: documents and the right to a Basiskonto',\n    query: 'Basiskonto Anspruch Girokonto eröffnen Unterlagen Verbraucherzentrale', allow: ['verbraucherzentrale.de', 'bafin.de', 'make-it-in-germany.com', 'bundesbank.de', 'sparkasse.de', 'ostsaechsische-sparkasse.de'] },\n  { slug: 'anmeldung-dresden', topic: 'anmeldung', title_hint: 'Registering your address (Anmeldung) at the Bürgerbüro Dresden',\n    query: 'Wohnsitz anmelden Dresden Bürgerbüro Unterlagen site:dresden.de', allow: ['dresden.de'] },\n  { slug: 'health-insurance-registration', topic: 'health_insurance', title_hint: 'Getting health insurance in Germany as a newcomer',\n    query: 'health insurance Germany newcomers statutory register make-it-in-germany', allow: ['make-it-in-germany.com', 'bundesgesundheitsministerium.de', 'verbraucherzentrale.de'] }\n];\nconst list = LIMIT > 0 ? guides.slice(0, LIMIT) : guides;\nreturn list.map(g => ({ json: Object.assign({ max_urls: MAX_URLS }, g) }));\n"
+      }
+    },
+    {
+      "id": "e5f01b90-54e0-4a47-976f-8a813a95ac6d",
+      "name": "Brave Web Search (trusted sources)",
+      "type": "@brave/n8n-nodes-brave-search.braveSearch",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        300
+      ],
+      "parameters": {
+        "operation": "web",
+        "query": "={{ $json.query }}",
+        "count": 10,
+        "additionalParameters": {
+          "country": "DE",
+          "search_lang": "de"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "5ec349d6-b8cd-4d30-855e-6c2efe9a3316",
+      "name": "Pick Official URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Keep only allow-listed domains; never Arztsuche/Doctolib/Jameda/Google Maps. One item per URL to scrape.\nconst DENY = /116117|kvsachsen|kvs-sachsen|arztsuche|doctolib|jameda|google\\.[a-z.]+\\/maps|maps\\.google/i;\nconst guides = $('Guide Jobs').all().map(i => i.json);\nconst out = [];\n$input.all().forEach((item, i) => {\n  const pi = item.pairedItem && typeof item.pairedItem.item === 'number' ? item.pairedItem.item : i;\n  const g = guides[pi] || guides[i];\n  if (!g) return;\n  const results = (item.json && item.json.web && item.json.web.results) || [];\n  const picked = [];\n  for (const r of results) {\n    if (picked.length >= (g.max_urls || 2)) break;\n    const m = String(r.url || '').match(/^https?:\\/\\/([^\\/?#:]+)/i);\n    if (!m) continue;\n    const host = m[1].toLowerCase();\n    if (DENY.test(r.url)) continue;\n    if (!g.allow.some(d => host === d || host.endsWith('.' + d))) continue;\n    if (/\\.pdf($|\\?)/i.test(r.url)) continue;\n    if (picked.some(p => p.url === r.url)) continue;\n    picked.push({ url: r.url, title: (r.title || '').replace(/<[^>]+>/g, '') });\n  }\n  picked.forEach(p => out.push({ json: { slug: g.slug, topic: g.topic, title_hint: g.title_hint, url: p.url, title: p.title } }));\n});\nif (out.length === 0) out.push({ json: { skip: true, slug: '', url: '' } });\nreturn out;\n"
+      }
+    },
+    {
+      "id": "2059d6ed-2e4e-44f0-a1ff-549c70f392d1",
+      "name": "Loop Over URLs",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1760,
+        300
+      ],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      }
+    },
+    {
+      "id": "e79d7c72-8c50-4241-9bcd-8307d4814a5f",
+      "name": "Firecrawl Scrape Page",
+      "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        420
+      ],
+      "parameters": {
+        "resource": "Scraping",
+        "operation": "scrape",
+        "url": "={{ $json.url }}"
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "49b73826-a6da-45cc-bff7-13a20e9e85a8",
+      "name": "Compact Scrape",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        420
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// Runs once per item: keep only what the guide step needs.\nconst src = $('Loop Over URLs').first().json;\nconst r = $json || {};\nconst md = (r.data && r.data.markdown) || '';\nconst meta = (r.data && r.data.metadata) || {};\nconst status = meta.statusCode || (r.success ? 200 : 0);\nconst ok = !src.skip && !r.error && r.success !== false && status > 0 && status < 400 && md.length > 200;\nreturn { json: {\n  slug: src.slug, topic: src.topic, title_hint: src.title_hint,\n  url: meta.url || meta.sourceURL || src.url,\n  title: meta.title || src.title || '',\n  ok, status,\n  error: ok ? null : String((r.error && (r.error.message || r.error)) || meta.error || 'empty or failed page').slice(0, 200),\n  markdown: ok ? md.slice(0, 12000) : '',\n  retrieved_at: new Date().toISOString()\n} };\n"
+      }
+    },
+    {
+      "id": "39d32db6-fde4-47f6-b392-5fdec56ae54c",
+      "name": "Polite Pause 2s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2420,
+        420
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 2,
+        "unit": "seconds"
+      },
+      "webhookId": "38b0cca8-1559-49ea-8334-37fe688eff25"
+    },
+    {
+      "id": "c3c57a37-2c94-4935-a3bf-1c1f12d3ee02",
+      "name": "Group by Guide",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        160
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// One item per guide with combined source text; guides without usable text are reported, not sent to Claude.\nconst bySlug = {};\nconst failedPages = [];\nfor (const it of $input.all()) {\n  const p = it.json;\n  if (!p.slug) continue;\n  if (!p.ok) { failedPages.push({ slug: p.slug, url: p.url, status: p.status, error: p.error }); continue; }\n  bySlug[p.slug] = bySlug[p.slug] || { slug: p.slug, topic: p.topic, title_hint: p.title_hint, sources: [], parts: [] };\n  if (bySlug[p.slug].sources.some(s => s.url === p.url)) continue;\n  bySlug[p.slug].sources.push({ url: p.url, title: p.title, retrieved_at: p.retrieved_at });\n  bySlug[p.slug].parts.push('### SOURCE ' + bySlug[p.slug].sources.length + ': ' + p.title + ' (' + p.url + ')\\n' + p.markdown);\n}\nconst guides = Object.values(bySlug).map(g => ({ json: {\n  has_text: true, slug: g.slug, topic: g.topic, title_hint: g.title_hint, sources: g.sources,\n  source_text: g.parts.join('\\n\\n'), failed_pages: failedPages\n} }));\nif (guides.length === 0) return [{ json: { has_text: false, failed_pages: failedPages } }];\nreturn guides;\n"
+      }
+    },
+    {
+      "id": "1f97d252-d015-4a1a-b71c-b147f5b13e2b",
+      "name": "Has Source Text?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2200,
+        160
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.has_text }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "3da82a60-d849-44aa-8e74-29320e20beae",
+      "name": "Claude: Write Guide (facts only)",
+      "type": "@n8n/n8n-nodes-langchain.anthropic",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        60
+      ],
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-sonnet-5"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "user",
+              "content": "=Write the newcomer guide \"{{ $json.title_hint }}\" (slug {{ $json.slug }}, city Dresden) using ONLY the source text below.\n\nSOURCE TEXT:\n{{ $json.source_text }}"
+            }
+          ]
+        },
+        "simplify": true,
+        "options": {
+          "system": "You write short, practical guides for newcomers to Dresden, Germany. Rules: (1) Use ONLY facts that appear in the provided source text. Never invent documents, fees, addresses, phone numbers, opening hours, links or steps. If something is not in the source, leave it out. (2) Write plain English at level B1: short sentences, common words. (3) Keep official German terms and document names in German and add the English in brackets, e.g. 'Meldebescheinigung (registration certificate)'. (4) If sources disagree, mention both briefly. (5) Output ONLY strict JSON, no markdown fences, no text before or after, with exactly these keys: {\"title_en\": string, \"summary_en\": string (2-3 sentences), \"checklist\": array of short strings (documents to bring and steps, in order), \"content_md\": string (markdown with short sections such as 'Before you go', 'What to bring', 'At the appointment', 'Good to know'; max about 350 words)}.",
+          "maxTokens": 2500
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "7df9c349-691e-4af1-8183-ff71dfe24aff",
+      "name": "Build Guide Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2640,
+        60
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Parse Claude's strict JSON and build rows for public.guides (uniform keys).\nconst inputs = $('Group by Guide').all().map(i => i.json).filter(g => g.has_text);\nconst now = new Date().toISOString();\nconst rows = [];\nconst failed = [];\n$input.all().forEach((item, i) => {\n  const pi = item.pairedItem && typeof item.pairedItem.item === 'number' ? item.pairedItem.item : i;\n  const g = inputs[pi] || inputs[i];\n  if (!g) return;\n  const r = item.json || {};\n  if (r.error) { failed.push({ slug: g.slug, error: String(r.error.message || r.error).slice(0, 200) }); return; }\n  const text = (Array.isArray(r.content) ? r.content : []).filter(c => c.type === 'text').map(c => c.text).join('\\n').trim();\n  let obj = null;\n  try {\n    const s = text.indexOf('{');\n    const e = text.lastIndexOf('}');\n    obj = JSON.parse(text.slice(s, e + 1));\n  } catch (err) { failed.push({ slug: g.slug, error: 'invalid JSON from model' }); return; }\n  if (!obj || !obj.title_en || !obj.summary_en) { failed.push({ slug: g.slug, error: 'missing title_en/summary_en' }); return; }\n  const checklist = (Array.isArray(obj.checklist) ? obj.checklist : []).map(x => String(x).trim()).filter(Boolean);\n  const footer = '\\n\\n---\\n*Generated from the official sources below on ' + now.slice(0, 10) + '. Rules, fees and opening hours can change. Always check the source before you go.*\\n\\n' +\n    g.sources.map(s => '- [' + (s.title || s.url) + '](' + s.url + ')').join('\\n');\n  rows.push({\n    slug: g.slug, topic: g.topic, city: 'Dresden',\n    title_en: String(obj.title_en).trim(), summary_en: String(obj.summary_en).trim(),\n    checklist, content_md: String(obj.content_md || '').trim() + footer,\n    sources: g.sources, updated_at: now\n  });\n});\nreturn [{ json: { rows, stats: { guides: rows.length, slugs: rows.map(r => r.slug), failed, failed_pages: (inputs[0] && inputs[0].failed_pages) || [] } } }];\n"
+      }
+    },
+    {
+      "id": "3ed6a4ab-f710-4fb2-a068-79d83376a4c6",
+      "name": "Upsert Guides",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2860,
+        60
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/guides?on_conflict=slug",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates,return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.rows) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "supabaseApi": {
+          "id": "lkfnOpZKYzhFFny1",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "id": "7abd1def-39ad-4ee3-b37c-61780e8e3c3a",
+      "name": "Summarize Run",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        160
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Collect counts for the events log. Works whether or not the guide branch produced rows.\nconst safe = f => { try { return f(); } catch (e) { return null; } };\nconst places = safe(() => $('Map Places to Rows').first().json.stats) || {};\nconst resStatus = safe(() => $('Upsert Resources').first().json.statusCode);\nconst guides = safe(() => $('Build Guide Rows').first().json.stats) || { guides: 0, slugs: [], failed: [] };\nconst guideStatus = safe(() => $('Upsert Guides').first().json.statusCode);\nconst grouped = safe(() => $('Group by Guide').first().json) || {};\nreturn [{ json: { payload: {\n  workflow: $workflow.name, execution: $execution.id,\n  resources_rows: places.rows || 0, resources_by_category: places.byCategory || {},\n  resources_upsert_status: resStatus, place_jobs: places.perJob || [], place_jobs_failed: places.failed || [],\n  guides_rows: guides.guides || 0, guides_slugs: guides.slugs || [], guides_upsert_status: guideStatus,\n  guides_failed: guides.failed || [], guide_pages_failed: guides.failed_pages || grouped.failed_pages || []\n} } }];\n"
+      }
+    },
+    {
+      "id": "af7de849-6fd5-4dd2-9803-7a10bd076da8",
+      "name": "Log Event: resources_crawled",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3300,
+        160
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/events",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source: \"n8n\", type: \"resources_crawled\", request_id: null, payload: $json.payload }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "supabaseApi": {
+          "id": "lkfnOpZKYzhFFny1",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "id": "1d858dd9-0b50-41bd-907e-8ff6a93bf4bc",
+      "name": "Sticky Note ffb883b5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -260
+      ],
+      "parameters": {
+        "content": "## Legal & ethics rules (read before editing)\n\n- **Only public business / official information.** No data about private individuals. Doctors appear only as practices/business listings.\n- **Allowed sources:** Brave Search API (place + web results), Firecrawl *scrape* of single official pages: dresden.de, tu-dresden.de, verbraucherzentrale.de, bafin.de, bundesbank.de, make-it-in-germany.com, bundesgesundheitsministerium.de, official bank sites.\n- **Never scrape:** 116117 Arztsuche, KV Sachsen Arztsuche, Doctolib, Jameda, Google Maps. Their terms forbid automated extraction. Use Brave place results instead (deny-list in *Pick Official URLs*).\n- Respect robots.txt and site terms; one page at a time with a 2 s pause.\n- Every row keeps **source_url + retrieved_at**. notes_en says hours/phone/languages are not verified.\n- Guides: Claude may only use facts from the scraped text (system prompt). Always show sources in the app.",
+        "color": 3,
+        "width": 620,
+        "height": 500
+      }
+    },
+    {
+      "id": "84f13bfa-b746-4943-86f7-c1cebd172552",
+      "name": "Sticky Note 14cfac20",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -260
+      ],
+      "parameters": {
+        "content": "## How to run\n\n1. Open this workflow, click **Execute workflow** (manual trigger only, no schedule, to save Gateway credits).\n2. Cheap test: in *Place Jobs* set `LIMIT = 4`, in *Guide Jobs* set `LIMIT = 1`. `0` = run everything (16 place searches, 4 guides x 2 pages).\n3. Writes use UPSERT: re-running updates rows instead of duplicating them (resources: `dedupe_key`, guides: `slug`).\n4. Result counts land in `public.events` (type `resources_crawled`).\n\nCost per full run (approx.): 16 + 4 Brave calls, up to 8 Firecrawl scrapes (1 credit each), 4 Claude calls.\n\nDocs: vault `Concepts/Newcomer Resources - Crawler.md`.",
+        "color": 5,
+        "width": 520,
+        "height": 500
+      }
+    }
+  ],
+  "connections": {
+    "Run Crawler (manual)": {
+      "main": [
+        [
+          {
+            "node": "Place Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Place Jobs": {
+      "main": [
+        [
+          {
+            "node": "Brave Place Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brave Place Search": {
+      "main": [
+        [
+          {
+            "node": "Map Places to Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Places to Rows": {
+      "main": [
+        [
+          {
+            "node": "Upsert Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Resources": {
+      "main": [
+        [
+          {
+            "node": "Guide Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guide Jobs": {
+      "main": [
+        [
+          {
+            "node": "Brave Web Search (trusted sources)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brave Web Search (trusted sources)": {
+      "main": [
+        [
+          {
+            "node": "Pick Official URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Official URLs": {
+      "main": [
+        [
+          {
+            "node": "Loop Over URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over URLs": {
+      "main": [
+        [
+          {
+            "node": "Group by Guide",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Firecrawl Scrape Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl Scrape Page": {
+      "main": [
+        [
+          {
+            "node": "Compact Scrape",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compact Scrape": {
+      "main": [
+        [
+          {
+            "node": "Polite Pause 2s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Polite Pause 2s": {
+      "main": [
+        [
+          {
+            "node": "Loop Over URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Group by Guide": {
+      "main": [
+        [
+          {
+            "node": "Has Source Text?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Source Text?": {
+      "main": [
+        [
+          {
+            "node": "Claude: Write Guide (facts only)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Summarize Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude: Write Guide (facts only)": {
+      "main": [
+        [
+          {
+            "node": "Build Guide Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Guide Rows": {
+      "main": [
+        [
+          {
+            "node": "Upsert Guides",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Guides": {
+      "main": [
+        [
+          {
+            "node": "Summarize Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize Run": {
+      "main": [
+        [
+          {
+            "node": "Log Event: resources_crawled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodeGroups": [
+    {
+      "name": "Places (Brave place search)",
+      "nodeNames": [
+        "Place Jobs",
+        "Brave Place Search",
+        "Map Places to Rows",
+        "Upsert Resources"
+      ],
+      "description": "Runs each place query in Dresden, keeps Dresden postcodes only, maps to resources rows and upserts on dedupe_key."
+    },
+    {
+      "name": "Guides: find official pages",
+      "nodeNames": [
+        "Guide Jobs",
+        "Brave Web Search (trusted sources)",
+        "Pick Official URLs"
+      ],
+      "description": "Web search per guide topic, keeps allow-listed official domains only (dresden.de, verbraucherzentrale.de, make-it-in-germany.com ...)."
+    },
+    {
+      "name": "Guides: scrape one page at a time",
+      "nodeNames": [
+        "Firecrawl Scrape Page",
+        "Compact Scrape",
+        "Polite Pause 2s"
+      ],
+      "description": "Firecrawl scrape (markdown) of each picked official URL, then a 2 s pause before the next one."
+    },
+    {
+      "name": "Guides: write + log",
+      "nodeNames": [
+        "Group by Guide",
+        "Has Source Text?",
+        "Claude: Write Guide (facts only)",
+        "Build Guide Rows",
+        "Upsert Guides",
+        "Summarize Run",
+        "Log Event: resources_crawled"
+      ],
+      "description": "Claude turns scraped text into a sourced guide (facts only), upsert on slug, then counts go to public.events."
+    }
+  ],
+  "meta": {
+    "n8nWorkflowId": "9Dl8JmCdK418btfF",
+    "instance": "arahmandeaxo.app.n8n.cloud",
+    "note": "Export of the live workflow (2026-09-26). Credentials are referenced by id/name only, no secrets. Brave, Firecrawl and Anthropic use n8n Gateway credits (auto-assigned on this instance); after import elsewhere, attach your own credentials."
+  }
+}
