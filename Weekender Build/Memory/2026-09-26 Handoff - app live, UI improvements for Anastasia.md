@@ -33,3 +33,8 @@ by: claude (abdul's session)
 - Lovable accepts queued follow-ups ("Send follow-up…") while it works: queue several small prompts instead of waiting.
 - Dictation and calls need the relay: on Abdul's laptop the local relay works; other devices need the public relay host (`docs/deploy-relay.md`).
 - The security report `docs/security/security-review-2026-09-26-run2.md` is **not committed** while the team repo is public (it describes abuse paths). It is on Abdul's laptop.
+
+## Update 26 Sep, 20:00 (before you start)
+- **Motion revamp live:** motion system in `src/components/motion` + tokens in `src/styles.css` (Knowledge v3.2 tells Lovable to reuse it, no animation libraries). Home: live-call demo with pause, real counts, age explorer, week strip, animated steps; animated directory, call page and result.
+- **Voice intake live:** one **Speak** button on `/ask` and the home box. The assistant asks the missing questions aloud in the UI language (relay speech-to-text + n8n intake + browser voice), fills the card, reads it back; one button "Yes, call for me in German". Typed form behind "Type instead". Code: `src/components/ask/VoiceAsk.tsx`, `src/lib/speech.ts`, `src/lib/listen.ts`.
+- Your guide-page strings are merged (873 → 893 keys with the voice texts). Always `git pull` both repos before you change anything.
