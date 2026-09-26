@@ -2,7 +2,7 @@
 type: run
 date: 2026-09-26 11:00
 by: verifier agent
-result: partial
+result: pass
 build: supabase resources (87 rows)
 ---
 
@@ -45,3 +45,6 @@ Tally (20 checked rows, Kinderchirurgie pair counted once): 12 ok with no or cos
 
 ## Verdict
 Data quality is good enough for the demo: all 20 checked rows are real, open, Dresden-based places and the addresses match their official sources in all but one case, so nothing embarrassing will appear if the demo shows these entries. Before going on stage, apply the SQL above for the rows most likely to be shown: the Ausländerbehörde and Dresden Welcome Center (add phone, "Eingang Nord"), fix the AWO address, move DAMF out of counselling, and remove or hide the generic "TU Dresden" row and the two Kinderchirurgie rows from the kinderarzt list. Avoid demoing the bank rows as "the branch's page" since most link to generic chain homepages, and treat missing phone numbers as a known limitation rather than a bug.
+
+## Applied (2026-09-26, Orchestrator)
+All 12 suggested SQL fixes applied in one transaction (`supabase db query --linked -f`): 9 updates (Ausländerbehörde + Welcome Center address/phone, AWO address, DAMF → language_cafe, BAMF name/website, 3 doctors' contact data, Sparkasse name/link) and 3 deletes (generic TU Dresden row, 2 duplicate Kinderchirurgie rows). Verified: 84 resources remain, deleted IDs gone, Ausländerbehörde = "Lingnerallee 3, Eingang Nord, 01069 Dresden".
