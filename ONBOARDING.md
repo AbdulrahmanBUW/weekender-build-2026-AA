@@ -1,7 +1,7 @@
 # START HERE — Anastasia's guide (status + setup + how to vibecode)
 
 Weekender Build, Dresden, 25–27.09.2026 · **Goal: our build is live under its own URL by Sun 27.09, 14:00.**
-Last updated: Fri 25.09.2026, ~22:15 (by Abdul + Claude).
+Last updated: Sat 26.09.2026, ~13:30 (by Abdul + Claude). **What changed since Friday: see the newest note in vault `Memory/`.**
 
 - Repo (private): https://github.com/AbdulrahmanBUW/weekender-build-2026-AA
 - Task board: https://github.com/users/AbdulrahmanBUW/projects/2 (milestones = pod slots)
@@ -13,13 +13,14 @@ Last updated: Fri 25.09.2026, ~22:15 (by Abdul + Claude).
 
 | Piece | Status | Where |
 |---|---|---|
-| **Your idea (Idea B)** | ⏳ **waiting for you** — write it, then we merge both ideas | `Weekender Build/Ideas/Idea B - (Teammate).md` → `Ideas/Merged Concept.md` |
-| Abdul's idea (Idea A: HalloTermin — AI calls German doctors for newcomers) | ✅ written + researched | `Ideas/Idea A - HalloTermin (Abdul).md` |
-| Database (Supabase, Frankfurt, project `weekender-build`) | ✅ live, schema + demo data, security rules tested | `supabase/migrations/`, vault `Concepts/Data Model.md` |
-| n8n workflow "HalloTermin 01" (new request → Claude writes German call brief → saved back to DB) | ✅ live + tested end to end (~10 s) | n8n: https://arahmandeaxo.app.n8n.cloud · export `n8n/workflows/` |
-| Lovable app "HalloTermin Paper" | 🟡 only the empty shell (P1) + our Supabase connected. **Paused until the ideas are merged.** | Lovable project "HalloTermin Paper" |
-| Voice calls (Retell / ElevenLabs) | 📝 researched, not built — decision DEC-001 still *proposed* | vault `Decisions/` |
-| Mandatory skills (security-audit, archify, brag) | ✅ installed in the repo, used on Sunday | `.claude/skills/` |
+| **Your idea (Idea B)** | ⏳ **waiting for you** — write it, then we merge | `Weekender Build/Ideas/Idea B - (Teammate).md` → `Ideas/Merged Concept.md` |
+| Product direction v2 | ✅ **any phone task** (not only doctors), **12 input languages**, loop Tell → Check → Call → Result | vault `Concepts/Frontend and UX Plan v2.md` |
+| Database (Supabase `weekender-build`) | ✅ v2 live: generic tasks, subtitles + results in the user's language, Arabic demo task | `supabase/migrations/`, vault `Concepts/Data Model.md` |
+| n8n | ✅ 01 brief writer · 02 Dresden crawler · 03 Deepgram test · 🟡 v2 (generic 01, 04 intake, 05 translate, 06 result) in progress | n8n: https://arahmandeaxo.app.n8n.cloud · `n8n/workflows/` |
+| Voice call (Deepgram, German) | ✅ browser-call relay works, role-play books correctly · 🟡 v2 task templates + voice input in progress | `services/voice-relay/` (needs your own `.env`) |
+| Newcomer data | ✅ 84 verified Dresden places + 4 guides, guides in AR/TR/UK | tables `resources`, `guides` |
+| Lovable app "HalloTermin Paper" | 🟡 shell only; build with Plan v2 prompts **after the merge** | Lovable project |
+| Presentation | ✅ Pitch Kit, Pixel Agents office, archify diagrams, competitors, Monday plan, security review | vault `Concepts/`, `docs/` |
 
 **Important:** everything HalloTermin-specific can change after the merge. The *pattern* (form → database → n8n + AI → result shown live) is generic and should survive whatever we merge into.
 

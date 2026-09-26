@@ -2,9 +2,9 @@
 
 > Dresden · 25–27 Sep 2026 · **Build live under own URL by Sun 27.09 14:00**
 
-## Status (Fri 25.09, 22:15) → full guide: `ONBOARDING.md` in the repo root
-- ✅ Supabase live · ✅ n8n workflow 01 live (request → Claude brief → DB) · 🟡 Lovable shell only (paused) · ⏳ **Idea B → merge**
-- Latest handoff: [[2026-09-25 Handoff - Setup done, waiting for Idea B]]
+## Status (Sat 26.09, 13:30) → full guide: `ONBOARDING.md` in the repo root
+- ✅ v2 direction: **any phone task, 12 languages** → [[Frontend and UX Plan v2]] · ✅ DB v2 live · ✅ voice relay + Deepgram books in role-play · ✅ 84 Dresden places + 4 guides (AR/TR/UK) · 🟡 n8n v2 + relay v2 in progress · 🟡 Lovable shell only · ⏳ **Idea B → merge**
+- Latest handoff: [[2026-09-26 Handoff - v2 any-task multilingual, ready for Idea B]]
 
 ## Deliverables (from weekenderbuild.de)
 - [ ] 1. Running build under own URL (Lovable)
