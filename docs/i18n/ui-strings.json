@@ -336,7 +336,13 @@
       "notFound": "We don't have this guide yet.",
       "loadError": "We couldn't load this guide.",
       "fxProgress": "{done} of {total} done",
-      "fxAllDone": "All done"
+      "fxAllDone": "All done",
+      "askHint": "Is it hard to call them yourself?",
+      "askHintText": "Our AI assistant can call for you in German and bring the answer back in your language.",
+      "askButton": "Ask the assistant to call",
+      "relatedTitle": "Useful on this topic",
+      "aboutTitle": "About Dresden mit Kind",
+      "aboutText": "Dresden mit Kind is a guide for international families in Dresden: courses, events, communities and step-by-step guides in six languages. If a phone call is hard, our AI assistant calls in German for you and brings the answer back in your language."
     },
     "ask": {
       "weWillCall": "We will call",
@@ -1261,7 +1267,13 @@
       "notFound": "Diesen Ratgeber haben wir noch nicht.",
       "loadError": "Wir konnten diesen Ratgeber nicht laden.",
       "fxProgress": "{done} von {total} erledigt",
-      "fxAllDone": "Alles erledigt"
+      "fxAllDone": "Alles erledigt",
+      "askHint": "Fällt Ihnen der Anruf schwer?",
+      "askHintText": "Unser KI-Assistent ruft für Sie auf Deutsch an und bringt die Antwort in Ihrer Sprache zurück.",
+      "askButton": "Assistent anrufen lassen",
+      "relatedTitle": "Passend zum Thema",
+      "aboutTitle": "Über Dresden mit Kind",
+      "aboutText": "Dresden mit Kind ist ein Wegweiser für internationale Familien in Dresden: Kurse, Veranstaltungen, Communities und Schritt-für-Schritt-Ratgeber in sechs Sprachen. Wenn ein Anruf schwerfällt, ruft unser KI-Assistent für Sie auf Deutsch an und bringt die Antwort in Ihrer Sprache zurück."
     },
     "ask": {
       "weWillCall": "Wir rufen hier an",
@@ -2186,7 +2198,13 @@
       "notFound": "Такой памятки у нас пока нет.",
       "loadError": "Не удалось загрузить памятку.",
       "fxProgress": "Готово: {done} из {total}",
-      "fxAllDone": "Всё готово"
+      "fxAllDone": "Всё готово",
+      "askHint": "Трудно позвонить самим?",
+      "askHintText": "Наш AI-помощник позвонит за вас на немецком и передаст ответ на вашем языке.",
+      "askButton": "Попросить помощника позвонить",
+      "relatedTitle": "Полезно по теме",
+      "aboutTitle": "О проекте Dresden mit Kind",
+      "aboutText": "Dresden mit Kind — путеводитель для иностранных семей в Дрездене: кружки, события, сообщества и пошаговые памятки на шести языках. Если звонить трудно, наш AI-помощник позвонит за вас на немецком и передаст ответ на вашем языке."
     },
     "ask": {
       "weWillCall": "Куда мы позвоним",
@@ -3111,7 +3129,13 @@
       "notFound": "Такого довідника в нас поки немає.",
       "loadError": "Не вдалося завантажити довідник.",
       "fxProgress": "Виконано: {done} з {total}",
-      "fxAllDone": "Усе виконано"
+      "fxAllDone": "Усе виконано",
+      "askHint": "Важко зателефонувати самостійно?",
+      "askHintText": "Наш AI-помічник зателефонує за вас німецькою і передасть відповідь вашою мовою.",
+      "askButton": "Попросити помічника зателефонувати",
+      "relatedTitle": "Корисно на цю тему",
+      "aboutTitle": "Про проєкт Dresden mit Kind",
+      "aboutText": "Dresden mit Kind — путівник для іноземних родин у Дрездені: гуртки, події, спільноти та покрокові пам’ятки шістьма мовами. Якщо телефонувати важко, наш AI-помічник зателефонує за вас німецькою і передасть відповідь вашою мовою."
     },
     "ask": {
       "weWillCall": "Куди ми зателефонуємо",
@@ -4036,7 +4060,13 @@
       "notFound": "ليس لدينا هذا الدليل بعد.",
       "loadError": "لم نتمكن من تحميل هذا الدليل.",
       "fxProgress": "تم إنجاز {done} من {total}",
-      "fxAllDone": "تم إنجاز كل شيء"
+      "fxAllDone": "تم إنجاز كل شيء",
+      "askHint": "هل يصعب عليك الاتصال بنفسك؟",
+      "askHintText": "يتصل مساعدنا الذكي نيابةً عنك باللغة الألمانية وينقل إليك الإجابة بلغتك.",
+      "askButton": "اطلب من المساعد أن يتصل",
+      "relatedTitle": "مفيد حول هذا الموضوع",
+      "aboutTitle": "عن Dresden mit Kind",
+      "aboutText": "Dresden mit Kind دليل للعائلات الدولية في دريسدن: دورات وفعاليات ومجتمعات وأدلة خطوة بخطوة بست لغات. وإذا كان الاتصال الهاتفي صعبًا، يتصل مساعدنا الذكي نيابةً عنك باللغة الألمانية وينقل إليك الإجابة بلغتك."
     },
     "ask": {
       "weWillCall": "الجهة التي سنتصل بها",
@@ -4961,7 +4991,13 @@
       "notFound": "Bu rehber henüz bizde yok.",
       "loadError": "Bu rehberi yükleyemedik.",
       "fxProgress": "{total} maddeden {done} tamamlandı",
-      "fxAllDone": "Tümü tamamlandı"
+      "fxAllDone": "Tümü tamamlandı",
+      "askHint": "Kendiniz aramakta zorlanıyor musunuz?",
+      "askHintText": "Yapay zekâ asistanımız sizin için Almanca arar ve cevabı sizin dilinizde iletir.",
+      "askButton": "Asistandan aramasını isteyin",
+      "relatedTitle": "Bu konuyla ilgili",
+      "aboutTitle": "Dresden mit Kind hakkında",
+      "aboutText": "Dresden mit Kind, Dresden'deki uluslararası aileler için bir rehberdir: altı dilde kurslar, etkinlikler, topluluklar ve adım adım rehberler. Telefonla aramak zor geliyorsa yapay zekâ asistanımız sizin için Almanca arar ve cevabı sizin dilinizde iletir."
     },
     "ask": {
       "weWillCall": "Arayacağımız yer",
