@@ -6,7 +6,7 @@ by: claude (abdul's session)
 # Handoff: app live, UI improvements for Anastasia
 
 ## Done
-- **The app is live: https://dresden-mit-kind.lovable.app** (Lovable project "HalloTermin Paper", TanStack Start with server rendering). Code: private repo https://github.com/AbdulrahmanBUW/hallotermin-paper, synced both ways with Lovable.
+- **The app is live: https://ankommen-dresden.lovable.app** (Lovable project "HalloTermin Paper", TanStack Start with server rendering). Code: private repo https://github.com/AbdulrahmanBUW/hallotermin-paper, synced both ways with Lovable.
 - All pages are built: home, courses, provider page, **Ask for me** (with a "Speak instead" dictation button), live call, result, events, communities, health & services, library, guides, suggest, Impressum, Datenschutz. 6 UI languages incl. Arabic right-to-left; SEO titles and preview image.
 - **The whole loop works on the live site**: [[RUN-026 Live site E2E call]] (Russian request → German call → trial lesson booked → Russian summary).
 - Plan v3 section G now holds the prompts exactly as they were sent (P1b … P16) and a build-status box at the top: [[Frontend and UX Plan v3 (merged)]].
@@ -38,3 +38,4 @@ by: claude (abdul's session)
 - **Motion revamp live:** motion system in `src/components/motion` + tokens in `src/styles.css` (Knowledge v3.2 tells Lovable to reuse it, no animation libraries). Home: live-call demo with pause, real counts, age explorer, week strip, animated steps; animated directory, call page and result.
 - **Voice intake live:** one **Speak** button on `/ask` and the home box. The assistant asks the missing questions aloud in the UI language (relay speech-to-text + n8n intake + browser voice), fills the card, reads it back; one button "Yes, call for me in German". Typed form behind "Type instead". Code: `src/components/ask/VoiceAsk.tsx`, `src/lib/speech.ts`, `src/lib/listen.ts`.
 - Your guide-page strings are merged (873 → 893 keys with the voice texts). Always `git pull` both repos before you change anything.
+- **Renamed 26 Sep, 21:00:** the app is now **Ankommen** ("Your guide to starting in Germany"), the call feature **"Call for me"**, URL **https://ankommen-dresden.lovable.app** (the old dresden-mit-kind address is gone). Home is discovery-first; the call feature is a small floating microphone button on every page plus one highlight section. The voice intake speaks with warm voices (Deepgram Viktoria/Helena, ElevenLabs for ru/uk/ar/tr via the relay).
