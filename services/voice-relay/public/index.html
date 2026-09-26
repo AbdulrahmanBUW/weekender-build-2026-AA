@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HalloTermin · Browser call test</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#F7F4EC; --card:#FFFDF8; --ink:#1C2420; --muted:#5B635E; --pine:#1F5C4A; --pine-tint:#E6EEE9; --amber:#D98E04; --brick:#A63A2A; --line:#D9D2C3; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.6 "Source Sans 3", system-ui, sans-serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font: 600 33px/1.15 Fraunces, serif; margin: 0 0 8px; }
+  h1 span { color: var(--pine); }
+  p.lead { color: var(--muted); margin: 0 0 24px; max-width: 60ch; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  label { font-weight: 600; display:block; margin-bottom: 4px; }
+  input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid #8C8577; border-radius: 6px; background: #fff; }
+  .row { display:flex; gap: 12px; align-items:center; margin-top: 12px; flex-wrap: wrap; }
+  button { font: 600 17px "Source Sans 3", sans-serif; padding: 10px 18px; border-radius: 6px; border: 1px solid var(--pine); background: var(--pine); color:#fff; cursor:pointer; min-height:44px; }
+  button.secondary { background: transparent; color: var(--pine); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button:focus-visible, input:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; }
+  #status { display:flex; align-items:center; gap:8px; color: var(--muted); }
+  .dot { width:10px; height:10px; border-radius:50%; background: var(--line); }
+  .live .dot { background: var(--amber); animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .live .dot { animation: none; } }
+  #lines { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  #lines li { padding: 10px 12px; border-radius: 6px; border: 1px solid var(--line); }
+  #lines li.agent { background: var(--pine-tint); }
+  #lines li .who { font-size: 14px; color: var(--muted); display:block; }
+  #lines li .de { font-family: Fraunces, serif; }
+  #lines li.sys { border-style: dashed; color: var(--muted); font-size: 15px; }
+  .booked { border-color: var(--pine) !important; }
+  .err { color: var(--brick); }
+  small { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1><span>Hallo</span>Termin · browser call</h1>
+  <p class="lead">Test the German AI assistant without a phone line. You play the receptionist of the practice. Speak German into your microphone; the assistant calls on the patient's behalf and says it is an AI in its first sentence. No audio is stored; only the text transcript.</p>
+
+  <div class="panel">
+    <label for="req">Request ID</label>
+    <input id="req" value="00000000-0000-0000-0000-000000000001" spellcheck="false">
+    <small>Use the ID from <code>/r/&lt;id&gt;</code>. The demo ID works too. Headphones recommended to avoid echo.</small>
+    <div class="row">
+      <button id="start">Start call</button>
+      <button id="stop" class="secondary" disabled>Hang up</button>
+      <span id="status"><span class="dot"></span><span id="statusText">Not connected</span></span>
+    </div>
+    <div class="row"><small id="meta"></small></div>
+  </div>
+
+  <div class="panel">
+    <strong>Transcript</strong>
+    <ul id="lines" aria-live="polite"></ul>
+  </div>
+  <p><small>Tip: try "Praxis Dr. Weber, guten Tag?", then ask "Sind Sie Neupatientin?", offer a time outside the window, then one inside it, and confirm the read-back.</small></p>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+let ws, micCtx, micNode, micStream, playCtx, playTime = 0, sources = [];
+
+function setStatus(text, live) { $('statusText').textContent = text; $('status').classList.toggle('live', !!live); }
+function addLine(speaker, text, cls='') {
+  const li = document.createElement('li');
+  li.className = speaker + ' ' + cls;
+  if (speaker === 'sys') li.textContent = text;
+  else li.innerHTML = `<span class="who">${speaker === 'agent' ? 'AI assistant' : 'Practice (you)'}</span><span class="de"></span>`, li.querySelector('.de').textContent = text;
+  $('lines').appendChild(li); li.scrollIntoView({ block: 'nearest' });
+}
+
+function playPcm(buf) {
+  const pcm = new Int16Array(buf);
+  const audio = playCtx.createBuffer(1, pcm.length, 24000);
+  const ch = audio.getChannelData(0);
+  for (let i = 0; i < pcm.length; i++) ch[i] = pcm[i] / 0x8000;
+  const src = playCtx.createBufferSource();
+  src.buffer = audio; src.connect(playCtx.destination);
+  const now = playCtx.currentTime;
+  playTime = Math.max(playTime, now + 0.02);
+  src.start(playTime); playTime += audio.duration;
+  sources.push(src); src.onended = () => { sources = sources.filter(s => s !== src); };
+}
+function stopPlayback() { sources.forEach(s => { try { s.stop(); } catch {} }); sources = []; playTime = 0; }
+
+async function start() {
+  $('start').disabled = true; $('lines').innerHTML = '';
+  playCtx = new AudioContext({ sampleRate: 24000 });
+  micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } });
+  micCtx = new AudioContext();
+  await micCtx.audioWorklet.addModule('/mic-worklet.js');
+  micNode = new AudioWorkletNode(micCtx, 'mic-downsampler');
+  micCtx.createMediaStreamSource(micStream).connect(micNode);
+
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  ws = new WebSocket(`${proto}://${location.host}/call?request=${encodeURIComponent($('req').value.trim())}`);
+  ws.binaryType = 'arraybuffer';
+  micNode.port.onmessage = e => { if (ws.readyState === 1) ws.send(e.data); };
+
+  ws.onopen = () => { setStatus('Connecting to the assistant…', true); $('stop').disabled = false; };
+  ws.onmessage = e => {
+    if (typeof e.data !== 'string') return playPcm(e.data);
+    const m = JSON.parse(e.data);
+    if (m.type === 'line') addLine(m.speaker, m.text);
+    else if (m.type === 'barge_in') stopPlayback();
+    else if (m.type === 'latency') $('meta').textContent = `Response latency: ${m.total}s`;
+    else if (m.type === 'dg' && m.event === 'SettingsApplied') setStatus('Live: speak German as the practice', true);
+    else if (m.type === 'relay') {
+      if (m.event === 'call_started') $('meta').textContent = `Calling "${m.practice}" for ${m.patient}. ${m.saving ? 'Transcript is saved to Supabase.' : 'No-DB mode: nothing is saved.'}`;
+      if (m.event === 'booked') addLine('sys', `Booked: ${m.date} ${m.time}${m.doctor ? ' with ' + m.doctor : ''}${m.bring_items ? ' · bring: ' + m.bring_items.join(', ') : ''}`, 'booked');
+      if (m.event === 'needs_user') addLine('sys', `The practice needs your answer: ${m.question}`);
+      if (m.event === 'error') addLine('sys', `Error: ${m.description || m.code}`, 'err');
+      if (m.event === 'call_ended') { addLine('sys', 'Call ended.'); cleanup(); }
+    }
+  };
+  ws.onclose = () => cleanup();
+}
+
+function cleanup() {
+  setStatus('Not connected', false);
+  $('start').disabled = false; $('stop').disabled = true;
+  try { micStream && micStream.getTracks().forEach(t => t.stop()); } catch {}
+  try { micCtx && micCtx.close(); } catch {}
+  stopPlayback();
+}
+$('start').onclick = () => start().catch(err => { addLine('sys', 'Could not start: ' + err.message, 'err'); cleanup(); });
+$('stop').onclick = () => { try { ws && ws.close(); } catch {} cleanup(); };
+</script>
+</body>
+</html>

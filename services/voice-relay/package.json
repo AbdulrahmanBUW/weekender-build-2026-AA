@@ -1,0 +1,14 @@
+{
+  "name": "voice-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser mic <-> Deepgram Voice Agent (German) relay; writes live transcript to Supabase",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5",
+    "ws": "^8.18.0"
+  }
+}
