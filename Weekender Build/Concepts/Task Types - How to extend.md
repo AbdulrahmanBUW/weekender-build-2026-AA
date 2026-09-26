@@ -26,7 +26,7 @@ tags: [tasks, n8n, extensibility]
 
 ### The two family types in detail
 - **Principal = the parent** (`patient_name` = parent, e.g. "für Maria Ivanova"). The child is never the principal and only appears as allowed facts; never health details of the child.
-- **Fact keys** (shared by intake 04, brief writer 01 and the relay): `child_age` (German, "5 Jahre" / "18 Monate"), `child_birth_month` ("03/2025", Kita alternative to age), `start_month` (German, "Januar 2027"; 01 and 04 also turn "2027-01" into "Januar 2027"), `preferred_days` ("dienstags ab 16 Uhr"), `language_preference` ("Russisch oder Englisch"), `child_first_name` (only if the parent gives it; intake never asks for it).
+- **Fact keys** (shared by intake 04, brief writer 01 and the relay): `child_age` (German, "5 Jahre" / "18 Monate"), `child_birth_month` ("03/2025", Kita alternative to age), `start_month` (German, "Januar 2027"; 01 and 04 also turn "2027-01" into "Januar 2027"), `preferred_days` ("dienstags ab 16 Uhr"), `language_preference` ("Russisch oder Englisch"), no child name: since [[DEF-050 Intake asks for the child's first name]] the intake's "Validate + Clean Draft" node drops any `child…name` fact, note or question (data minimisation).
 - **Opening clause** (German, after "…, weil <Name> noch nicht so gut Deutsch spricht, und"):
   - course: "wollte fragen, ob es in Ihrem Kurs für {Alter}-Jährige noch einen Platz oder eine Probestunde gibt"
   - kita: "wollte fragen, ob Sie ab {Monat} einen Betreuungsplatz für ein {Alter}-jähriges Kind haben und wie man auf die Warteliste kommt"

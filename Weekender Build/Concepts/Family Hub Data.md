@@ -25,9 +25,11 @@ Counts from the live DB on **Sat 26.09, ~13:45** ([[RUN-023 Merged flow E2E]]). 
 | **Health & services** (`/services`) | `doctor` 38 (14 paediatricians/gynaecologists are `both`) · `pharmacy` 16 · `bank` 14 · `auslaenderbehoerde` 1 · newcomer `community` 15 | **84** | none (English `notes_en`; the UI translates labels only) | crawler 02 (Brave + Firecrawl) from 26.09 morning, spot-checked in [[RUN-011 Resource spot-check]]. **Few phones:** doctors 13/38, pharmacies 1/16, banks 2/14 |
 | Suggestions | `suggestions` | 0 | – | browser insert-only, read by the service role only |
 
+> **Update 26 Sep 15:05 ([[RUN-025 Data round 2 and review sheets]]):** 162 `resources` (92 family / `both` rows, 77 of them with a phone, 46 with an age range), 44 `family_events` (24 new for 5 Oct – 29 Nov), 8 guides (Ausländerbehörde guide fixed). Doctors 37/38, pharmacies 16/16, banks 7/14 with phone; no service row without district. The demo listing **Olgas Musikstudio** now exists (`subcategory = 'demo'`). The tables above are the 13:20 state.
+
 **Totals:** 140 `resources` (56 seeded family rows + 84 service places), 20 `family_events`, 8 `guides`. All 56 family rows have `description_en` + five translations + a `source_url`; 45/56 have a phone; 31/56 have an age range; 12 family/`both` rows have no district.
 
-**No demo listing yet.** Plan v3 (section H) wants a fictional "Olgas Musikstudio" with `subcategory = 'demo'` and a `+49 351 0000000`-style phone for the on-stage call. It is not in `resources` (0 rows with `subcategory = 'demo'`).
+**Demo listing (added 26 Sep 15:00, see RUN-025; the rest of this paragraph is the earlier state).** Plan v3 (section H) wants a fictional "Olgas Musikstudio" with `subcategory = 'demo'` and a `+49 351 0000000`-style phone for the on-stage call. It is not in `resources` (0 rows with `subcategory = 'demo'`).
 
 ## Sources policy (all rows)
 - Only **real, public** information about organisations and public events in Dresden. Every row has a `source_url` that an agent actually opened (curl, raw HTML; no small-model summaries), and `notes_en` says "Details from the provider's website (retrieved 26 Sep 2026) — please verify before visiting."
@@ -59,6 +61,7 @@ Counts from the live DB on **Sat 26.09, ~13:45** ([[RUN-023 Merged flow E2E]]). 
 ## How to refresh
 1. **Spreadsheet → DB (preferred, no SQL):** `docs/content-kit/README.md`. Fill the Google Sheet from `providers-template.csv` / `events-template.csv` (columns include *Translations (JSON)* and *Source link*), download as CSV, then
    `python scripts/import_content.py "<file>.csv"` (dry run + report) → `… --apply` (asks `yes`, upserts on `dedupe_key` in one transaction). Needs `npx supabase login` + `link --project-ref ycyrtlzympxzlfcocazh`.
+1b. **Review and improve (fastest):** `python scripts/export_review.py` writes `docs/content-kit/review/providers-review.csv` + `events-review.csv` (ID, Review ok/fix/remove, Review note, one column per language). Edit in Google Sheets, mark changed rows `fix`, re-import with step 1. `remove` rows only go to a `.remove.sql` list for the team.
 2. **Events go stale fastest:** 13 of 20 events are in the week of the demo. After 04.10. the list thins out; add October/November events from the same sources (IKT Dresden calendar, bibo-dresden.de, zoo, Philharmonie family concerts). Build timestamps from the visible local time with Europe/Berlin rules, not from JSON-LD offsets (DST ends 25.10.).
 3. **SQL by hand:** only from a UTF-8 `.sql` file via `npx -y supabase db query --linked -f <file>` (never inline non-ASCII), upsert `on conflict (dedupe_key) do update`. Use a private scratchpad folder ([[DEF-042 Parallel agents share one scratchpad]]).
 4. **Do not run crawler 02 before the demo** — it spends Brave + Firecrawl + Claude credits for every resource ([[RUN-024 n8n credit optimisation]]).

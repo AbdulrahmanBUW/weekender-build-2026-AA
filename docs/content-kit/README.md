@@ -70,10 +70,32 @@ If anything goes wrong, **nothing is saved**, because the whole file goes in as 
 
 ---
 
+## Review and improve what is already in the app
+
+The research agents have already filled the app with public places and events. The fastest way to make them better is to **review** them, not to type everything again.
+
+1. **Get the review sheets.** They are in `docs/content-kit/review/`: `providers-review.csv` (every family place in the app) and `events-review.csv` (all upcoming events). To get a fresh copy of what is live right now, run:
+   ```
+   python scripts/export_review.py
+   ```
+2. **Open them in Google Sheets.** Make a new sheet, then go to *File → Import → Upload* and choose *Insert new sheet(s)*. Import each file once.
+3. **Review row by row.** Use the two columns on the left:
+   - **Review** empty or `ok`: the row is fine, and nothing happens to it.
+   - **Review** `fix`: you changed something in this row. Correct any cell: a wrong phone number, missing ages, a better description, the translations in *Description (ru)*, *(uk)*, *(ar)* and so on. **Only rows marked `fix` are saved**, so always write `fix` when you change a row.
+   - **Review** `remove`: the place is closed, wrong or not for families. Say why in **Review note**. It is **not** deleted automatically. The team checks it first.
+   - **Review note**: anything for the team. It is never shown in the app.
+4. **Add new places at the bottom** of the same sheet, and leave **ID** empty. Places from your own network are the most valuable part: the Russian-speaking music teacher, the Saturday school, the parent group.
+5. **Never change the ID column.** It tells the script which entry to update. With an ID, you *can* change the name or address, and the same entry is updated.
+6. **Download each tab as CSV and run the same check as above** (step 3), then `--apply` (step 5). The report shows `unchanged` for rows without `fix`. Rows marked `remove` go into a separate file ending in `.remove.sql` for the team.
+
+Empty translation cells never delete a translation that is already there. Translations you write for one language never touch the other languages.
+
+---
+
 ## Good to know
 
 - **No duplicates.** If you import a provider with the same *Category + Name + Address* again, the existing entry is updated. The same goes for an event with the same *Title + Start time*. You can safely import the whole sheet again after adding new rows.
-- **Changing a name, address or start time creates a new entry**, and the old one stays. Tell the team so they can remove the old one.
+- **Changing a name, address or start time creates a new entry**, and the old one stays, unless the row has an **ID** (review sheets). Without an ID, tell the team so they can remove the old one.
 - **An empty cell never deletes anything** that is already in the app. To remove information or a whole entry, ask the team.
 - **Every entry needs a source link**, meaning a page where the information can be checked. For providers, the Website is used if the Source link is empty. For events, the Event link is used.
 - **Notes:** if you leave Notes empty, the app automatically shows "Times, prices, age groups and languages can change: please check with the provider before you go."

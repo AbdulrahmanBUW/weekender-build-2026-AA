@@ -13,6 +13,12 @@ Options:
     --yes                     with --apply: do not ask for confirmation
     --include-examples        also turn EXAMPLE rows into SQL (for testing only; never with --apply)
 
+Review sheets (made by scripts/export_review.py) have three extra columns and one column per language:
+    ID                        filled = update that exact entry (name and address may change); empty = new entry
+    Review                    empty / ok = leave as it is, fix = save my changes, remove = list it for deletion
+    Review note               free text for the team, never imported
+    Description (ru), Title (uk), ...   translations; merged into i18n per language, an empty cell erases nothing
+
 Python 3 standard library only. The rules below mirror
 supabase/migrations/20260926200000_merged_family_hub.sql - keep them in sync when the schema changes.
 """
@@ -138,6 +144,11 @@ EVENT_COLUMNS = [
     ("source_url", "Source link"),
 ]
 REQUIRED_HEADERS = {"providers": ["category", "name", "source_url"], "events": ["title", "starts_at", "source_url"]}
+# Review sheet columns (scripts/export_review.py). "Review note" is for people only and is never imported.
+REVIEW_COLUMNS = [("id", "ID"), ("review", "Review"), ("review_note", "Review note")]
+REVIEW_VALUES = {"": "ok", "ok": "ok", "okay": "ok", "checked": "ok", "fix": "fix", "fixed": "fix",
+                 "changed": "fix", "remove": "remove", "delete": "remove", "entfernen": "remove", "löschen": "remove"}
+I18N_COLUMN_RE = re.compile(r"^\s*(title|description)\s*\(\s*([a-z]{2,3})\s*\)\s*$", re.I)  # "Description (ru)"
 EXTRA_ALIASES = {"sub category": "subcategory", "source": "source_url", "source url": "source_url",
                  "link": "source_url", "description": "description_en", "translations": "i18n",
                  "resource": "provider_name", "provider": "provider_name", "start": "starts_at",
@@ -158,6 +169,8 @@ def header_map(kind: str) -> dict:
     for alias, field in EXTRA_ALIASES.items():
         if field in dict(PROVIDER_COLUMNS if kind == "providers" else EVENT_COLUMNS):
             m.setdefault(alias, field)
+    for field, label in REVIEW_COLUMNS:
+        m[norm_header(label)] = field
     return m
 
 
@@ -363,6 +376,38 @@ def v_i18n(row, field="i18n", label="Translations (JSON)"):
     row.provided.add(field)
 
 
+def v_i18n_columns(row):
+    """Per-language columns ("Description (ru)", "Title (uk)") are merged into i18n on top of Translations (JSON)."""
+    for f, raw in row.raw.items():
+        if not f.startswith("i18n:"):
+            continue
+        text = (raw or "").replace("\x00", "").strip()
+        if not text:
+            continue
+        _, lang, key = f.split(":")
+        tr = row.values.setdefault("i18n", {})
+        if not isinstance(tr.get(lang), dict):
+            tr[lang] = {}
+        tr[lang][key] = text
+        row.provided.add("i18n")
+
+
+UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.I)
+
+
+def v_review(row):
+    raw = clean(row.raw.get("id")).lower()
+    row.values["id"] = raw or None
+    if raw and not UUID_RE.match(raw):
+        row.err(f'ID "{raw}" is not valid. Never edit the ID column; leave it empty for new entries.')
+        row.values["id"] = None
+    rv = clean(row.raw.get("review")).lower()
+    row.values["review"] = REVIEW_VALUES.get(rv)
+    if row.values["review"] is None:
+        row.err(f'Review "{rv}" - write ok, fix or remove (or leave it empty)')
+        row.values["review"] = "ok"
+
+
 def v_phone(row):
     raw = clean(row.raw.get("phone"))
     row.values["phone"] = raw or None
@@ -415,6 +460,8 @@ def check_provider(row: Row):
     v_text(row, "opening_hours", "Opening hours")
     v_text(row, "description_en", "Description (English)", max_len=DESCRIPTION_MAX)
     v_i18n(row)
+    v_i18n_columns(row)
+    v_review(row)
     v_url(row, "source_url", "Source link")
     v_text(row, "notes_en", "Notes")
     if not row.values.get("source_url"):
@@ -470,6 +517,8 @@ def check_event(row: Row):
     v_url(row, "url", "Event link")
     v_text(row, "description_en", "Description (English)", max_len=DESCRIPTION_MAX)
     v_i18n(row)
+    v_i18n_columns(row)
+    v_review(row)
     v_url(row, "source_url", "Source link")
     if not row.values.get("source_url"):
         if row.values.get("url"):
@@ -486,6 +535,26 @@ def check_event(row: Row):
 def verify_notice() -> str:
     return (f"Added by the Dresden mit Kind team from our own network on {date.today():%Y-%m-%d}. "
             "Times, prices, age groups and languages can change: please check with the provider before you go.")
+
+
+def i18n_merge(current: str, new: str) -> str:
+    """Merge translations per language, so a sheet with only some languages or keys never erases the others."""
+    e = "'{}'::jsonb"
+    return (f"(select coalesce(jsonb_object_agg(k, coalesce({current} -> k, {e}) || coalesce({new} -> k, {e})), {e}) "
+            f"from jsonb_object_keys(coalesce({current}, {e}) || coalesce({new}, {e})) as k)")
+
+
+def sql_update(table: str, alias: str, r: Row, cols: dict, fields: list, always=(), extra=(), returning="") -> str:
+    """Review sheet row with an ID: update exactly that entry (only the cells that are filled in)."""
+    sets = [f"{c} = {cols[c]}" for c in always]
+    sets += [f"{c} = {cols[c]}" for c in fields if c in r.provided and c not in always]
+    if "i18n" in r.provided:
+        sets.append(f"i18n = {i18n_merge(alias + '.i18n', cols['i18n'])}")
+    sets += list(extra) + ["source = 'manual'", f"source_url = {cols['source_url']}", "retrieved_at = now()"]
+    return (f"-- sheet row {r.number}: {sql_comment(r.label)} (update by ID)\n"
+            f"update {table} as {alias} set\n  " + ",\n  ".join(sets) + "\n"
+            f"where {alias}.id = {q(r.values['id'])}\n"
+            f"returning {r.number} as sheet_row, false as added, {returning}")
 
 
 def sql_provider(r: Row) -> str:
@@ -506,8 +575,13 @@ def sql_provider(r: Row) -> str:
     # On update only overwrite what she filled in - an empty cell never erases existing data.
     updatable = ["subcategory", "district", "phone", "website", "languages", "activity_categories",
                  "age_min_years", "age_max_years", "price_type", "format", "opening_hours",
-                 "description_en", "i18n", "notes_en"]
+                 "description_en", "notes_en"]
+    if v.get("id"):
+        return sql_update("public.resources", "r", r, cols, ["category", "name", "address"] + updatable,
+                          returning="r.name as name, r.id")
     sets = [f"{c} = excluded.{c}" for c in updatable if c in p]
+    if "i18n" in p:
+        sets.append(f"i18n = {i18n_merge('r.i18n', 'excluded.i18n')}")
     if "notes_en" not in p:
         sets.append("notes_en = coalesce(r.notes_en, excluded.notes_en)")
     sets += ["audience = case when r.audience = 'newcomer' then 'both' else r.audience end",
@@ -538,15 +612,22 @@ def sql_event(r: Row) -> str:
         "url": q(v.get("url")), "source": q("manual"), "source_url": q(v["source_url"]),
         "retrieved_at": "now()",
     }
-    updatable = ["description_en", "i18n", "ends_at", "place_name", "address", "district",
+    updatable = ["description_en", "ends_at", "place_name", "address", "district",
                  "age_min_years", "age_max_years", "languages", "activity_categories", "price_type",
                  "price_text", "url"]
+    found = "(e.resource_id is not null)" if provider else "null::boolean"
+    if v.get("id"):
+        extra = [f"resource_id = coalesce({resource_sql}, e.resource_id)"] if provider else []
+        return sql_update("public.family_events", "e", r, cols, updatable,
+                          always=("title", "starts_at", "all_day"), extra=extra,
+                          returning=f"e.title as name, e.id, {found} as provider_found")
     sets = ["title = excluded.title", "all_day = excluded.all_day"]
     sets += [f"{c} = excluded.{c}" for c in updatable if c in p]
+    if "i18n" in p:
+        sets.append(f"i18n = {i18n_merge('e.i18n', 'excluded.i18n')}")
     if provider:
         sets.append("resource_id = coalesce(excluded.resource_id, e.resource_id)")
     sets += ["source = 'manual'", "source_url = excluded.source_url", "retrieved_at = now()"]
-    found = "(e.resource_id is not null)" if provider else "null::boolean"
     return (f"-- sheet row {r.number}: {sql_comment(r.label)}\n"
             f"insert into public.family_events as e ({', '.join(cols)})\n"
             f"values ({', '.join(cols.values())})\n"
@@ -567,7 +648,8 @@ def build_sql(kind: str, rows: list, source_name: str) -> str:
     extra = ", provider_found" if kind == "events" else ""
     union = "\n  union all ".join(f"select * from row_{r.number}" for r in rows)
     return (f"-- Generated by scripts/import_content.py on {datetime.now():%Y-%m-%d %H:%M} from {sql_comment(source_name)}\n"
-            f"-- {len(rows)} {kind} -> {target} (upsert on dedupe_key). Rows with errors are not included.\n"
+            f"-- {len(rows)} {kind} -> {target} (upsert on dedupe_key; rows with an ID update that entry). "
+            "Rows with errors are not included.\n"
             f"-- One statement: all rows are saved, or none if anything fails.\n"
             "with\n" + ",\n".join(ctes) + "\n"
             f"select sheet_row, case when added then 'added' else 'updated' end as result, name{extra}\n"
@@ -636,6 +718,10 @@ def main() -> int:
     hmap = header_map(kind)
     col_field, ignored = {}, []
     for i, h in enumerate(headers):
+        lm = I18N_COLUMN_RE.match(h or "")
+        if lm and lm.group(2).lower() in LANG_CODES:
+            col_field[i] = f"i18n:{lm.group(2).lower()}:{lm.group(1).lower()}"
+            continue
         f = hmap.get(norm_header(h))
         if f and f not in col_field.values():
             col_field[i] = f
@@ -668,10 +754,12 @@ def main() -> int:
     # Same key twice in one file -> the later row would silently win; flag it.
     seen = {}
     for r in rows:
-        if r.errors:
+        if r.errors or r.values.get("review") == "remove":
             continue
         v = r.values
-        if kind == "providers":
+        if v.get("id"):
+            key = "id|" + v["id"]
+        elif kind == "providers":
             key = f"{v['category']}|{v['name'].lower()}|{(v.get('address') or '').lower()}"
         else:
             key = f"{v['title'].lower()}|{v['starts_at']:%Y-%m-%d %H:%M}"
@@ -680,13 +768,21 @@ def main() -> int:
         else:
             seen[key] = r.number
 
-    ok, bad, examples = [], [], []
+    ok, bad, examples, removals, unchanged = [], [], [], [], []
     width = min(48, max([len(r.label) for r in rows] + [10]))
     for r in rows:
         label = (r.label[: width - 3] + "...") if len(r.label) > width else r.label
         if r.example and not a.include_examples:
             status = "SKIPPED (example row - delete it from your sheet)"
             examples.append(r)
+        elif r.values.get("review") == "remove":
+            status = "MARKED REMOVE - not imported, listed for the team" if r.values.get("id") else \
+                "MARKED REMOVE - new row, simply not imported"
+            if r.values.get("id"):
+                removals.append(r)
+        elif r.values.get("id") and r.values.get("review") == "ok" and not r.errors:
+            status = "unchanged (Review is empty/ok - write fix if you changed it)"
+            unchanged.append(r)
         elif r.errors:
             status = "ERROR - not imported"
             bad.append(r)
@@ -705,7 +801,22 @@ def main() -> int:
 
     print()
     print(f"Summary: {len(ok)} ready, {len(bad)} with errors, "
-          f"{len([r for r in examples if not a.include_examples])} example rows skipped.")
+          f"{len([r for r in examples if not a.include_examples])} example rows skipped"
+          + (f", {len(unchanged)} unchanged" if unchanged else "")
+          + (f", {len(removals)} marked remove" if removals else "") + ".")
+    if removals:
+        table_name = "public.resources" if kind == "providers" else "public.family_events"
+        rm = Path(a.out).with_suffix(".remove.sql") if a.out else path.with_name(path.stem + ".remove.sql")
+        lines = [f"-- Marked 'remove' in {sql_comment(path.name)} on {datetime.now():%Y-%m-%d %H:%M}.",
+                 "-- NOT run automatically. The team checks each entry, then runs:",
+                 f"--   npx -y supabase db query --linked -f {rm.name}"]
+        for r in removals:
+            note = clean(r.raw.get("review_note"))
+            lines.append(f"-- {sql_comment(r.label)}" + (f" | note: {sql_comment(note)}" if note else ""))
+        ids = ", ".join(q(r.values["id"]) for r in removals)
+        lines.append(f"delete from {table_name} where id in ({ids});")
+        rm.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+        print(f"Entries marked remove are NOT deleted. The list for the team is in: {rm}")
     if not ok:
         print("Nothing to import - no SQL file written.")
         return 1 if bad else 0
