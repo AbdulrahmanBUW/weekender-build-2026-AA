@@ -73,7 +73,9 @@ REGELN:
 5. Bevor du bestätigst: wiederhole Wochentag, Datum, Uhrzeit und Ärztin/Arzt und warte auf ein "Ja"/"Richtig". Erst danach rufst du confirm_booking auf.
 6. Wenn die Praxis etwas fragt, das du nicht weißt, oder auf der Patientin besteht: rufe needs_user auf und biete einen Rückruf an.
 7. Wenn keine Neupatienten angenommen werden oder kein Termin möglich ist: bedanke dich und rufe end_call mit dem passenden Ergebnis auf.
-8. Nach confirm_booking bedankst du dich kurz, verabschiedest dich und rufst end_call mit outcome "booked" auf.`;
+8. Nach confirm_booking bedankst du dich kurz, verabschiedest dich in EINEM Satz und rufst end_call mit outcome "booked" auf. Danach sagst du nichts mehr.
+9. Nenne eine Ärztin/einen Arzt NUR, wenn die Praxis den Namen klar und vollständig gesagt hat (z. B. "bei Dr. Sommer"). Einzelne unklare Wörter sind KEINE Namen. Im Zweifel sag "bei Ihnen in der Praxis" oder frag kurz nach. Erfinde niemals Namen, Daten oder Uhrzeiten.
+10. Wenn du etwas akustisch nicht sicher verstanden hast, frag höflich nach ("Entschuldigung, habe ich richtig verstanden: …?").`;
 
   const keyterms = [...new Set([...req.patient_name.split(/\s+/), req.practice_name.replace(/^(Praxis|Hausarztpraxis|Kinderarztpraxis)\s*/i, ''), 'KI-Assistentin'])]
     .filter(Boolean).slice(0, 10);
@@ -90,7 +92,7 @@ const FUNCTIONS = [
       properties: {
         date: { type: 'string', description: 'Appointment date, YYYY-MM-DD' },
         time: { type: 'string', description: 'Appointment time, HH:MM (24h)' },
-        doctor: { type: 'string', description: 'Doctor name if mentioned' },
+        doctor: { type: 'string', description: 'Doctor name ONLY if the practice clearly said it; otherwise omit' },
         bring_items: { type: 'array', items: { type: 'string' }, description: 'Things the patient must bring, in German (e.g. Versichertenkarte, Überweisung)' }
       },
       required: ['date', 'time']
@@ -171,6 +173,7 @@ wss.on('connection', async (browser, httpReq) => {
   const callId = call?.id || null;
   await dbq('status calling', c => c.from('call_requests').update({ status: 'calling' }).eq('id', req.id));
   await dbq('event call_started', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'call_started', payload: { provider: 'deepgram-browser', call_id: callId } }));
+  console.log(`[call ${callId || 'no-db'}] started for request ${req.id} (${req.patient_name})`);
   toBrowser({ type: 'relay', event: 'call_started', callId, requestId: req.id, patient: req.patient_name, practice: req.practice_name, saving: !!db });
 
   const dg = new WebSocket(DG_URL, { headers: { Authorization: `Token ${DG_KEY}` } });
@@ -269,17 +272,22 @@ wss.on('connection', async (browser, httpReq) => {
     }
   });
 
+  let audioInBytes = 0;
   browser.on('message', (data, isBinary) => {
-    if (isBinary && dg.readyState === WebSocket.OPEN) dg.send(data);
+    if (!isBinary) return;
+    audioInBytes += data.length;
+    if (dg.readyState === WebSocket.OPEN) dg.send(data);
   });
 
   let finished = false;
   async function finish(reason) {
     if (finished) return; finished = true;
+    const secondsIn = (audioInBytes / 32000).toFixed(1);
+    console.log(`[call ${callId || 'no-db'}] ended: ${reason} | mic audio received: ${secondsIn} s`);
     clearInterval(keepAlive);
     clearInterval(silenceWatch);
     await dbq('ended_at', c => c.from('calls').update({ ended_at: new Date().toISOString() }).eq('id', callId));
-    await dbq('event call_ended', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'call_ended', payload: { reason } }));
+    await dbq('event call_ended', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'call_ended', payload: { reason, mic_seconds: Number(secondsIn) } }));
     toBrowser({ type: 'relay', event: 'call_ended', reason });
     try { dg.close(); } catch {}
     try { browser.close(); } catch {}

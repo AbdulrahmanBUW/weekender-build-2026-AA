@@ -51,6 +51,9 @@
       <button id="stop" class="secondary" disabled>Hang up</button>
       <span id="status"><span class="dot"></span><span id="statusText">Not connected</span></span>
     </div>
+    <div class="row" aria-label="Microphone level">
+      <small>Mic</small><div style="flex:1;height:10px;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden"><div id="level" style="height:100%;width:0;background:var(--pine);transition:width 80ms"></div></div><small id="levelText">no audio yet</small>
+    </div>
     <div class="row"><small id="meta"></small></div>
   </div>
 
@@ -62,6 +65,8 @@
 </main>
 <script>
 const $ = id => document.getElementById(id);
+const qsReq = new URLSearchParams(location.search).get('request');
+if (qsReq) document.getElementById('req').value = qsReq;
 let ws, micCtx, micNode, micStream, playCtx, playTime = 0, sources = [];
 
 function setStatus(text, live) { $('statusText').textContent = text; $('status').classList.toggle('live', !!live); }
@@ -99,7 +104,14 @@ async function start() {
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
   ws = new WebSocket(`${proto}://${location.host}/call?request=${encodeURIComponent($('req').value.trim())}`);
   ws.binaryType = 'arraybuffer';
-  micNode.port.onmessage = e => { if (ws.readyState === 1) ws.send(e.data); };
+  micNode.port.onmessage = e => {
+    const pcm = new Int16Array(e.data); let peak = 0;
+    for (let i = 0; i < pcm.length; i += 8) peak = Math.max(peak, Math.abs(pcm[i]));
+    const pct = Math.min(100, Math.round(peak / 327.67));
+    $('level').style.width = pct + '%';
+    $('levelText').textContent = pct > 3 ? 'hearing you' : 'silence';
+    if (ws.readyState === 1) ws.send(e.data);
+  };
 
   ws.onopen = () => { setStatus('Connecting to the assistant…', true); $('stop').disabled = false; };
   ws.onmessage = e => {

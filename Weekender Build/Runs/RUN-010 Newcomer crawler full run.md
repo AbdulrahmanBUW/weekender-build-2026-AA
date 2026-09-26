@@ -24,6 +24,7 @@ Run all 16 place searches + 4 guide topics after [[RUN-007 Newcomer crawler firs
 
 ## Gaps
 - 4th guide (health-insurance registration) not written — likely no trusted source passed the filter → rerun or add manually.
+  - Fixed 2026-09-26: `health-insurance-registration` added manually by the Guide writer agent (10 steps, 9 official sources: BMG, gesund.bund.de, verwaltung.bund.de, TU Dresden, BAMF, TK, AOK).
 - Many rows have no phone (Brave place data) → the app should link to the website instead.
 - Spot-check key rows before the demo ([[Newcomer Resources - Crawler]]: "verify" rule).
 
