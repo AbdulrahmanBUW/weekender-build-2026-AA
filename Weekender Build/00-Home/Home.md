@@ -41,6 +41,6 @@
 - Stack: [[Stack Overview - Lovable n8n Supabase]] · [[Integration Patterns]] · [[Lovable - Practical Guide]] · [[Supabase - Practical Guide]] · [[n8n - Practical Guide]] · [[Data Model]]
 - Voice: [[Voice Pipeline - Architecture]] · [[Voice Platform Comparison]] · [[Relay Hosting Options]] · [[Telephony Constraints (Twilio Trial, Numbers)]] · [[Voice Risks and Mitigations]]
 - UI: [[Lovable Connectors - What We Use]] · [[Lovable Prompt Pack]] (visual direction "Bilingual paper", Knowledge blocks, prompts P1–P7)
-- Tooling: [[Toolchain - MCP, Skills, Plugins]]
+- Tooling: [[Toolchain - MCP, Skills, Plugins]] · Presentation: [[Agent Space - Who Does What]] (Pixel Agents)
 - Folders: `Rules/` (hard constraints) · `Concepts/` (domain + product concepts) · `Decisions/` (ADRs) · `Runs/` (test/demo runs) · `Defects/` (bugs) · `Memory/` (session handoffs, learnings)
 - Create notes from `Templates/` (Obsidian core Templates plugin, folder = `Templates`).
