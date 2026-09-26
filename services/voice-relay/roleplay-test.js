@@ -1,5 +1,5 @@
 // Automated role-play: a synthetic German receptionist (Deepgram TTS) talks to the agent through the relay.
-// Usage: node roleplay-test.js <requestId> [scenario]   (relay must be running on :8787)
+// Usage: node roleplay-test.js <requestId> [scenario]   (relay must be running on :8787, or set PORT)
 // Scenario "book": offers a slot OUTSIDE the window first, then the first allowed window, then confirms the read-back.
 import dotenv from 'dotenv';
 import { WebSocket } from 'ws';
@@ -63,7 +63,7 @@ ws.on('message', async (data, bin) => {
 });
 ws.on('close', async () => {
   clearInterval(silenceTimer);
-  const { data: call } = await db.from('calls').select('outcome,booked_slot,bring_items,summary_en').eq('request_id', requestId).order('created_at', { ascending: false }).limit(1).single();
+  const { data: call } = await db.from('calls').select('outcome,booked_slot,bring_items,summary_en,result,disclosure_variant').eq('request_id', requestId).order('created_at', { ascending: false }).limit(1).single();
   const { data: r } = await db.from('call_requests').select('status').eq('id', requestId).single();
   console.log(`\nDone in ${((Date.now() - started) / 1000).toFixed(0)} s → request status: ${r.status}, call:`, call);
   process.exit(0);
