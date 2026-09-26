@@ -114,3 +114,13 @@
 - The n8n exports contain no `pinData` and no embedded credentials. The Supabase project URL in them is not a secret.
 - The crawler (workflow 02) uses domain allow- and deny-lists and caps the scraped text size before it goes to Claude.
 - No secrets anywhere in git history.
+
+---
+## Remediation log (2026-09-26, Orchestrator)
+| Finding | Status | Change | Verified |
+|---|---|---|---|
+| Medium — relay accepts any website origin | **fixed** | `server.js`: `verifyClient` Origin allowlist (`ALLOWED_ORIGINS`, default relay's own page), UUID check on `request`, `MAX_CONCURRENT_CALLS` (3) | foreign origin → 403, bad id → 400, own page → accepted |
+| Medium — anon insert can set `status` / `call_brief_de` (prompt injection) | **fixed** | migration `20260926120000_harden_request_insert.sql`: insert only with `status='submitted'` and `call_brief_de is null` | tampered status → 401, injected brief → 401, normal → 201 |
+| Low — malformed model time crashes relay | **fixed** | invalid date → function error back to the agent, no crash | code path reviewed |
+| Other low/info | open | see above | — |
+Still open for production: per-request tokens for viewing calls, rate limiting on inserts (each costs a Claude call), owner-scoped RLS.

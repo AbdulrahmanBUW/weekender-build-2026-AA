@@ -157,9 +157,28 @@ const server = http.createServer((req, res) => {
 });
 
 // ---------- WS: one browser connection = one call ----------
-const wss = new WebSocketServer({ server, path: '/call' });
+// Only our own pages may open calls (security review 2026-09-26, medium): stops other websites in the
+// same browser from spending Deepgram/Claude quota or changing request status via this relay.
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || `http://127.0.0.1:${PORT},http://localhost:${PORT}`)
+  .split(',').map(s => s.trim()).filter(Boolean);
+const MAX_CONCURRENT_CALLS = Number(process.env.MAX_CONCURRENT_CALLS || 3);
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+let activeCalls = 0;
+
+const wss = new WebSocketServer({
+  server,
+  path: '/call',
+  verifyClient: ({ origin, req }, done) => {
+    const id = new URL(req.url, 'http://x').searchParams.get('request');
+    if (origin && !ALLOWED_ORIGINS.includes(origin)) return done(false, 403, 'origin not allowed');
+    if (id && !UUID_RE.test(id)) return done(false, 400, 'bad request id');
+    if (activeCalls >= MAX_CONCURRENT_CALLS) return done(false, 429, 'too many calls');
+    done(true);
+  }
+});
 
 wss.on('connection', async (browser, httpReq) => {
+  activeCalls += 1;
   const url = new URL(httpReq.url, 'http://x');
   const requestId = url.searchParams.get('request') || DEMO_REQUEST_ID;
   const toBrowser = obj => browser.readyState === WebSocket.OPEN && browser.send(JSON.stringify(obj));
@@ -232,7 +251,9 @@ wss.on('connection', async (browser, httpReq) => {
               result = { ok: false, error: 'Dieser Termin liegt außerhalb der erlaubten Zeitfenster. Bitte höflich nach einer Alternative im Zeitfenster fragen.' };
             } else {
               outcomeRecorded = true;
-              const slot = new Date(`${args.date}T${args.time}:00+02:00`).toISOString();
+              const slotDate = new Date(`${args.date}T${args.time}:00+02:00`);
+              if (Number.isNaN(slotDate.getTime())) { result = { ok: false, error: 'Datum/Uhrzeit unklar. Bitte noch einmal bestätigen lassen.' }; outcomeRecorded = false; dg.send(JSON.stringify({ type: 'FunctionCallResponse', id: fn.id, name: fn.name, content: JSON.stringify(result) })); continue; }
+              const slot = slotDate.toISOString();
               await dbq('booked call', c => c.from('calls').update({ outcome: 'booked', booked_slot: slot, bring_items: args.bring_items || null }).eq('id', callId));
               await dbq('status booked', c => c.from('call_requests').update({ status: 'booked' }).eq('id', req.id));
               await dbq('event booked', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'booking_confirmed', payload: args }));
@@ -282,6 +303,7 @@ wss.on('connection', async (browser, httpReq) => {
   let finished = false;
   async function finish(reason) {
     if (finished) return; finished = true;
+    activeCalls = Math.max(0, activeCalls - 1);
     const secondsIn = (audioInBytes / 32000).toFixed(1);
     console.log(`[call ${callId || 'no-db'}] ended: ${reason} | mic audio received: ${secondsIn} s`);
     clearInterval(keepAlive);
