@@ -38,7 +38,9 @@
       "notFoundLink": "Go to the start page",
       "docTitleSuffix": "Dresden mit Kind",
       "footerAbout": "Dresden mit Kind is a demo built at Weekender Build Dresden, September 2026. Our AI assistant always says it is an AI.",
-      "footerListings": "Listings come from public websites. Please check before you visit."
+      "footerListings": "Listings come from public websites. Please check before you visit.",
+      "footerImpressum": "Imprint",
+      "footerPrivacy": "Privacy"
     },
     "nav": {
       "courses": "Courses & activities",
@@ -710,7 +712,9 @@
       "Prohlis": "Prohlis",
       "Striesen": "Striesen",
       "Südvorstadt": "Südvorstadt",
-      "Weißer Hirsch": "Weißer Hirsch"
+      "Weißer Hirsch": "Weißer Hirsch",
+      "Bühlau": "Bühlau",
+      "Seidnitz": "Seidnitz"
     },
     "taskTypes": {
       "doctor_appointment": "Doctor's appointment",
@@ -842,6 +846,11 @@
       "closingTitle": "Not sure whom to call?",
       "closingCta": "Find a place",
       "closingGuides": "Read the guides"
+    },
+    "legal": {
+      "impressumTitle": "Imprint (Impressum)",
+      "privacyTitle": "Privacy notice",
+      "germanBinding": "The legally binding version of this page is the German text."
     }
   },
   "de": {
@@ -883,7 +892,9 @@
       "notFoundLink": "Zur Startseite",
       "docTitleSuffix": "Dresden mit Kind",
       "footerAbout": "Dresden mit Kind ist eine Demo, gebaut beim Weekender Build Dresden im September 2026. Unsere KI-Assistentin sagt immer, dass sie eine KI ist.",
-      "footerListings": "Die Einträge stammen von öffentlichen Websites. Bitte prüfen Sie sie vor dem Besuch."
+      "footerListings": "Die Einträge stammen von öffentlichen Websites. Bitte prüfen Sie sie vor dem Besuch.",
+      "footerImpressum": "Impressum",
+      "footerPrivacy": "Datenschutz"
     },
     "nav": {
       "courses": "Kurse & Aktivitäten",
@@ -1555,7 +1566,9 @@
       "Prohlis": "Prohlis",
       "Striesen": "Striesen",
       "Südvorstadt": "Südvorstadt",
-      "Weißer Hirsch": "Weißer Hirsch"
+      "Weißer Hirsch": "Weißer Hirsch",
+      "Bühlau": "Bühlau",
+      "Seidnitz": "Seidnitz"
     },
     "taskTypes": {
       "doctor_appointment": "Arzttermin",
@@ -1687,6 +1700,11 @@
       "closingTitle": "Nicht sicher, wen Sie anrufen sollen?",
       "closingCta": "Ort finden",
       "closingGuides": "Ratgeber lesen"
+    },
+    "legal": {
+      "impressumTitle": "Impressum",
+      "privacyTitle": "Datenschutzerklärung",
+      "germanBinding": "Rechtlich verbindlich ist der deutsche Text."
     }
   },
   "ru": {
@@ -1728,7 +1746,9 @@
       "notFoundLink": "На главную страницу",
       "docTitleSuffix": "Dresden mit Kind",
       "footerAbout": "Dresden mit Kind — демоверсия, созданная на Weekender Build Dresden в сентябре 2026 года. Наш ИИ-ассистент всегда говорит, что он ИИ.",
-      "footerListings": "Данные взяты с открытых сайтов. Пожалуйста, проверяйте их перед визитом."
+      "footerListings": "Данные взяты с открытых сайтов. Пожалуйста, проверяйте их перед визитом.",
+      "footerImpressum": "Выходные данные (Impressum)",
+      "footerPrivacy": "Конфиденциальность"
     },
     "nav": {
       "courses": "Курсы и занятия",
@@ -1744,8 +1764,8 @@
     },
     "home": {
       "docTitle": "Курсы, мероприятия и помощь для семей в Дрездене",
-      "title": "Найдите в Дрездене. Мы позвоним за вас.",
-      "subtitle": "Курсы, мероприятия, сообщества и услуги для семей, которые недавно в Дрездене, — на вашем языке. Если нужно позвонить по-немецки, это сделает наш ИИ-ассистент.",
+      "title": "Найдите нужное в Дрездене. Мы позвоним за вас.",
+      "subtitle": "Курсы, мероприятия, сообщества и услуги для семей, недавно переехавших в Дрезден, — на вашем языке. Если нужно позвонить по-немецки, это сделает наш ИИ-ассистент.",
       "askLabel": "Что нам спросить за вас?",
       "askExample": "Например: есть ли во вторник после обеда пробное занятие для моего ребёнка 4 лет?",
       "ageQuestion": "Сколько лет вашему ребёнку?",
@@ -1757,7 +1777,7 @@
       "pillarServices": "Детские сады, врачи, аптеки, учреждения",
       "pillarLibrary": "Короткие памятки с источниками",
       "placesCount": "Мест: {count}",
-      "comingUp": "Скоро",
+      "comingUp": "Ближайшие мероприятия",
       "allEvents": "Все мероприятия",
       "howTitle": "Как работает «Спросите за меня»",
       "stepFind": "Найдите",
@@ -1776,7 +1796,7 @@
       "trustHealth": "Говорить о здоровье вашего ребёнка",
       "trustHealthText": "Сообщается только возраст.",
       "trustLimits": "Соглашаться на то, что вы не одобрили",
-      "trustLimitsText": "Всё, что вне вашего времени, возвращается к вам.",
+      "trustLimitsText": "Если предложат что-то вне указанного вами времени, ассистент сначала спросит вас.",
       "trustSign": "Регистрировать вас или подписывать за вас",
       "trustSignText": "Он спрашивает. Решаете вы.",
       "missingTitle": "Знаете место, которого здесь нет?",
@@ -1826,7 +1846,7 @@
       "notVerified": "Языки, часы работы и номера телефонов не проверены.",
       "empty": "Ничего не подходит под все фильтры.",
       "emptyTryWithout": "Попробовать без фильтра: {name}",
-      "emptyAllAges": "Показать любой возраст",
+      "emptyAllAges": "Показать все возрасты",
       "suggest": "Предложить место, которого у нас нет",
       "error": "Не удалось загрузить список.",
       "noPhone": "Номер телефона не указан",
@@ -1875,7 +1895,7 @@
       "ask_restaurant_booking": "Забронировать столик",
       "ask_other_call": "Задать вопрос",
       "noPhoneAsk": "У нас пока нет номера телефона этого места. Вы можете добавить его на следующей странице.",
-      "upcoming": "Скоро здесь",
+      "upcoming": "Ближайшие мероприятия в этом месте",
       "report": "Сообщить об устаревших данных",
       "notFound": "Мы не можем найти это место."
     },
@@ -1892,7 +1912,7 @@
       "organiser": "Страница организатора",
       "calendar": "Добавить в мой календарь",
       "place": "Подробнее о месте",
-      "verify": "С сайта организатора, получено {date}. Пожалуйста, проверьте, прежде чем идти.",
+      "verify": "Данные с сайта организатора, получены {date}. Пожалуйста, проверьте их, прежде чем идти.",
       "empty": "На ближайшие 5 недель нет мероприятий под ваши фильтры.",
       "showAll": "Показать все мероприятия",
       "suggest": "Предложить мероприятие",
@@ -1918,7 +1938,7 @@
       "subFrauenarzt": "Гинеколог (Frauenarzt)",
       "subZahnarzt": "Стоматолог (Zahnarzt)",
       "subApotheke": "Аптека (Apotheke)",
-      "subWelcomeCenter": "Центр для новоприбывших",
+      "subWelcomeCenter": "Центр для новоприбывших (Welcome Center)",
       "subMigrantCounselling": "Консультации для мигрантов",
       "subLanguageCafe": "Языковое кафе",
       "subInternationalOffice": "Международный отдел",
@@ -1992,18 +2012,18 @@
       "willAsk": "Что он спросит",
       "willAsk_course_enquiry": "свободное место · пробное занятие · лист ожидания · время и цена занятий · язык занятий",
       "willAsk_kita_enquiry": "место, начало: {month} · лист ожидания · посещение детского сада",
-      "yourTimes": "Ваше время",
+      "yourTimes": "Удобное вам время",
       "mayAgree_course_enquiry": "Он может записать на пробное занятие в пределах этого времени.",
       "mayAgree_kita_enquiry": "Он может договориться о визите в пределах этого времени. Он никогда не записывает вашего ребёнка.",
       "noWindows": "Он не будет соглашаться ни на какое время. Он только спрашивает.",
       "noChildName": "Имя ребёнка не нужно. Достаточно возраста.",
       "neverHealthChild": "Говорить о здоровье вашего ребёнка.",
-      "neverTimes": "Соглашаться на что-либо вне вашего времени.",
+      "neverTimes": "Соглашаться на что-либо вне удобного вам времени.",
       "sensitiveRemoved": "Мы убрали сведения о здоровье. Для этого звонка они не нужны.",
       "consentLabel": "Да, позвоните за меня по-немецки",
       "consentAi": "Сначала он говорит, что он ИИ.",
-      "consentFacts": "Он сообщает только данные выше.",
-      "consentTimes": "Он соглашается только на время в пределах вашего времени.",
+      "consentFacts": "Он сообщает только данные, указанные выше.",
+      "consentTimes": "Он соглашается только на то время, которое вы указали.",
       "consentAudio": "Без аудио. Сохраняется текстовая расшифровка.",
       "callNow": "Позвонить сейчас"
     },
@@ -2070,7 +2090,7 @@
       "timeTooShort": "Пожалуйста, выберите не менее 30 минут.",
       "timeOutOfRange": "Пожалуйста, выберите день в ближайшие 60 дней.",
       "timeEndBeforeStart": "Время окончания должно быть позже времени начала.",
-      "qNewPatient": "Вы уже были в этой практике раньше?",
+      "qNewPatient": "Вы уже бывали в этой практике?",
       "optFirstTime": "Нет, впервые",
       "optBeenBefore": "Да",
       "qReason": "Какой это тип приёма?",
@@ -2132,7 +2152,7 @@
       "stepPrepared": "Звонок подготовлен",
       "stepOnPhone": "Идёт разговор",
       "stepResult": "Результат",
-      "live": "Вживую",
+      "live": "В эфире",
       "yourTask": "Ваша задача",
       "taskLabel": "Задача",
       "placeLabel": "Место",
@@ -2145,7 +2165,7 @@
       "phasePreparing": "Подготовка…",
       "phaseDialling": "Набираем номер…",
       "phaseConnecting": "Соединение…",
-      "phaseConnected": "Соединено",
+      "phaseConnected": "Соединение установлено",
       "phaseWrapping": "Завершение разговора",
       "phaseEnded": "Звонок завершён, {duration}",
       "timerLabel": "Длительность звонка",
@@ -2161,12 +2181,12 @@
       "newLinesBelow": "Новые строки ниже",
       "eventOnHold": "На удержании",
       "eventChecking": "Они проверяют расписание",
-      "eventReadBack": "Повтор подтверждён",
+      "eventReadBack": "Время повторено и подтверждено",
       "noAudio": "Только текст. Аудио не записывается.",
       "behindScenes": "За кулисами",
       "evRequestSubmitted": "Запрос сохранён",
       "evN8nNotified": "Передано в автоматизацию",
-      "evBriefCreated": "Немецкий план звонка написан",
+      "evBriefCreated": "План звонка на немецком готов",
       "evCallStarted": "Звонок начат",
       "evTranslation": "Строка переведена",
       "evBookingConfirmed": "Время подтверждено",
@@ -2180,11 +2200,11 @@
       "readyText": "Страница звонка откроется в новой вкладке. В этой демоверсии там говорит другая сторона.",
       "start": "Начать звонок",
       "started": "Страница звонка открыта в другой вкладке",
-      "briefing": "Пишем немецкий план звонка (около 10 секунд).",
+      "briefing": "Составляем план звонка на немецком (около 10 секунд).",
       "trouble": "Не получается начать?",
       "local": "Открыть страницу звонка на этом ноутбуке",
       "readAloud": "Зачитывать новые строки вслух",
-      "takeCallHere": "Провести звонок здесь (демо)",
+      "takeCallHere": "Принять звонок здесь (демо)",
       "hangUp": "Завершить звонок",
       "micBlocked": "Микрофон заблокирован. Нажмите на значок замка в адресной строке, разрешите микрофон и попробуйте ещё раз.",
       "micNotFound": "Микрофон не найден. Подключите микрофон или гарнитуру.",
@@ -2224,9 +2244,9 @@
       "summaryInEnglish": "Краткое содержание на английском",
       "calendarSummary": "{task} - {place}",
       "calendarDescription": "Взять с собой: {items}. Телефон: {phone}. Записано ИИ-ассистентом Dresden mit Kind.",
-      "trialBooked": "Пробное занятие записано",
+      "trialBooked": "Вы записаны на пробное занятие",
       "kitaVisitBooked": "Визит в детский сад назначен",
-      "courseTitle": "Что ответили на курсе",
+      "courseTitle": "Что ответили организаторы курса",
       "kitaTitle": "Что ответили в детском саду",
       "noPlace": "Сейчас свободных мест нет",
       "inGerman": "(по-немецки, как они сказали)",
@@ -2400,7 +2420,9 @@
       "Prohlis": "Пролис",
       "Striesen": "Штризен",
       "Südvorstadt": "Зюдфорштадт",
-      "Weißer Hirsch": "Вайсер-Хирш"
+      "Weißer Hirsch": "Вайсер-Хирш",
+      "Bühlau": "Бюлау",
+      "Seidnitz": "Зайдниц"
     },
     "taskTypes": {
       "doctor_appointment": "Запись к врачу",
@@ -2423,7 +2445,7 @@
       "pharmacy_question": "Аптека",
       "restaurant_booking": "Ресторан",
       "other_call": "Собеседник",
-      "course_enquiry": "Курс",
+      "course_enquiry": "Организатор курса",
       "kita_enquiry": "Детский сад"
     },
     "reasonCategories": {
@@ -2453,7 +2475,7 @@
       "Probestunde": "пробное занятие",
       "Warteliste": "лист ожидания",
       "Betreuungsplatz": "место в детском саду или у дневной няни",
-      "Kita-Portal": "онлайн-портал города для мест в детских садах"
+      "Kita-Portal": "городской онлайн-портал для записи в детские сады"
     },
     "languages": {
       "en": "English",
@@ -2532,6 +2554,11 @@
       "closingTitle": "Не знаете, куда звонить?",
       "closingCta": "Найти место",
       "closingGuides": "Читать памятки"
+    },
+    "legal": {
+      "impressumTitle": "Выходные данные (Impressum)",
+      "privacyTitle": "Политика конфиденциальности",
+      "germanBinding": "Юридически обязательной является немецкая версия этой страницы."
     }
   },
   "uk": {
@@ -2573,7 +2600,9 @@
       "notFoundLink": "На головну сторінку",
       "docTitleSuffix": "Dresden mit Kind",
       "footerAbout": "Dresden mit Kind — демоверсія, створена на Weekender Build Dresden у вересні 2026 року. Наш ШІ-асистент завжди каже, що він ШІ.",
-      "footerListings": "Дані взято з відкритих вебсайтів. Будь ласка, перевіряйте їх перед візитом."
+      "footerListings": "Дані взято з відкритих вебсайтів. Будь ласка, перевіряйте їх перед візитом.",
+      "footerImpressum": "Вихідні дані (Impressum)",
+      "footerPrivacy": "Конфіденційність"
     },
     "nav": {
       "courses": "Курси та заняття",
@@ -2589,7 +2618,7 @@
     },
     "home": {
       "docTitle": "Курси, події та допомога для сімей у Дрездені",
-      "title": "Знайдіть у Дрездені. Ми зателефонуємо за вас.",
+      "title": "Знайдіть потрібне в Дрездені. Ми зателефонуємо за вас.",
       "subtitle": "Курси, події, спільноти й послуги для сімей, які нещодавно в Дрездені, — вашою мовою. Якщо треба зателефонувати німецькою, це зробить наш ШІ-асистент.",
       "askLabel": "Що нам запитати за вас?",
       "askExample": "Наприклад: чи є у вівторок після обіду пробне заняття для моєї дитини 4 років?",
@@ -2621,7 +2650,7 @@
       "trustHealth": "Говорити про здоров’я вашої дитини",
       "trustHealthText": "Повідомляється лише вік.",
       "trustLimits": "Погоджуватися на те, чого ви не схвалили",
-      "trustLimitsText": "Усе, що поза вашим часом, повертається до вас.",
+      "trustLimitsText": "Якщо запропонують інший час, рішення за вами.",
       "trustSign": "Реєструвати вас або підписувати за вас",
       "trustSignText": "Він запитує. Вирішуєте ви.",
       "missingTitle": "Знаєте місце, якого тут немає?",
@@ -2720,7 +2749,7 @@
       "ask_restaurant_booking": "Забронювати столик",
       "ask_other_call": "Поставити запитання",
       "noPhoneAsk": "У нас поки немає номера телефону цього місця. Ви можете додати його на наступній сторінці.",
-      "upcoming": "Незабаром тут",
+      "upcoming": "Найближчі події тут",
       "report": "Повідомити про застарілі дані",
       "notFound": "Ми не можемо знайти це місце."
     },
@@ -2763,7 +2792,7 @@
       "subFrauenarzt": "Гінеколог (Frauenarzt)",
       "subZahnarzt": "Стоматолог (Zahnarzt)",
       "subApotheke": "Аптека (Apotheke)",
-      "subWelcomeCenter": "Центр для новоприбулих",
+      "subWelcomeCenter": "Центр для новоприбулих (Welcome Center)",
       "subMigrantCounselling": "Консультації для мігрантів",
       "subLanguageCafe": "Мовне кафе",
       "subInternationalOffice": "Міжнародний офіс",
@@ -2794,7 +2823,7 @@
     },
     "guides": {
       "inEnglish": "Цей довідник англійською мовою.",
-      "showSummary": "Показати підсумок мовою: {language}",
+      "showSummary": "Показати короткий зміст мовою: {language}",
       "checklistLabel": "Позначте те, що у вас уже є",
       "sourcesTitle": "Джерела",
       "checkedOn": "перевірено {date}",
@@ -2837,18 +2866,18 @@
       "willAsk": "Що він запитає",
       "willAsk_course_enquiry": "вільне місце · пробне заняття · список очікування · час і ціна занять · мова занять",
       "willAsk_kita_enquiry": "місце, початок: {month} · список очікування · відвідування садочка",
-      "yourTimes": "Ваш час",
-      "mayAgree_course_enquiry": "Він може записати на пробне заняття в межах цього часу.",
+      "yourTimes": "Зручний для вас час",
+      "mayAgree_course_enquiry": "Він може записати дитину на пробне заняття в межах цього часу.",
       "mayAgree_kita_enquiry": "Він може домовитися про візит у межах цього часу. Він ніколи не записує вашу дитину.",
       "noWindows": "Він не погоджуватиметься на жоден час. Він лише запитує.",
       "noChildName": "Ім’я дитини не потрібне. Достатньо віку.",
       "neverHealthChild": "Говорити про здоров’я вашої дитини.",
-      "neverTimes": "Погоджуватися на щось поза вашим часом.",
+      "neverTimes": "Погоджуватися на час поза межами, які ви вказали.",
       "sensitiveRemoved": "Ми прибрали відомості про здоров’я. Для цього дзвінка вони не потрібні.",
       "consentLabel": "Так, зателефонуйте за мене німецькою",
       "consentAi": "Спершу він каже, що він ШІ.",
-      "consentFacts": "Він повідомляє лише дані вище.",
-      "consentTimes": "Він погоджується лише на час у межах вашого часу.",
+      "consentFacts": "Він повідомляє лише наведені вище дані.",
+      "consentTimes": "Він погоджується лише на час у межах, які ви вказали.",
       "consentAudio": "Без аудіо. Зберігається текстова розшифровка.",
       "callNow": "Зателефонувати зараз"
     },
@@ -2856,7 +2885,7 @@
       "docTitle": "Новий дзвінок",
       "title": "Що потрібно зробити?",
       "helper": "Напишіть своїми словами, будь-якою мовою.",
-      "helperExample": "Наприклад: мені потрібен дитячий лікар для сина, будь-який ранок наступного тижня.",
+      "helperExample": "Наприклад: мені потрібен дитячий лікар для сина, будь-якого ранку наступного тижня.",
       "textareaLabel": "Ваш запит",
       "writingIn": "Мова запиту: {language}",
       "changeLanguage": "змінити",
@@ -2952,7 +2981,7 @@
       "limitsLabel": "Ваші межі",
       "onlyTimes": "Лише в цей час:",
       "budget": "До {amount} €",
-      "partySize": "Столик на {count} осіб",
+      "partySize": "Столик, кількість осіб: {count}",
       "readBack": "Перш ніж погодитися, він повторить час уголос.",
       "factsLabel": "Що він може повідомити",
       "factsHelp": "Зніміть позначку з того, чим не можна ділитися.",
@@ -2964,7 +2993,7 @@
       "emailLabel": "Надіслати результат і на мою пошту",
       "emailHelp": "Необов’язково. Результат також буде на наступній сторінці.",
       "emailInvalid": "Будь ласка, перевірте адресу електронної пошти.",
-      "consent": "Я прошу ШІ-асистента Dresden mit Kind зателефонувати за мене німецькою. На початку він скаже, що він ШІ. Він повідомить лише наведені вище дані й погодиться лише на час у моїх межах. Аудіо не записується; зберігається текстова розшифровка.",
+      "consent": "Я прошу ШІ-асистента Dresden mit Kind зателефонувати за мене німецькою. На початку він скаже, що він ШІ. Він повідомить лише наведені вище дані й погодиться лише на час у вказаних мною межах. Аудіо не записується; зберігається текстова розшифровка.",
       "consentRequired": "Щоб продовжити, поставте позначку.",
       "confirm": "Так, телефонуйте зараз",
       "changeSomething": "Щось змінити",
@@ -3004,14 +3033,14 @@
       "showEnglish": "Показувати й англійською",
       "interrupted": "(перервано)",
       "newLinesBelow": "Нові рядки нижче",
-      "eventOnHold": "На утриманні",
+      "eventOnHold": "Очікування на лінії",
       "eventChecking": "Вони перевіряють розклад",
-      "eventReadBack": "Повторення підтверджено",
+      "eventReadBack": "Час повторено й підтверджено",
       "noAudio": "Лише текст. Аудіо не записується.",
       "behindScenes": "За лаштунками",
       "evRequestSubmitted": "Запит збережено",
       "evN8nNotified": "Передано в автоматизацію",
-      "evBriefCreated": "Німецький план дзвінка написано",
+      "evBriefCreated": "План дзвінка німецькою складено",
       "evCallStarted": "Дзвінок розпочато",
       "evTranslation": "Рядок перекладено",
       "evBookingConfirmed": "Час підтверджено",
@@ -3025,11 +3054,11 @@
       "readyText": "Сторінка дзвінка відкриється в новій вкладці. У цій демоверсії там говорить інша сторона.",
       "start": "Почати дзвінок",
       "started": "Сторінка дзвінка відкрита в іншій вкладці",
-      "briefing": "Пишемо німецький план дзвінка (близько 10 секунд).",
+      "briefing": "Складаємо план дзвінка німецькою (близько 10 секунд).",
       "trouble": "Не вдається почати?",
       "local": "Відкрити сторінку дзвінка на цьому ноутбуці",
       "readAloud": "Зачитувати нові рядки вголос",
-      "takeCallHere": "Провести дзвінок тут (демо)",
+      "takeCallHere": "Прийняти дзвінок тут (демо)",
       "hangUp": "Завершити дзвінок",
       "micBlocked": "Мікрофон заблоковано. Натисніть значок замка в адресному рядку, дозвольте мікрофон і спробуйте ще раз.",
       "micNotFound": "Мікрофон не знайдено. Під’єднайте мікрофон або гарнітуру.",
@@ -3076,7 +3105,7 @@
       "noPlace": "Зараз вільних місць немає",
       "inGerman": "(німецькою, як вони сказали)",
       "backTo": "Назад: {place}",
-      "kitaGuide": "Як працюють місця в садочках Дрездена",
+      "kitaGuide": "Як отримати місце в садочку в Дрездені",
       "moreCourses": "Інші курси для цього віку",
       "key_free_spot": "Вільне місце",
       "key_trial_lesson": "Пробне заняття",
@@ -3087,7 +3116,7 @@
       "key_language_of_instruction": "Мова занять",
       "key_places_available": "Є вільні місця",
       "key_from_month": "З якого місяця",
-      "key_waiting_list_possible": "Можна стати до списку очікування",
+      "key_waiting_list_possible": "Можна записатися до списку очікування",
       "key_how_to_apply": "Як подати заявку",
       "key_visit_possible": "Можна прийти подивитися",
       "key_visit_text": "Візит",
@@ -3245,7 +3274,9 @@
       "Prohlis": "Проліс",
       "Striesen": "Штрізен",
       "Südvorstadt": "Зюдфорштадт",
-      "Weißer Hirsch": "Вайсер-Гірш"
+      "Weißer Hirsch": "Вайсер-Гірш",
+      "Bühlau": "Бюлау",
+      "Seidnitz": "Зайдніц"
     },
     "taskTypes": {
       "doctor_appointment": "Запис до лікаря",
@@ -3260,7 +3291,7 @@
       "kita_enquiry": "Дізнатися про місце в садочку"
     },
     "otherSide": {
-      "doctor_appointment": "Практика",
+      "doctor_appointment": "Реєстратура",
       "authority_appointment": "Установа",
       "landlord_request": "Орендодавець",
       "contract_question": "Компанія",
@@ -3282,7 +3313,7 @@
     "germanTerms": {
       "Versichertenkarte": "картка медичного страхування",
       "Überweisung": "направлення від лікаря",
-      "Impfpass": "щеплювальний паспорт",
+      "Impfpass": "паспорт щеплень",
       "Personalausweis": "посвідчення особи",
       "Reisepass": "закордонний паспорт",
       "Mietvertrag": "договір оренди",
@@ -3298,7 +3329,7 @@
       "Probestunde": "пробне заняття",
       "Warteliste": "список очікування",
       "Betreuungsplatz": "місце в садочку або в денної няні",
-      "Kita-Portal": "онлайн-портал міста для місць у садочках"
+      "Kita-Portal": "міський онлайн-портал для запису в садочки"
     },
     "languages": {
       "en": "English",
@@ -3377,6 +3408,11 @@
       "closingTitle": "Не знаєте, куди телефонувати?",
       "closingCta": "Знайти установу",
       "closingGuides": "Читати довідники"
+    },
+    "legal": {
+      "impressumTitle": "Вихідні дані (Impressum)",
+      "privacyTitle": "Політика конфіденційності",
+      "germanBinding": "Юридично обов'язковою є німецька версія цієї сторінки."
     }
   },
   "ar": {
@@ -3412,13 +3448,15 @@
       "showMore": "عرض المزيد",
       "showLess": "عرض أقل",
       "footerDemo": "هذه نسخة تجريبية. يُرجى استخدام بيانات تجريبية فقط.",
-      "footerEmergency": "ليس للحالات الطارئة: اتصل بالرقم 112. طبيب خارج أوقات الدوام: 116117.",
+      "footerEmergency": "ليس للحالات الطارئة: اتصل بالرقم 112. الطبيب المناوب خارج أوقات الدوام: 116117.",
       "notFoundTitle": "هذه الصفحة غير موجودة.",
       "notFoundBody": "ربما يكون الرابط قديمًا أو فيه خطأ.",
       "notFoundLink": "العودة إلى الصفحة الرئيسية",
       "docTitleSuffix": "Dresden mit Kind",
       "footerAbout": "موقع Dresden mit Kind نسخة تجريبية بُنيت خلال Weekender Build Dresden في سبتمبر 2026. ويقول مساعدنا بالذكاء الاصطناعي دائمًا إنه ذكاء اصطناعي.",
-      "footerListings": "المعلومات مأخوذة من مواقع عامة. يُرجى التحقق منها قبل الزيارة."
+      "footerListings": "المعلومات مأخوذة من مواقع عامة. يُرجى التحقق منها قبل الزيارة.",
+      "footerImpressum": "بيانات الناشر (Impressum)",
+      "footerPrivacy": "الخصوصية"
     },
     "nav": {
       "courses": "دورات وأنشطة",
@@ -3447,7 +3485,7 @@
       "pillarServices": "الروضات والأطباء والصيدليات والدوائر الرسمية",
       "pillarLibrary": "أدلة قصيرة مع مصادرها",
       "placesCount": "عدد الأماكن: {count}",
-      "comingUp": "قريبًا",
+      "comingUp": "الفعاليات القادمة",
       "allEvents": "كل الفعاليات",
       "howTitle": "كيف تعمل خدمة «اسألوا نيابةً عني»",
       "stepFind": "ابحث",
@@ -3465,7 +3503,7 @@
       "trustRecordText": "نص فقط، دون صوت.",
       "trustHealth": "الحديث عن صحة طفلك",
       "trustHealthText": "لا يذكر إلا العمر.",
-      "trustLimits": "الموافقة على شيء لم توافق عليه",
+      "trustLimits": "الموافقة على شيء لم تأذن به",
       "trustLimitsText": "أي شيء خارج أوقاتك يعود إليك.",
       "trustSign": "تسجيلك أو التوقيع نيابةً عنك",
       "trustSignText": "هو يسأل، وأنت تقرّر.",
@@ -3565,7 +3603,7 @@
       "ask_restaurant_booking": "احجز طاولة",
       "ask_other_call": "اطرح سؤالًا",
       "noPhoneAsk": "ليس لدينا رقم هاتف لهذا المكان بعد. يمكنك إضافته في الصفحة التالية.",
-      "upcoming": "قريبًا هنا",
+      "upcoming": "الفعاليات القادمة هنا",
       "report": "الإبلاغ عن معلومات قديمة",
       "notFound": "لا نجد هذا المكان."
     },
@@ -3605,7 +3643,7 @@
       "resultsCount": "عدد الجهات: {count}",
       "subHausarzt": "طبيب عام (Hausarzt)",
       "subKinderarzt": "طبيب أطفال (Kinderarzt)",
-      "subFrauenarzt": "طبيب نسائية (Frauenarzt)",
+      "subFrauenarzt": "طبيب أمراض نسائية (Frauenarzt)",
       "subZahnarzt": "طبيب أسنان (Zahnarzt)",
       "subApotheke": "صيدلية (Apotheke)",
       "subWelcomeCenter": "مركز الاستقبال",
@@ -3651,7 +3689,7 @@
       "ctaAnmeldung": "احجز موعدًا في Bürgeramt",
       "ctaBank": "اسأل بنكًا عن فتح حساب",
       "ctaFindBank": "ابحث عن بنك",
-      "ctaInsurance": "اسأل شركة تأمين عمّا تحتاجه",
+      "ctaInsurance": "اسأل شركة تأمين عمّا تطلبه منك",
       "otherGuides": "أدلة أخرى",
       "notFound": "ليس لدينا هذا الدليل بعد.",
       "loadError": "لم نتمكن من تحميل هذا الدليل."
@@ -3694,7 +3732,7 @@
       "consentAi": "يقول أولًا إنه ذكاء اصطناعي.",
       "consentFacts": "لا يشارك إلا المعلومات المذكورة أعلاه.",
       "consentTimes": "لا يوافق إلا على مواعيد ضمن أوقاتك.",
-      "consentAudio": "لا صوت. يُحفظ نص مكتوب للمكالمة.",
+      "consentAudio": "لا يُسجَّل أي صوت، ويُحفظ نص مكتوب للمكالمة.",
       "callNow": "اتصل الآن"
     },
     "intake": {
@@ -3732,7 +3770,7 @@
       "parseManual": "سأملأ التفاصيل بنفسي",
       "manualFormTitle": "املأ التفاصيل",
       "sensitiveRemoved": "حذفنا التفاصيل الصحية. العيادة تحتاج فقط إلى نوع الموعد.",
-      "refuseEmergency": "يبدو أن الأمر عاجل. يُرجى الاتصال بالرقم 112 الآن. للطبيب خارج أوقات الدوام، اتصل بالرقم 116117.",
+      "refuseEmergency": "يبدو أن الأمر عاجل. يُرجى الاتصال بالرقم 112 الآن. وللوصول إلى الطبيب المناوب خارج أوقات الدوام، اتصل بالرقم 116117.",
       "refuseNotByPhone": "لا يمكننا فعل هذا عبر الهاتف.",
       "refuseNotByPhoneAlt": "إليك ما يمكننا فعله بدلًا من ذلك:",
       "refuseUnsafe": "لا يمكننا المساعدة في هذا الطلب.",
@@ -3836,7 +3874,7 @@
       "phaseDialling": "جارٍ الاتصال…",
       "phaseConnecting": "جارٍ الربط…",
       "phaseConnected": "تم الاتصال",
-      "phaseWrapping": "إنهاء المكالمة",
+      "phaseWrapping": "جارٍ إنهاء المكالمة",
       "phaseEnded": "انتهت المكالمة، {duration}",
       "timerLabel": "مدة المكالمة",
       "whoSpeaking": "من يتحدث",
@@ -3856,7 +3894,7 @@
       "behindScenes": "خلف الكواليس",
       "evRequestSubmitted": "تم حفظ الطلب",
       "evN8nNotified": "أُرسل إلى نظام الأتمتة",
-      "evBriefCreated": "كُتب ملخص المكالمة بالألمانية",
+      "evBriefCreated": "كُتبت خطة المكالمة بالألمانية",
       "evCallStarted": "بدأت المكالمة",
       "evTranslation": "تُرجم السطر",
       "evBookingConfirmed": "تم تأكيد الموعد",
@@ -3874,7 +3912,7 @@
       "trouble": "هل تواجه مشكلة في البدء؟",
       "local": "استخدم صفحة المكالمة على هذا الحاسوب",
       "readAloud": "اقرأ الأسطر الجديدة بصوت عالٍ",
-      "takeCallHere": "أجرِ المكالمة هنا (تجريبي)",
+      "takeCallHere": "استقبل المكالمة هنا (تجريبي)",
       "hangUp": "إنهاء المكالمة",
       "micBlocked": "الميكروفون محظور. اضغط على رمز القفل في شريط العنوان، واسمح باستخدام الميكروفون، ثم حاول مرة أخرى.",
       "micNotFound": "لم نجد ميكروفونًا. وصّل ميكروفونًا أو استخدم سماعات فيها ميكروفون.",
@@ -3921,7 +3959,7 @@
       "noPlace": "لا يوجد لديهم مكان شاغر حاليًا",
       "inGerman": "(بالألمانية، كما قالوها)",
       "backTo": "العودة إلى {place}",
-      "kitaGuide": "كيف تعمل أماكن الروضات في دريسدن",
+      "kitaGuide": "كيف تحصل على مكان في روضة في دريسدن",
       "moreCourses": "دورات أخرى لهذا العمر",
       "key_free_spot": "مكان شاغر",
       "key_trial_lesson": "درس تجريبي",
@@ -4032,7 +4070,7 @@
       "familienzentrum": "مركز عائلي",
       "familienzentrum_familiencafe": "مركز عائلي مع مقهى",
       "family_meetup": "لقاء عائلي",
-      "frauenarzt": "طبيب نسائية (Frauenarzt)",
+      "frauenarzt": "طبيب أمراض نسائية (Frauenarzt)",
       "hausarzt": "طبيب عام (Hausarzt)",
       "heritage_language_course": "دورة في لغة الأم",
       "heritage_language_school": "مدرسة لغة الأم",
@@ -4090,7 +4128,9 @@
       "Prohlis": "بروليس",
       "Striesen": "شتريزن",
       "Südvorstadt": "زودفورشتات",
-      "Weißer Hirsch": "فايسر هيرش"
+      "Weißer Hirsch": "فايسر هيرش",
+      "Bühlau": "بولاو",
+      "Seidnitz": "زايدنيتس"
     },
     "taskTypes": {
       "doctor_appointment": "موعد عند الطبيب",
@@ -4214,7 +4254,7 @@
       "neverRecordDesc": "نص فقط، دون صوت.",
       "neverHealth": "السؤال عن تفاصيلك الصحية",
       "neverHealthDesc": "العيادة تحتاج فقط إلى نوع الموعد.",
-      "neverApprove": "الموافقة على شيء لم توافق عليه",
+      "neverApprove": "الموافقة على شيء لم تأذن به",
       "neverApproveDesc": "أي شيء خارج حدودك يعود إليك أولًا.",
       "languagesTitle": "اللغات",
       "languagesBody": "يفهم Dresden mit Kind هذه اللغات ويكتب بها: {list}.",
@@ -4222,6 +4262,11 @@
       "closingTitle": "لا تعرف بمن تتصل؟",
       "closingCta": "ابحث عن جهة",
       "closingGuides": "اقرأ الأدلة"
+    },
+    "legal": {
+      "impressumTitle": "بيانات الناشر (Impressum)",
+      "privacyTitle": "إشعار الخصوصية",
+      "germanBinding": "النص الألماني هو النسخة الملزمة قانونياً لهذه الصفحة."
     }
   },
   "tr": {
@@ -4263,7 +4308,9 @@
       "notFoundLink": "Ana sayfaya git",
       "docTitleSuffix": "Dresden mit Kind",
       "footerAbout": "Dresden mit Kind, Eylül 2026’da Weekender Build Dresden’de yapılmış bir demodur. Yapay zekâ asistanımız her zaman yapay zekâ olduğunu söyler.",
-      "footerListings": "Kayıtlar herkese açık web sitelerinden alınmıştır. Lütfen gitmeden önce kontrol edin."
+      "footerListings": "Kayıtlar herkese açık web sitelerinden alınmıştır. Lütfen gitmeden önce kontrol edin.",
+      "footerImpressum": "Künye (Impressum)",
+      "footerPrivacy": "Gizlilik"
     },
     "nav": {
       "courses": "Kurslar ve aktiviteler",
@@ -4935,7 +4982,9 @@
       "Prohlis": "Prohlis",
       "Striesen": "Striesen",
       "Südvorstadt": "Südvorstadt",
-      "Weißer Hirsch": "Weißer Hirsch"
+      "Weißer Hirsch": "Weißer Hirsch",
+      "Bühlau": "Bühlau",
+      "Seidnitz": "Seidnitz"
     },
     "taskTypes": {
       "doctor_appointment": "Doktor randevusu",
@@ -5067,6 +5116,11 @@
       "closingTitle": "Kimi arayacağınızdan emin değil misiniz?",
       "closingCta": "Yer bul",
       "closingGuides": "Rehberleri okuyun"
+    },
+    "legal": {
+      "impressumTitle": "Künye (Impressum)",
+      "privacyTitle": "Gizlilik bildirimi",
+      "germanBinding": "Bu sayfanın yasal olarak bağlayıcı sürümü Almanca metindir."
     }
   }
 }

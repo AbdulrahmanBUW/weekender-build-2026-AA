@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HalloTermin · Browser call test</title>
+<title>Dresden mit Kind · Call page</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root { --paper:#F7F4EC; --card:#FFFDF8; --ink:#1C2420; --muted:#5B635E; --pine:#1F5C4A; --pine-tint:#E6EEE9; --amber:#D98E04; --brick:#A63A2A; --line:#D9D2C3; }
@@ -52,7 +52,7 @@
     <div class="row">
       <button id="start">Start call</button>
       <button id="stop" class="secondary" disabled>Hang up</button>
-      <span id="status"><span class="dot"></span><span id="statusText">Not connected</span></span>
+      <span id="status" role="status"><span class="dot" aria-hidden="true"></span><span id="statusText">Not connected</span></span>
     </div>
     <div class="row" aria-label="Microphone level">
       <small>Mic</small><div style="flex:1;height:10px;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden"><div id="level" style="height:100%;width:0;background:var(--pine);transition:width 80ms"></div></div><small id="levelText">no audio yet</small>
@@ -61,8 +61,8 @@
   </div>
 
   <div class="panel">
-    <strong>Transcript</strong>
-    <ul id="lines" aria-live="polite"></ul>
+    <h2 id="linesTitle" style="font-size:1rem;margin:0">Transcript</h2>
+    <ul id="lines" aria-labelledby="linesTitle"></ul>
   </div>
   <div class="panel">
     <strong>Voice intake test</strong>
@@ -88,14 +88,14 @@
 const $ = id => document.getElementById(id);
 const qsReq = new URLSearchParams(location.search).get('request');
 if (qsReq) document.getElementById('req').value = qsReq;
-let ws, micCtx, micNode, micStream, playCtx, playTime = 0, sources = [];
+let ws, micCtx, micNode, micStream, playCtx, playTime = 0, sources = [], wsOpened = false, inCall = false;
 
 function setStatus(text, live) { $('statusText').textContent = text; $('status').classList.toggle('live', !!live); }
 function addLine(speaker, text, cls='') {
   const li = document.createElement('li');
   li.className = speaker + ' ' + cls;
   if (speaker === 'sys') li.textContent = text;
-  else li.innerHTML = `<span class="who">${speaker === 'agent' ? 'AI assistant' : 'Practice (you)'}</span><span class="de"></span>`, li.querySelector('.de').textContent = text;
+  else li.innerHTML = `<span class="who">${speaker === 'agent' ? 'AI assistant' : 'Practice (you)'}</span><span class="de" lang="de"></span>`, li.querySelector('.de').textContent = text;
   $('lines').appendChild(li); li.scrollIntoView({ block: 'nearest' });
 }
 
@@ -134,7 +134,8 @@ async function start() {
     if (ws.readyState === 1) ws.send(e.data);
   };
 
-  ws.onopen = () => { setStatus('Connecting to the assistant…', true); $('stop').disabled = false; };
+  wsOpened = false; inCall = true;
+  ws.onopen = () => { wsOpened = true; setStatus('Connecting to the assistant…', true); $('stop').disabled = false; $('stop').focus(); };
   ws.onmessage = e => {
     if (typeof e.data !== 'string') return playPcm(e.data);
     const m = JSON.parse(e.data);
@@ -156,17 +157,29 @@ async function start() {
       if (m.event === 'call_ended') { addLine('sys', 'Call ended.'); cleanup(); }
     }
   };
-  ws.onclose = () => cleanup();
+  ws.onclose = () => {
+    if (!wsOpened && inCall) addLine('sys', 'Could not reach the call service. Check the request ID and try again.', 'err');
+    cleanup();
+  };
+}
+
+// Plain-language errors instead of raw browser messages (a11y review F14).
+function friendlyError(err) {
+  if (err && err.name === 'NotAllowedError') return 'The microphone is blocked. Click the lock icon in the address bar, allow the microphone, then press Start call again.';
+  if (err && err.name === 'NotFoundError') return 'No microphone found. Plug one in or use headphones with a mic.';
+  return 'Could not start the call. Please reload the page and try again.';
 }
 
 function cleanup() {
+  const wasInCall = inCall; inCall = false;
   setStatus('Not connected', false);
   $('start').disabled = false; $('stop').disabled = true;
+  if (wasInCall) $('start').focus();
   try { micStream && micStream.getTracks().forEach(t => t.stop()); } catch {}
   try { micCtx && micCtx.close(); } catch {}
   stopPlayback();
 }
-$('start').onclick = () => start().catch(err => { addLine('sys', 'Could not start: ' + err.message, 'err'); cleanup(); });
+$('start').onclick = () => start().catch(err => { console.error(err); addLine('sys', friendlyError(err), 'err'); cleanup(); });
 $('stop').onclick = () => { try { ws && ws.close(); } catch {} cleanup(); };
 
 // ---------- Voice intake test (/listen) ----------
@@ -200,7 +213,7 @@ function stopListenLocal() {
   try { lStream && lStream.getTracks().forEach(t => t.stop()); } catch {}
   try { lCtx && lCtx.close(); } catch {}
 }
-$('micStart').onclick = () => startListen().catch(err => { $('intakeStatus').textContent = 'Could not start: ' + err.message; stopListenLocal(); });
+$('micStart').onclick = () => startListen().catch(err => { console.error(err); $('intakeStatus').textContent = friendlyError(err).replace('Start call', 'Start speaking'); stopListenLocal(); });
 $('micStop').onclick = () => { try { lws && lws.readyState === 1 && lws.send(JSON.stringify({ type: 'stop' })); } catch {} $('intakeStatus').textContent = 'Finishing…'; };
 </script>
 </body>

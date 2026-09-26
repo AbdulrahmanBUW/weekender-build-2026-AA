@@ -422,6 +422,7 @@ wss.on('connection', async (browser, httpReq) => {
   dg.on('open', () => {
     dg.send(JSON.stringify({
       type: 'Settings',
+      mip_opt_out: true, // no Deepgram model-improvement retention: keeps our "No audio is stored" promise
       audio: {
         input: { encoding: 'linear16', sample_rate: 16000 },
         output: { encoding: 'linear16', sample_rate: 24000, container: 'none' }
@@ -611,7 +612,7 @@ listenWss.on('connection', (browser, httpReq) => {
   activeCalls += 1;
   const lang = LISTEN_LANGS[new URL(httpReq.url, 'http://x').searchParams.get('lang')];
   const toBrowser = obj => browser.readyState === WebSocket.OPEN && browser.send(JSON.stringify(obj));
-  const qs = new URLSearchParams({ model: 'nova-3', language: lang, encoding: 'linear16', sample_rate: '16000', interim_results: 'true', smart_format: 'true', punctuate: 'true' });
+  const qs = new URLSearchParams({ model: 'nova-3', language: lang, encoding: 'linear16', sample_rate: '16000', interim_results: 'true', smart_format: 'true', punctuate: 'true', mip_opt_out: 'true' });
   const dg = new WebSocket(`wss://api.deepgram.com/v1/listen?${qs}`, { headers: { Authorization: `Token ${DG_KEY}` } });
   const pending = [];
   let closed = false;
