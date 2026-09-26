@@ -14,7 +14,7 @@ const PORT = Number(process.env.PORT || 8787);
 const DG_KEY = process.env.DEEPGRAM_API_KEY;
 const DG_URL = 'wss://agent.deepgram.com/v1/agent/converse';
 const THINK_PROVIDER = process.env.THINK_PROVIDER || 'anthropic';
-const THINK_MODEL = process.env.THINK_MODEL || 'claude-sonnet-4-20250514';
+const THINK_MODEL = process.env.THINK_MODEL || 'claude-sonnet-5';
 const SPEAK_MODEL = process.env.SPEAK_MODEL || 'aura-2-viktoria-de';
 const LISTEN_MODEL = process.env.LISTEN_MODEL || 'nova-3';
 const DEMO_REQUEST_ID = '00000000-0000-0000-0000-000000000001';
@@ -176,7 +176,20 @@ wss.on('connection', async (browser, httpReq) => {
   const dg = new WebSocket(DG_URL, { headers: { Authorization: `Token ${DG_KEY}` } });
   let endAfterAudio = false;
   let outcomeRecorded = false;
+  let lastPracticeActivity = Date.now();
+  let agentSpeaking = false;
+  const SILENCE_LIMIT_MS = Number(process.env.SILENCE_LIMIT_MS || 30000);
   const keepAlive = setInterval(() => dg.readyState === WebSocket.OPEN && dg.send(JSON.stringify({ type: 'KeepAlive' })), 8000);
+  // No answer / practice went silent: close the call with a recorded outcome instead of leaving it "calling".
+  const silenceWatch = setInterval(async () => {
+    if (agentSpeaking || outcomeRecorded || endAfterAudio) return;
+    if (Date.now() - lastPracticeActivity < SILENCE_LIMIT_MS) return;
+    outcomeRecorded = true;
+    await dbq('no_answer', c => c.from('calls').update({ outcome: 'no_answer', summary_en: 'The practice did not answer or went silent.' }).eq('id', callId));
+    await dbq('status failed', c => c.from('call_requests').update({ status: 'failed' }).eq('id', req.id));
+    toBrowser({ type: 'relay', event: 'no_answer' });
+    finish('silence timeout');
+  }, 5000);
 
   dg.on('open', () => {
     dg.send(JSON.stringify({
@@ -202,6 +215,7 @@ wss.on('connection', async (browser, httpReq) => {
     switch (msg.type) {
       case 'ConversationText': {
         const speaker = msg.role === 'assistant' ? 'agent' : 'practice';
+        if (speaker === 'practice') lastPracticeActivity = Date.now();
         toBrowser({ type: 'line', speaker, text: msg.content });
         if (callId) await dbq('transcript', c => c.from('transcript_lines').insert({ call_id: callId, speaker, text_de: msg.content }));
         break;
@@ -240,12 +254,13 @@ wss.on('connection', async (browser, httpReq) => {
         }
         break;
       }
-      case 'UserStartedSpeaking': toBrowser({ type: 'barge_in' }); break;
+      case 'UserStartedSpeaking': lastPracticeActivity = Date.now(); toBrowser({ type: 'barge_in' }); break;
       case 'AgentAudioDone':
+        agentSpeaking = false; lastPracticeActivity = Date.now();
         toBrowser({ type: 'agent_done' });
         if (endAfterAudio) setTimeout(() => finish('agent ended the call'), 1500);
         break;
-      case 'AgentStartedSpeaking': toBrowser({ type: 'latency', total: msg.total_latency }); break;
+      case 'AgentStartedSpeaking': agentSpeaking = true; toBrowser({ type: 'latency', total: msg.total_latency }); break;
       case 'Error': case 'Warning':
         console.error(`[deepgram ${msg.type}]`, msg.code, msg.description);
         toBrowser({ type: 'relay', event: msg.type.toLowerCase(), code: msg.code, description: msg.description });
@@ -262,6 +277,7 @@ wss.on('connection', async (browser, httpReq) => {
   async function finish(reason) {
     if (finished) return; finished = true;
     clearInterval(keepAlive);
+    clearInterval(silenceWatch);
     await dbq('ended_at', c => c.from('calls').update({ ended_at: new Date().toISOString() }).eq('id', callId));
     await dbq('event call_ended', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'call_ended', payload: { reason } }));
     toBrowser({ type: 'relay', event: 'call_ended', reason });

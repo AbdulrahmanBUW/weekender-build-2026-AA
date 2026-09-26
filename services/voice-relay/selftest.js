@@ -8,7 +8,7 @@ let audioBytes = 0; const seen = [];
 ws.on('open', () => {
   const silence = Buffer.alloc(3200); // 100 ms @ 16 kHz Int16
   const t = setInterval(() => ws.readyState === 1 && ws.send(silence), 100);
-  setTimeout(() => { clearInterval(t); ws.close(); }, 12000);
+  setTimeout(() => { clearInterval(t); ws.close(); }, (Number(process.argv[3]) || 12) * 1000);
 });
 ws.on('message', (d, bin) => {
   if (bin) { audioBytes += d.length; return; }

@@ -112,6 +112,7 @@ async function start() {
     else if (m.type === 'relay') {
       if (m.event === 'call_started') $('meta').textContent = `Calling "${m.practice}" for ${m.patient}. ${m.saving ? 'Transcript is saved to Supabase.' : 'No-DB mode: nothing is saved.'}`;
       if (m.event === 'booked') addLine('sys', `Booked: ${m.date} ${m.time}${m.doctor ? ' with ' + m.doctor : ''}${m.bring_items ? ' · bring: ' + m.bring_items.join(', ') : ''}`, 'booked');
+      if (m.event === 'no_answer') addLine('sys', 'No answer from the practice (30 s of silence). Call closed as no_answer.');
       if (m.event === 'needs_user') addLine('sys', `The practice needs your answer: ${m.question}`);
       if (m.event === 'error') addLine('sys', `Error: ${m.description || m.code}`, 'err');
       if (m.event === 'call_ended') { addLine('sys', 'Call ended.'); cleanup(); }
