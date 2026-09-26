@@ -13,9 +13,10 @@ by: abdul + claude
 - **Security:** both medium findings fixed ([[docs/security]] review + remediation log).
 - **Presentation kit:** [[Pitch Kit]], [[Agent Space - Who Does What]] (Pixel Agents), archify diagrams in `docs/diagrams/`, [[Competitive Landscape]], [[Monday-Morning Plan]], [[Accessibility and RTL Review]], UI strings EN/AR/TR/UK in `docs/i18n/`.
 
-## In progress (agents, will be pushed when tested)
-- n8n: generic workflow 01 + new 04 intake, 05 transcript translation, 06 result in user language.
-- Relay: task templates for all 8 task types, `record_result`, `/listen` voice input.
+## Finished this afternoon
+- n8n v2 live: 01 (all 8 task types), 04 intake `https://arahmandeaxo.app.n8n.cloud/webhook/task-intake`, 05 translate line, 06 result in user language → [[RUN-013 n8n v2 workflows]].
+- Relay v2 live: task templates, `record_result`, `/listen` (13 languages) → [[RUN-014 Relay v2 generic tasks]].
+- How to add a task type (important for the merge): [[Task Types - How to extend]].
 
 ## Next — Anastasia
 1. `git pull`, open the vault, read [[Home]] → [[Frontend and UX Plan v2]] (section A is 1 page).

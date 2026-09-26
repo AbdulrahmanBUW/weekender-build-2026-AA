@@ -16,8 +16,8 @@ Last updated: Sat 26.09.2026, ~13:30 (by Abdul + Claude). **What changed since F
 | **Your idea (Idea B)** | ⏳ **waiting for you** — write it, then we merge | `Weekender Build/Ideas/Idea B - (Teammate).md` → `Ideas/Merged Concept.md` |
 | Product direction v2 | ✅ **any phone task** (not only doctors), **12 input languages**, loop Tell → Check → Call → Result | vault `Concepts/Frontend and UX Plan v2.md` |
 | Database (Supabase `weekender-build`) | ✅ v2 live: generic tasks, subtitles + results in the user's language, Arabic demo task | `supabase/migrations/`, vault `Concepts/Data Model.md` |
-| n8n | ✅ 01 brief writer · 02 Dresden crawler · 03 Deepgram test · 🟡 v2 (generic 01, 04 intake, 05 translate, 06 result) in progress | n8n: https://arahmandeaxo.app.n8n.cloud · `n8n/workflows/` |
-| Voice call (Deepgram, German) | ✅ browser-call relay works, role-play books correctly · 🟡 v2 task templates + voice input in progress | `services/voice-relay/` (needs your own `.env`) |
+| n8n | ✅ 01 brief writer (all 8 task types) · 02 Dresden crawler · 03 Deepgram test · 04 task intake (`/webhook/task-intake`) · 05 transcript translation · 06 result in user language | n8n: https://arahmandeaxo.app.n8n.cloud · `n8n/workflows/` |
+| Voice call (Deepgram, German) | ✅ relay v2: task templates for all 8 types, `record_result`, voice input `/listen` (13 languages); doctor + pharmacy role-plays pass | `services/voice-relay/` (needs your own `.env`) |
 | Newcomer data | ✅ 84 verified Dresden places + 4 guides, guides in AR/TR/UK | tables `resources`, `guides` |
 | Lovable app "HalloTermin Paper" | 🟡 shell only; build with Plan v2 prompts **after the merge** | Lovable project |
 | Presentation | ✅ Pitch Kit, Pixel Agents office, archify diagrams, competitors, Monday plan, security review | vault `Concepts/`, `docs/` |
