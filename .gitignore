@@ -26,3 +26,7 @@ Thumbs.db
 # supabase local
 supabase/.branches
 supabase/.temp
+
+# content import (scripts/import_content.py): generated SQL + Python cache
+*.import.sql
+__pycache__/

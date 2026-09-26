@@ -8,29 +8,22 @@
   },
   "nodes": [
     {
-      "name": "Translate Line Request",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        240,
-        304
-      ],
       "parameters": {
         "httpMethod": "POST",
         "path": "translate-line",
         "authentication": "headerAuth",
         "responseMode": "onReceived",
         "options": {}
-      }
+      },
+      "name": "Translate Line Request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        304
+      ]
     },
     {
-      "name": "Translate (Claude Haiku)",
-      "type": "@n8n/n8n-nodes-langchain.anthropic",
-      "typeVersion": 1,
-      "position": [
-        480,
-        304
-      ],
       "parameters": {
         "resource": "text",
         "operation": "message",
@@ -50,15 +43,27 @@
         "simplify": true,
         "options": {
           "system": "You translate single lines of a German phone call (an AI assistant calling a German office/practice for a newcomer) for live subtitles. Translate faithfully, short and natural, keep names, dates, times and numbers exact, do not add or explain anything. Reply with ONLY a JSON object: {\"text_en\": \"<English>\", \"text_user\": \"<target language>\"}. If the target language is English or German, set text_user to an empty string.",
-          "maxTokens": 800
+          "maxTokens": 300
         }
       },
+      "name": "Translate (Claude Haiku)",
+      "type": "@n8n/n8n-nodes-langchain.anthropic",
+      "typeVersion": 1,
+      "position": [
+        480,
+        304
+      ],
       "onError": "continueErrorOutput",
       "retryOnFail": true,
       "maxTries": 2,
       "waitBetweenTries": 500
     },
     {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// Parse Claude translation JSON; en/de users get text_user without a second translation.\nconst src = $('Translate Line Request').item.json.body || {};\nconst lang = String(src.user_language || 'en');\nconst raw = ($json.content ?? []).filter(c => c.type === 'text').map(c => c.text).join('\\n').trim();\nconst m = raw.match(/\\{[\\s\\S]*\\}/);\nif (!m) throw new Error('no JSON in translation');\nconst t = JSON.parse(m[0]);\nconst textEn = String(t.text_en || '').trim().slice(0, 2000);\nif (!textEn) throw new Error('empty text_en');\nlet textUser = String(t.text_user || '').trim().slice(0, 2000);\nif (lang === 'en') textUser = textEn;\nif (lang === 'de') textUser = String(src.text_de || '');\nif (!textUser) textUser = textEn;\nconst lineId = String(src.line_id ?? '');\nif (!/^\\d+$/.test(lineId)) throw new Error('invalid line_id');\nreturn { json: { line_id: lineId, text_en: textEn, text_user: textUser } };\n"
+      },
       "name": "Parse Translation",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -66,21 +71,9 @@
         720,
         208
       ],
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "language": "javaScript",
-        "jsCode": "// Parse Claude translation JSON; en/de users get text_user without a second translation.\nconst src = $('Translate Line Request').item.json.body || {};\nconst lang = String(src.user_language || 'en');\nconst raw = ($json.content ?? []).filter(c => c.type === 'text').map(c => c.text).join('\\n').trim();\nconst m = raw.match(/\\{[\\s\\S]*\\}/);\nif (!m) throw new Error('no JSON in translation');\nconst t = JSON.parse(m[0]);\nconst textEn = String(t.text_en || '').trim().slice(0, 2000);\nif (!textEn) throw new Error('empty text_en');\nlet textUser = String(t.text_user || '').trim().slice(0, 2000);\nif (lang === 'en') textUser = textEn;\nif (lang === 'de') textUser = String(src.text_de || '');\nif (!textUser) textUser = textEn;\nconst lineId = String(src.line_id ?? '');\nif (!/^\\d+$/.test(lineId)) throw new Error('invalid line_id');\nreturn { json: { line_id: lineId, text_en: textEn, text_user: textUser } };\n"
-      },
       "onError": "continueErrorOutput"
     },
     {
-      "name": "Save Subtitles (PATCH transcript_lines)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        960,
-        208
-      ],
       "parameters": {
         "method": "PATCH",
         "url": "=https://ycyrtlzympxzlfcocazh.supabase.co/rest/v1/transcript_lines?id=eq.{{ $json.line_id }}",
@@ -101,17 +94,24 @@
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ text_en: $json.text_en, text_user: $json.text_user }) }}",
         "options": {}
-      }
+      },
+      "name": "Save Subtitles (PATCH transcript_lines)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        960,
+        208
+      ]
     },
     {
+      "parameters": {},
       "name": "Leave Line Untouched",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
         720,
         460
-      ],
-      "parameters": {}
+      ]
     }
   ],
   "connections": {
@@ -163,5 +163,5 @@
       ]
     }
   },
-  "_notes": "Triggered by pg_net on transcript_lines INSERT (Vault n8n_translate_line_url). Payload {line_id, call_id, speaker, text_de, user_language}. Responds on receipt. Successful executions are not saved (volume; request headers). Credentials not exported. Webhooks 01/05/06: Header Auth credential (header X-Webhook-Secret, same value as Supabase Vault n8n_webhook_secret). HTTP Request nodes: predefined credential 'Supabase API' (supabaseApi). Claude: n8n Gateway credits (anthropicApi)."
+  "_notes": "Triggered by pg_net on transcript_lines INSERT (Vault n8n_translate_line_url). Payload {line_id, call_id, speaker, text_de, user_language}. Responds on receipt. Successful executions are not saved (volume; request headers). Credentials not exported. Webhooks 01/05/06: Header Auth credential (header X-Webhook-Secret, same value as Supabase Vault n8n_webhook_secret). HTTP Request nodes: predefined credential 'Supabase API' (supabaseApi). Claude: n8n Gateway credits (anthropicApi). Credit saver (RUN-024, 26.09): maxTokens 300; the DB trigger now only sends speaker=practice lines (assistant lines are batch-translated by 06). Kill switch: delete vault secret n8n_translate_line_url."
 }

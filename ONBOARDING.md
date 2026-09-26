@@ -1,7 +1,7 @@
 # START HERE — Anastasia's guide (status + setup + how to vibecode)
 
 Weekender Build, Dresden, 25–27.09.2026 · **Goal: our build is live under its own URL by Sun 27.09, 14:00.**
-Last updated: Sat 26.09.2026, ~13:30 (by Abdul + Claude). **What changed since Friday: see the newest note in vault `Memory/`.**
+Last updated: Sat 26.09.2026, ~13:50 (by Abdul + Claude). **What changed: see the newest note in vault `Memory/` (now `Memory/2026-09-26 Handoff - merged build.md`).**
 
 - Repo (private): https://github.com/AbdulrahmanBUW/weekender-build-2026-AA
 - Task board: https://github.com/users/AbdulrahmanBUW/projects/2 (milestones = pod slots)
@@ -13,16 +13,17 @@ Last updated: Sat 26.09.2026, ~13:30 (by Abdul + Claude). **What changed since F
 
 | Piece | Status | Where |
 |---|---|---|
-| **Your idea (Idea B)** | ⏳ **waiting for you** — write it, then we merge | `Weekender Build/Ideas/Idea B - (Teammate).md` → `Ideas/Merged Concept.md` |
-| Product direction v2 | ✅ **any phone task** (not only doctors), **12 input languages**, loop Tell → Check → Call → Result | vault `Concepts/Frontend and UX Plan v2.md` |
-| Database (Supabase `weekender-build`) | ✅ v2 live: generic tasks, subtitles + results in the user's language, Arabic demo task | `supabase/migrations/`, vault `Concepts/Data Model.md` |
-| n8n | ✅ 01 brief writer (all 8 task types) · 02 Dresden crawler · 03 Deepgram test · 04 task intake (`/webhook/task-intake`) · 05 transcript translation · 06 result in user language | n8n: https://arahmandeaxo.app.n8n.cloud · `n8n/workflows/` |
-| Voice call (Deepgram, German) | ✅ relay v2: task templates for all 8 types, `record_result`, voice input `/listen` (13 languages); doctor + pharmacy role-plays pass | `services/voice-relay/` (needs your own `.env`) |
-| Newcomer data | ✅ 84 verified Dresden places + 4 guides, guides in AR/TR/UK | tables `resources`, `guides` |
-| Lovable app "HalloTermin Paper" | 🟡 shell only; build with Plan v2 prompts **after the merge** | Lovable project |
+| **Merged product** | ✅ accepted 26.09: **Dresden mit Kind** (family hub: courses, events, bilingual communities, library + Health & services) with **"Ask for me"** (our AI phones the place in German, answer in the parent's language) | vault `Ideas/Merged Concept.md` (section "Build status"), `Decisions/DEC-003 Merged concept.md` |
+| UI plan | ✅ **Plan v3 is the UI source** (routes, screens, data contract, Lovable Knowledge + prompts); v2 stays the design base | vault `Concepts/Frontend and UX Plan v3 (merged).md` |
+| Database (Supabase `weekender-build`) | ✅ merge migration live: family fields on `resources`, `family_events`, `suggestions`, guide categories, `course_enquiry` + `kita_enquiry`, "checked by phone" trigger | `supabase/migrations/`, vault `Concepts/Data Model.md` |
+| Family hub data | ✅ **56** real, sourced family listings (28 courses, 6 communities, 5 Kitas, 3 schools, 4 libraries, 4 playgrounds, 6 family places) + **84** service places · **20** events (27.09.–31.10.) · **8** guides — family listings, events and guides translated de/ru/uk/ar/tr; every family listing, event and new guide fact-checked by a second agent (service places: spot-checked, RUN-011) | vault `Concepts/Family Hub Data.md`; add more via `docs/content-kit/` |
+| Call types | ✅ **10**: doctor, authority, landlord, contract, bank, pharmacy, restaurant, other + **course_enquiry** (free spot / trial lesson / waiting list) + **kita_enquiry** (Kita place / waiting list / visit). Full loop tested on a real course listing (RUN-023) | vault `Concepts/Task Types - How to extend.md`, `Runs/RUN-023 Merged flow E2E.md` |
+| n8n | ✅ 01 brief writer · 02 Dresden crawler (don't run before the demo, credits) · 03 Deepgram test · 04 task intake with provider prefill (`/webhook/task-intake`) · 05 live subtitles (other side only) · 06 result + assistant subtitles in the user's language — all on Claude Haiku to save credits | n8n: https://arahmandeaxo.app.n8n.cloud · `n8n/workflows/` |
+| Voice call (Deepgram, German) | ✅ relay: templates for all 10 types, trial lesson / Kita visit booking, `record_result`, voice input `/listen`; course, Kita, pharmacy and curveball role-plays pass. 🟡 not hosted publicly yet | `services/voice-relay/` (needs your own `.env`), `docs/deploy-relay.md` |
+| Lovable app | 🟡 P1 shell only → **next: build with Plan v3 prompts** | Lovable project |
 | Presentation | ✅ Pitch Kit, Pixel Agents office, archify diagrams, competitors, Monday plan, security review | vault `Concepts/`, `docs/` |
 
-**Important:** everything HalloTermin-specific can change after the merge. The *pattern* (form → database → n8n + AI → result shown live) is generic and should survive whatever we merge into.
+**Important:** backend and data are done and tested; what is missing for Sunday is the **Lovable UI** (Plan v3 prompts), a public host for the relay, the demo listing, and the RU/UK/AR translation review. "HalloTermin" is now only the engine name inside; the UI says **Dresden mit Kind** and **Ask for me**.
 
 ---
 

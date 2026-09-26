@@ -1,0 +1,21 @@
+# deps are installed inside the image with npm ci
+node_modules
+npm-debug.log*
+
+# secrets: never copy into the image (pass env at runtime)
+.env
+.env.*
+
+# test audio and local-only scripts (not needed at runtime)
+*.raw
+*.wav
+selftest.js
+roleplay-*.js
+listen-test.js
+probe-*.js
+
+# docs / build files
+README.md
+Dockerfile
+.dockerignore
+.git

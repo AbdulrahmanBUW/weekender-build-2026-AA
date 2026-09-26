@@ -9,10 +9,86 @@
 //   success      outcome that counts as success ('booked' | 'completed')
 //   resultType   default record_result.result_type for this task
 //   resultHint   what record_result.details should contain (English, for the function description)
-//   rules        extra German rules for this type
+//   rules        extra German rules for this type: string[] or (req, h) => string[]
+//                placeholders: {reason} (doctor reason), {person} (how to refer to the person: sie/er/Frau X/name)
+//   bookingKind  optional: what confirm_booking books (e.g. 'trial_lesson'); stored in calls.result.booking_kind
+//   bookingDetails  true = confirm_booking also takes `details` (same keys as resultHint), so ONE call records
+//                the booked slot plus everything else the other side said (places, waiting list, price…)
+//   keyterms     optional German words that help speech recognition for this task type
 // h = helpers passed in by server.js: { reason, fact(key), party(), hasWindows }
 
 const withWindows = (req, ...fns) => (req.time_windows?.length ? ['confirm_booking', ...fns] : fns.length ? fns : ['record_result']);
+
+// ---------- helpers for the family task types (course_enquiry, kita_enquiry) ----------
+// Facts come from the intake (n8n 04) as {key, label, value}; key names can vary a little, so look up by list + regex.
+function factBy(req, h, keys, re) {
+  for (const k of keys) { const v = h.fact(k); if (v) return v; }
+  const list = Array.isArray(req.allowed_facts) ? req.allowed_facts : [];
+  const f = re && list.find(x => x && x.value != null && String(x.value).trim() && re.test(String(x.key || '').toLowerCase()));
+  return f ? String(f.value).replace(/\s+/g, ' ').trim().slice(0, 80) : '';
+}
+
+const NUM_DE = ['null', 'ein', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn', 'elf', 'zwölf',
+  'dreizehn', 'vierzehn', 'fünfzehn', 'sechzehn', 'siebzehn', 'achtzehn'];
+const MONTHS_DE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const MONTH_PREFIX = { jan: 0, feb: 1, mar: 2, mär: 2, mae: 2, apr: 3, may: 4, mai: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, okt: 9, nov: 10, dec: 11, dez: 11 };
+
+// "6", "6 Jahre", "6 years", "sechs", "2,5 Jahre", "18 Monate" -> { years, half? } | { months } | { raw } | null
+// NOTE: never match "language" (contains "age") — the regex below only takes age/alter as a whole key part.
+const AGE_KEY_RE = /(^|_)(age|alter)(_|$)|child_?age|kind_?alter/;
+const AGE_WORDS = { eins: 1, ein: 1, eine: 1, zwei: 2, drei: 3, vier: 4, 'fünf': 5, sechs: 6, sieben: 7, acht: 8, neun: 9, zehn: 10, elf: 11, 'zwölf': 12,
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12 };
+function childAge(req, h) {
+  const raw = factBy(req, h, ['child_age', 'child_age_years', 'age', 'kid_age', 'alter', 'alter_kind'], AGE_KEY_RE);
+  if (!raw) return null;
+  const s = raw.toLowerCase();
+  const m = /(\d{1,2})(?:[.,](\d))?/.exec(s);
+  const word = (s.match(/[a-zäöüß]+/g) || []).map(w => AGE_WORDS[w]).find(Boolean);
+  const n = m ? Number(m[1]) : word || null;
+  if (n == null) return { raw };
+  if (/monat|month/.test(s) && !/jahr|year/.test(s)) return { months: n, raw };
+  if (n < 1 || n > 18) return { raw };
+  return { years: n, half: m?.[2] === '5', raw };
+}
+const ageWord = a => `${NUM_DE[a.years]}${a.half ? 'einhalb' : ''}`;   // "sechs", "zweieinhalb", "eineinhalb"
+
+// "2027-02", "02/2027", "Februar 2027", "from February", "feb" -> "Februar 2027" / "Februar"; else the raw text
+function monthDe(value) {
+  const s = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!s) return '';
+  let m = /^(\d{4})-(\d{1,2})/.exec(s);
+  if (m && +m[2] >= 1 && +m[2] <= 12) return `${MONTHS_DE[+m[2] - 1]} ${m[1]}`;
+  m = /^(?:\d{1,2}\.)?(\d{1,2})[./](\d{4})$/.exec(s);   // 02/2027, 2.2027, 14.05.2024 (day dropped on purpose)
+  if (m && +m[1] >= 1 && +m[1] <= 12) return `${MONTHS_DE[+m[1] - 1]} ${m[2]}`;
+  const year = /\b(20\d{2})\b/.exec(s)?.[1];
+  for (const w of s.toLowerCase().match(/[a-zäöü]{3,}/g) || []) {
+    const i = MONTH_PREFIX[w.slice(0, 3)];
+    if (i !== undefined) return `${MONTHS_DE[i]}${year ? ` ${year}` : ''}`;
+  }
+  return s.replace(/^(ab|from)\s+/i, '').slice(0, 40);   // "ab sofort" -> "sofort": the clause already says "ab …"
+}
+
+const startMonth = (req, h) => monthDe(factBy(req, h, ['start_month', 'desired_start', 'start_date', 'from_month', 'startmonat'], /start|beginn|from_month|ab_wann/)
+  || (req.constraints && typeof req.constraints === 'object' ? req.constraints.start_month || '' : ''));
+const birthOf = (req, h) => factBy(req, h, ['child_birth', 'child_birth_month', 'birth_month', 'child_dob', 'geburtsmonat'], /birth|geburt|dob/);
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+// course: "für Sechsjährige" / "für Kinder von 18 Monaten" / ''
+function courseAudience(req, h) {
+  const a = childAge(req, h);
+  if (!a) return '';
+  if (a.years) return `für ${cap(ageWord(a))}jährige`;
+  if (a.months) return `für Kinder von ${a.months} Monaten`;
+  return '';   // unclear text (e.g. "Kleinkind"): leave it out of the greeting; it is still in FAKTEN
+}
+// kita: "ein zweijähriges Kind" / "ein Kind von 14 Monaten" / "ein im Mai 2024 geborenes Kind" / "ein Kind"
+function kitaChild(req, h) {
+  const a = childAge(req, h);
+  if (a?.years) return `ein ${ageWord(a)}jähriges Kind`;
+  if (a?.months) return `ein Kind von ${a.months} Monaten`;
+  const b = birthOf(req, h);
+  return b ? `ein im ${monthDe(b)} geborenes Kind` : 'ein Kind';
+}
 
 export const REASON_DE = {
   first_visit: 'Erstuntersuchung', checkup: 'Vorsorgeuntersuchung', acute: 'Akuttermin',
@@ -112,6 +188,69 @@ export const TASK_TEMPLATES = {
     rules: [
       'Die Personenzahl ist fest (siehe RAHMEN). Reserviere auf den Namen der Person.',
       'Wenn nichts im Zeitfenster frei ist: bedanke dich und rufe end_call mit outcome "rejected" auf.'
+    ]
+  },
+  course_enquiry: {
+    label: "Kids' course enquiry",
+    mode: 'appointment',
+    purposeDe: (req, h) => {
+      const aud = courseAudience(req, h);
+      return aud ? `wollte fragen, ob es in Ihrem Kurs ${aud} noch einen Platz oder eine Probestunde gibt`
+        : 'wollte fragen, ob es in Ihrem Kurs noch einen Platz oder eine Probestunde für ein Kind gibt';
+    },
+    goalDe: (req, h) => {
+      const a = childAge(req, h);
+      const kid = a?.years ? `ein Kind von ${a.years === 1 && !a.half ? 'einem Jahr' : `${ageWord(a)} Jahren`}` : a?.months ? `ein Kind von ${a.months} Monaten` : 'ein Kind';
+      return `Für ${kid} beim Kursanbieter nachfragen: Gibt es einen freien Platz oder eine Probestunde, sonst eine Warteliste? Dazu Kurszeiten, Preis und Unterrichtssprache erfragen.${h.hasWindows ? ' Eine Probestunde nur innerhalb der Zeitfenster zusagen.' : ''}`;
+    },
+    functions: req => withWindows(req, 'record_result'),
+    success: 'booked',
+    bookingKind: 'trial_lesson',
+    bookingDetails: true,
+    resultType: 'course_availability',
+    resultHint: 'free_spot (true/false), trial_lesson (true/false), trial_slot_text, waiting_list (true/false), schedule_text, price_text, language_of_instruction, next_steps — booleans only if clearly said',
+    keyterms: ['Probestunde', 'Schnupperstunde', 'Warteliste', 'Kurs'],
+    rules: (req, h) => [
+      'Frag nacheinander, immer nur eine Frage: Ist ein Platz frei? Ist eine Probestunde (Schnupperstunde) möglich? Wenn nicht: Gibt es eine Warteliste? Dann – falls noch nicht gesagt – Kurszeiten, Preis und Unterrichtssprache.',
+      factBy(req, h, ['language_preference', 'preferred_language', 'wunschsprache', 'language'], /lang|sprache/)
+        ? 'In den FAKTEN steht eine Wunschsprache: frag, ob der Kurs auch in dieser Sprache oder zweisprachig möglich ist.'
+        : 'Frag, in welcher Sprache unterrichtet wird.',
+      h.hasWindows
+        ? 'Eine Probestunde sagst du NUR innerhalb der Zeitfenster zu. Liegt das Angebot außerhalb, frag nach einem anderen Termin. Passt ein Angebot: frag zuerst noch offene Punkte (Preis, Unterrichtssprache), dann Wochentag, Datum und Uhrzeit wiederholen und auf "Ja"/"Richtig" warten. Danach sagst du kurz "Wunderbar, ich notiere das." und rufst sofort confirm_booking auf – was mitzubringen ist (z. B. Sportsachen, Hausschuhe) in bring_items, alle weiteren Antworten (Platz, Warteliste, Kurszeiten, Preis, Sprache) in details. Nach confirm_booking KEIN record_result.'
+        : 'Du sagst keinen Termin zu (es gibt keine Zeitfenster): notiere angebotene Probestunden als trial_slot_text.',
+      'Gibt es keine passende Probestunde: fasse die Antworten zusammen und warte auf "Ja"/"Richtig". Danach sagst du kurz "Danke, ich notiere das." und rufst im selben Zug record_result mit result_type "course_availability" auf. free_spot, trial_lesson und waiting_list nur als true/false, wenn es klar gesagt wurde; alles andere als kurzer Text.',   // DEF-025 (closing turn of record_result)
+      'free_spot (in details und record_result) nur, wenn ausdrücklich gesagt wurde, ob ein Platz frei ist. Ein "Ja, gern" vor einer Rückfrage ist keine Antwort, und eine angebotene Probestunde heißt NICHT, dass ein Platz frei ist – dann free_spot weglassen.',   // DEF-028
+      'waiting_list nur, wenn die Frage nach der Warteliste selbst beantwortet wurde. "Kein Platz frei" oder "unter der Woche ist alles voll" heißt NICHT "keine Warteliste": dann noch einmal nach der Warteliste fragen oder waiting_list weglassen – und nichts Ungesagtes in die Zusammenfassung schreiben.',   // DEF-028 (RUN-016 verification)
+      'Du meldest das Kind nicht verbindlich an, unterschreibst nichts und stimmst keinem Vertrag und keiner Zahlung zu. Wird eine feste Anmeldung oder ein Eintrag auf die Warteliste angeboten: "Danke, das macht {person} gern selbst. Wie geht das am besten?" und notiere es als next_steps.',
+      'Vom Kind nennst du nur, was in den FAKTEN steht (z. B. das Alter). Sag "das Kind" oder den Vornamen aus den FAKTEN – "Tochter"/"Sohn" nur, wenn es in FAKTEN oder AUFGABE steht (nie aus dem Vornamen raten). Niemals Gesundheit, Allergien, Entwicklung oder Förderbedarf des Kindes. Wird danach gefragt: "Das bespricht {person} gern selbst mit Ihnen."'
+    ]
+  },
+  kita_enquiry: {
+    label: 'Kita place enquiry',
+    mode: 'appointment',
+    purposeDe: (req, h) => {
+      const from = startMonth(req, h);
+      return `wollte fragen, ob Sie${from ? ` ab ${from}` : ''} einen Betreuungsplatz für ${kitaChild(req, h)} haben und wie man auf die Warteliste kommt`;
+    },
+    goalDe: (req, h) => {
+      const from = startMonth(req, h);
+      return `Bei der Kita nachfragen, ob${from ? ` ab ${from}` : ''} ein Betreuungsplatz für ${kitaChild(req, h)} frei ist, wie man auf die Warteliste kommt bzw. wie die Plätze vergeben werden, und ob man die Kita besichtigen kann (Besichtigungstermin oder Tag der offenen Tür).${h.hasWindows ? ' Einen Besichtigungstermin nur innerhalb der Zeitfenster zusagen.' : ''}`;
+    },
+    functions: req => withWindows(req, 'record_result'),
+    success: 'booked',
+    bookingKind: 'kita_visit',
+    bookingDetails: true,
+    resultType: 'kita_availability',
+    resultHint: 'places_available (true/false), from_month, waiting_list_possible (true/false), how_to_apply, visit_possible (true/false), visit_text, languages, next_steps — booleans only if clearly said',
+    keyterms: ['Betreuungsplatz', 'Warteliste', 'Kita-Portal', 'Besichtigung'],
+    rules: (req, h) => [
+      `Reihenfolge, immer nur eine Frage: 1. Gibt es ab dem Wunschmonat einen Platz (sonst ab wann)? 2. Wie kommt man auf die Warteliste bzw. wie werden die Plätze vergeben? ${factBy(req, h, ['language_preference', 'preferred_language', 'wunschsprache', 'language'], /lang|sprache/) ? '3. Welche Sprachen werden im Kita-Alltag gesprochen (Wunschsprache siehe FAKTEN)? 4.' : '3.'} Zuletzt: Kann man die Kita besichtigen?`,
+      'Du meldest das Kind am Telefon NICHT an, unterschreibst nichts und nimmst keinen Platz verbindlich an. Behaupte nie, dass eine Anmeldung erledigt ist. In Dresden läuft die Anmeldung meist über das Online-Portal der Stadt – erkläre das aber nicht der Kita, sondern frag, wie es bei ihnen läuft, und notiere die Antwort (how_to_apply).',
+      h.hasWindows
+        ? 'Einen Besichtigungstermin (oder Tag der offenen Tür) sagst du NUR innerhalb der Zeitfenster zu. Vor der Zusage: Wochentag, Datum und Uhrzeit wiederholen und auf "Ja"/"Richtig" warten. Danach sagst du kurz "Wunderbar, ich notiere das." und rufst sofort confirm_booking auf – alle anderen Antworten (Plätze, ab wann, Warteliste, Anmeldung, Sprachen) in details. Nach confirm_booking KEIN record_result. Liegt der Termin außerhalb, frag nach einer Alternative oder notiere ihn als visit_text.'
+        : 'Du sagst keinen Termin zu (es gibt keine Zeitfenster): notiere Besichtigungstermine als visit_text.',
+      'Gibt es keinen Besichtigungstermin im Zeitfenster: fasse die Antworten zusammen und warte auf "Ja"/"Richtig". Danach sagst du kurz "Danke, ich notiere das." und rufst im selben Zug record_result mit result_type "kita_availability" auf. places_available, waiting_list_possible und visit_possible nur als true/false, wenn es klar gesagt wurde; alles andere als kurzer Text. Eine mögliche Besichtigung heißt NICHT, dass ein Platz frei ist, und "kein Platz frei" heißt NICHT "keine Warteliste".',   // DEF-025 + DEF-028
+      'Vom Kind nennst du nur, was in den FAKTEN steht (Alter oder Geburtsmonat, Wunschmonat). Sag "das Kind" oder den Vornamen aus den FAKTEN – "Tochter"/"Sohn" nur, wenn es in FAKTEN oder AUFGABE steht. Niemals Gesundheit, Allergien, Entwicklung, Förderbedarf oder Integrationsplatz. Wird danach gefragt: "Das bespricht {person} gern selbst mit Ihnen."'
     ]
   },
   other_call: {

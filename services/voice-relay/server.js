@@ -40,6 +40,11 @@ const clip = (v, n) => String(v ?? '').replace(/[\r\n\t\u0000-\u001f]+/g, ' ').r
 // Remove stage directions like "(Anruf beendet)" / "[lacht]" (RUN-012) before sending/saving a line.
 const stripStageDirections = t => String(t || '').replace(/\([^)]*\)|\[[^\]]*\]|\*[^*]*\*/g, ' ').replace(/\s+/g, ' ').trim();
 const normTime = t => { const m = /^(\d{1,2}):(\d{2})/.exec(String(t || '').trim()); return m ? `${m[1].padStart(2, '0')}:${m[2]}` : null; };
+// record_result / confirm_booking details: plain object, ≤ 2000 chars, empty values dropped
+const cleanDetails = d => (d && typeof d === 'object' && !Array.isArray(d) && JSON.stringify(d).length <= 2000
+  ? Object.fromEntries(Object.entries(d).filter(([, v]) => v !== '' && v != null)) : {});
+const RESERVED_RESULT_KEYS = ['result_type', 'booking_kind', 'date', 'time', 'doctor', 'party_size'];
+const withoutReserved = (o, keys = RESERVED_RESULT_KEYS) => Object.fromEntries(Object.entries(o || {}).filter(([k]) => !keys.includes(k)));
 
 // Local Berlin date+time -> UTC ISO string (handles CET/CEST). null if invalid.
 function berlinIso(date, time) {
@@ -134,26 +139,39 @@ function buildAgent(req) {
     ? `Sprich über ${p.name} als "${p.gender === 'f' ? 'sie' : 'er'}".`
     : p.sal ? `Sprich über die Person als "${p.sal === 'f' ? 'Frau' : 'Herr'} ${p.surname}".`
       : `Das Geschlecht von ${p.name} ist unbekannt: verwende keine Pronomen wie "sie" oder "er" und keine Anrede Frau/Herr, sondern den Namen.`;
+  // how the agent refers to the person in a sentence ("… meldet sich {ref} gern selbst")
+  const ref = p.gender === 'f' ? 'sie' : p.gender === 'm' ? 'er' : p.sal ? `${p.sal === 'f' ? 'Frau' : 'Herr'} ${p.surname}` : p.name;
+  const tplRules = typeof tpl.rules === 'function' ? tpl.rules(req, h) : (tpl.rules || []);
 
   const successRule = tpl.mode === 'appointment' && fnNames.includes('confirm_booking')
     ? 'Ziel ist eine Zusage innerhalb der Zeitfenster. Wiederhole vorher Wochentag, Datum und Uhrzeit (und bei einer Praxis die Ärztin/den Arzt, falls genannt) und warte auf ein "Ja"/"Richtig". Erst danach rufst du confirm_booking auf. Nach confirm_booking: kurz bedanken, in EINEM Satz verabschieden, end_call mit outcome "booked".'
     : '';
+  // family types (course/kita): the booking is the main goal, record_result only when no slot inside the windows came up
+  const resultLead = tpl.bookingDetails && fnNames.includes('confirm_booking')
+    ? 'Nur wenn KEIN Termin im Zeitfenster zustande kommt, und erst wenn alle Fragen aus der AUFGABE gestellt sind: fasse die Antworten kurz zusammen'
+    : 'Sobald du die Antwort hast: fasse sie kurz zusammen';
+  // family types: speak a short filler in the same turn as record_result, so the other side does not hear ~6-7 s of
+  // silence while the result is written and the goodbye is generated (DEF-025, record_result path; RUN-016 verification)
+  const resultCall = tpl.bookingDetails
+    ? 'warte auf die Bestätigung, sag dann nur "Danke, ich notiere das." und rufe im selben Zug record_result auf'
+    : 'warte auf die Bestätigung, rufe dann record_result auf';
   const resultRule = fnNames.includes('record_result')
-    ? `Sobald du die Antwort hast: fasse sie kurz zusammen ("Nur damit ich es richtig notiere: …"), warte auf die Bestätigung, rufe dann record_result auf (nur ausdrücklich genannte Angaben; eine Frage ohne klare Antwort lässt du weg, ein "Gerne, auf Wiederhören" ist keine Antwort) (Details: ${tpl.resultHint || 'die wichtigsten Angaben'}), verabschiede dich in EINEM Satz und rufe end_call mit outcome "completed" auf.`
+    ? `${resultLead} ("Nur damit ich es richtig notiere: …"), ${resultCall} (nur ausdrücklich genannte Angaben; eine Frage ohne klare Antwort lässt du weg, ein "Gerne, auf Wiederhören" ist keine Antwort) (Details: ${tpl.resultHint || 'die wichtigsten Angaben'}), verabschiede dich in EINEM Satz und rufe end_call mit outcome "completed" auf.`
     : '';
 
   const rules = [
     'Du bist eine KI und sagst das ehrlich. Fragt jemand "Sind Sie ein Roboter/eine KI/ein Computer?", bestätige sofort: "Ja, genau, ich bin eine KI. Ich rufe im Auftrag an und habe alle Angaben hier." Gib dich niemals als die Person oder als Mensch aus.',
     'Nenne niemals Gesundheitsdaten, Symptome oder Diagnosen.',
-    `Verwende NUR die FAKTEN oben. Wird etwas anderes gefragt: "Das kann ich leider nicht sagen, dazu meldet sich ${p.gender === 'f' ? 'sie' : p.gender === 'm' ? 'er' : p.sal ? `${p.sal === 'f' ? 'Frau' : 'Herr'} ${p.surname}` : p.name} gern selbst." — oder rufe needs_user auf, wenn es wichtig ist.`,
+    `Verwende NUR die FAKTEN oben. Wird etwas anderes gefragt: "Das kann ich leider nicht sagen, das klärt ${ref} gern selbst mit Ihnen." — oder rufe needs_user auf, wenn es wichtig ist.`,
     pronounRule,
     'Sage nichts zu, was außerhalb von AUFGABE und RAHMEN liegt. Liegt ein Angebot außerhalb, frag höflich nach einer Alternative.',
     'Wenn die Gegenseite auf der Person besteht oder nicht mit einer KI sprechen möchte: bedanke dich, rufe needs_user auf (Frage auf Englisch) und verabschiede dich.',
     'Wenn nichts erreicht werden kann: bedanke dich und rufe end_call mit dem passenden outcome ("rejected" oder "failed") auf.',
     'Nenne Namen von Ansprechpartnern NUR, wenn sie klar und vollständig gesagt wurden. Einzelne unklare Wörter sind KEINE Namen. Erfinde niemals Namen, Daten, Uhrzeiten oder Zahlen.',
     'Wenn du etwas akustisch nicht sicher verstanden hast, frag höflich nach ("Entschuldigung, habe ich richtig verstanden: …?").',
+    'Stelle nie zwei Fragen in einem Satz. Kommt trotzdem nur ein "Ja" auf zwei Fragen, frag nach, worauf es sich bezieht; notiere nichts, was nicht einzeln beantwortet wurde.',   // DEF-027
     'Namen buchstabierst du nur auf Nachfrage mit dem deutschen Buchstabieralphabet ("A wie Anton").',
-    ...tpl.rules.map(r => r.replace('{reason}', reason))
+    ...tplRules.filter(Boolean).map(r => r.replaceAll('{reason}', reason).replaceAll('{person}', ref))
   ];
 
   const style = [
@@ -182,7 +200,7 @@ ${rules.map((r, i) => `${i + 1}. ${r}`).join('\n')}
 SPRECHSTIL:
 ${style.map(r => `- ${r}`).join('\n')}`;
 
-  const keyterms = [...new Set([...p.name.split(/\s+/), org.replace(/^(Praxis|Hausarztpraxis|Kinderarztpraxis|Apotheke|Restaurant)\s*/i, ''), 'KI-Assistentin'])]
+  const keyterms = [...new Set([...p.name.split(/\s+/), org.replace(/^(Praxis|Hausarztpraxis|Kinderarztpraxis|Apotheke|Restaurant|Musikschule|Tanzschule|Kita|Kindertagesstätte|Kindergarten)\s*/i, ''), 'KI-Assistentin', ...(tpl.keyterms || [])])]
     .filter(Boolean).slice(0, 10);
 
   return { greeting, prompt, keyterms, functions: buildFunctions(req, tpl, fnNames), template: tpl };
@@ -200,9 +218,10 @@ function buildFunctions(req, tpl, names) {
     };
     if (tpl.useDoctorFields) properties.doctor = { type: 'string', description: 'Doctor name ONLY if the practice clearly said it; otherwise omit' };
     if (req.task_type === 'restaurant_booking') properties.party_size = { type: 'integer', description: 'Number of people as agreed' };
+    if (tpl.bookingDetails) properties.details = { type: 'object', description: `Everything else the other side explicitly said (${tpl.resultHint || 'key facts'}). Leave out anything not clearly answered ("ja, gern" before a counter-question is NOT a yes); never guess and add no own conclusions (e.g. no "no Ukrainian" when it was simply not mentioned).` };
     fns.push({
       name: 'confirm_booking',
-      description: 'Call ONLY after the other side explicitly confirmed your read-back. Records the agreed appointment/visit/table. The server rejects times outside the allowed windows.',
+      description: `Call ONLY after the other side explicitly confirmed your read-back. Records the agreed ${tpl.bookingKind ? tpl.bookingKind.replace(/_/g, ' ') : 'appointment/visit/table'}. The server rejects times outside the allowed windows.`,
       parameters: { type: 'object', properties, required: ['date', 'time'] }
     });
   }
@@ -214,7 +233,7 @@ function buildFunctions(req, tpl, names) {
         type: 'object',
         properties: {
           result_type: { type: 'string', description: `Short snake_case type${tpl.resultType ? ` (use "${tpl.resultType}")` : ', e.g. how_to_book, documents, reported, answer'}` },
-          details: { type: 'object', description: 'ONLY facts the other side explicitly said (numbers as numbers, times HH:MM). Leave out anything not clearly answered: a goodbye or "gerne" is NOT a yes. Never guess.' },
+          details: { type: 'object', description: 'ONLY facts the other side explicitly said (numbers as numbers, times HH:MM). Leave out anything not clearly answered: a goodbye or "gerne" is NOT a yes. Never guess, no own conclusions.' },
           summary_en: { type: 'string', description: 'One or two plain English sentences for the user' }
         },
         required: ['result_type', 'details', 'summary_en']
@@ -282,6 +301,19 @@ const server = http.createServer((req, res) => {
 // Deepgram/Claude quota or changing request status via this relay. Applies to /call and /listen.
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || `http://127.0.0.1:${PORT},http://localhost:${PORT}`)
   .split(',').map(s => s.trim()).filter(Boolean);
+// Hosted frontends (Lovable preview + published URLs change per project/branch): accept https://<sub><suffix>.
+// Set ALLOWED_ORIGIN_SUFFIXES= (empty) to turn this off and rely on the exact list only.
+const ALLOWED_ORIGIN_SUFFIXES = (process.env.ALLOWED_ORIGIN_SUFFIXES ?? '.lovable.app,.lovableproject.com')
+  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean).map(s => (s.startsWith('.') ? s : `.${s}`));
+
+function originAllowed(origin) {
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  let u; try { u = new URL(origin); } catch { return false; }
+  // exactly https://host (no port, path, user info; browsers send lowercase hosts)
+  if (u.protocol !== 'https:' || u.port || u.origin !== origin) return false;
+  const host = u.hostname;
+  return ALLOWED_ORIGIN_SUFFIXES.some(s => host.endsWith(s) && host.length > s.length);
+}
 const MAX_CONCURRENT_CALLS = Number(process.env.MAX_CONCURRENT_CALLS || 3);   // shared by /call and /listen
 const MAX_LISTEN_SECONDS = Number(process.env.MAX_LISTEN_SECONDS || 120);
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -300,7 +332,7 @@ function reject(socket, code, msg) {
 server.on('upgrade', (req, socket, head) => {
   const url = new URL(req.url, 'http://x');
   const origin = req.headers.origin;
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) return reject(socket, 403, 'origin not allowed');
+  if (origin && !originAllowed(origin)) return reject(socket, 403, 'origin not allowed');
   if (activeCalls >= MAX_CONCURRENT_CALLS) return reject(socket, 429, 'too many calls');
   if (url.pathname === '/call') {
     const id = url.searchParams.get('request');
@@ -320,6 +352,8 @@ const HOLD_RE = /\b(moment|augenblick|kurz warten|bleiben sie (bitte )?dran|ich 
 
 wss.on('connection', async (browser, httpReq) => {
   activeCalls += 1;
+  let browserGone = false;          // closed during the setup awaits below (before the real close handler exists)
+  browser.once('close', () => { browserGone = true; });
   const url = new URL(httpReq.url, 'http://x');
   const requestId = url.searchParams.get('request') || DEMO_REQUEST_ID;
   const toBrowser = obj => browser.readyState === WebSocket.OPEN && browser.send(JSON.stringify(obj));
@@ -342,6 +376,7 @@ wss.on('connection', async (browser, httpReq) => {
   const dg = new WebSocket(DG_URL, { headers: { Authorization: `Token ${DG_KEY}` } });
   let endAfterAudio = false;
   let recordedOutcome = null;
+  let lastResult = null;            // calls.result as last written (booking + extra answers are merged)
   let summaryRecorded = false;
   let lastPracticeActivity = Date.now();
   let holdUntil = 0;
@@ -349,19 +384,34 @@ wss.on('connection', async (browser, httpReq) => {
   let saidGoodbye = false;          // last agent line was a goodbye
   let muteAfterEnd = false;
   let audioMuted = false;         // end_call after a goodbye: drop anything the model adds ("Termin vereinbart – danke!")
+  let practiceHeard = false;      // the other side said something (so a later silence is NOT "no answer")
+  let askedUser = false;          // needs_user was called
   const SILENCE_LIMIT_MS = Number(process.env.SILENCE_LIMIT_MS || 30000);
   const HOLD_LIMIT_MS = Number(process.env.HOLD_LIMIT_MS || 90000);
   const keepAlive = setInterval(() => dg.readyState === WebSocket.OPEN && dg.send(JSON.stringify({ type: 'KeepAlive' })), 8000);
+
+  // The call stops without confirm_booking / record_result / end_call (silence, the other side hung up, Deepgram dropped):
+  // record an honest outcome. Before: silence after a whole conversation was saved as "did not answer" and a hang-up
+  // (browser closed) left the request "calling" with no outcome (RUN-016 verification).
+  async function closeWithoutResult(why, stopped = false) {   // stopped = closed/dropped (not a silence timeout)
+    if (recordedOutcome || endAfterAudio) return recordedOutcome;
+    const outcome = askedUser ? 'needs_user' : (practiceHeard || stopped) ? 'failed' : 'no_answer';
+    recordedOutcome = outcome;
+    const summary = outcome === 'no_answer' ? 'The other side did not answer or went silent.'
+      : `The call ended before anything was confirmed (${why}). Nothing was agreed or recorded${outcome === 'needs_user' ? '; an open question for the person is saved' : '; please check or try again'}.`;
+    await dbq(`outcome ${outcome}`, c => c.from('calls').update({ outcome, summary_en: summary }).eq('id', callId));
+    if (outcome !== 'needs_user') await dbq('status failed', c => c.from('call_requests').update({ status: 'failed' }).eq('id', req.id));
+    return outcome;
+  }
+
   // No answer / other side went silent: close the call with a recorded outcome instead of leaving it "calling".
   // During an explicit hold ("Moment bitte") the limit is raised to HOLD_LIMIT_MS.
   const silenceWatch = setInterval(async () => {
     if (agentSpeaking || recordedOutcome || endAfterAudio) return;
     const limit = Date.now() < holdUntil ? HOLD_LIMIT_MS : SILENCE_LIMIT_MS;
     if (Date.now() - lastPracticeActivity < limit) return;
-    recordedOutcome = 'no_answer';
-    await dbq('no_answer', c => c.from('calls').update({ outcome: 'no_answer', summary_en: 'The other side did not answer or went silent.' }).eq('id', callId));
-    await dbq('status failed', c => c.from('call_requests').update({ status: 'failed' }).eq('id', req.id));
-    toBrowser({ type: 'relay', event: 'no_answer' });
+    const outcome = await closeWithoutResult('the other side went silent');
+    toBrowser(outcome === 'no_answer' ? { type: 'relay', event: 'no_answer' } : { type: 'relay', event: 'ending', outcome, summary_en: 'The other side went silent before anything was confirmed.' });
     finish('silence timeout');
   }, 5000);
 
@@ -399,29 +449,51 @@ wss.on('connection', async (browser, httpReq) => {
       const wantParty = Number(req.constraints?.party_size) || null;
       if (wantParty && args.party_size != null && Number(args.party_size) !== wantParty) return { ok: false, error: `Die Personenzahl muss ${wantParty} sein. Bitte korrigieren.` };
       const bring = Array.isArray(args.bring_items) ? args.bring_items.map(x => clip(x, 60)).filter(Boolean).slice(0, 8) : null;
-      const result = { result_type: 'booking', date: args.date, time, ...(args.doctor ? { doctor: clip(args.doctor, 60) } : {}), ...(wantParty ? { party_size: wantParty } : {}) };
+      // earlier record_result answers + details given with the booking are kept; the booking fields always win
+      const result = {
+        ...withoutReserved(lastResult), ...withoutReserved(cleanDetails(args.details)),
+        result_type: 'booking', ...(template.bookingKind ? { booking_kind: template.bookingKind } : {}),
+        date: args.date, time, ...(args.doctor ? { doctor: clip(args.doctor, 60) } : {}), ...(wantParty ? { party_size: wantParty } : {})
+      };
+      lastResult = result;
       recordedOutcome = 'booked';
-      await dbq('booked call', c => c.from('calls').update({ outcome: 'booked', booked_slot: slot, bring_items: bring, result }).eq('id', callId));
-      await dbq('status booked', c => c.from('call_requests').update({ status: 'booked' }).eq('id', req.id));
-      await dbq('event booked', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'booking_confirmed', payload: { ...result, bring_items: bring } }));
+      await Promise.all([   // independent writes in parallel: every ms here is silence on the line (DEF-025)
+        dbq('booked call', c => c.from('calls').update({ outcome: 'booked', booked_slot: slot, bring_items: bring, result }).eq('id', callId)),
+        dbq('status booked', c => c.from('call_requests').update({ status: 'booked' }).eq('id', req.id)),
+        dbq('event booked', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'booking_confirmed', payload: { ...result, bring_items: bring } }))
+      ]);
       toBrowser({ type: 'relay', event: 'booked', ...result, bring_items: bring });
       return { ok: true };
     }
     if (fn.name === 'record_result') {
       const details = args.details && typeof args.details === 'object' && !Array.isArray(args.details) ? args.details : null;
       if (!details || JSON.stringify(details).length > 2000) return { ok: false, error: 'details fehlt oder ist zu groß. Bitte die wichtigsten Angaben als kurze Schlüssel/Wert-Paare übergeben.' };
-      const clean = Object.fromEntries(Object.entries(details).filter(([, v]) => v !== '' && v != null));
-      const result = { result_type: clip(args.result_type || 'answer', 40), ...clean };
+      const clean = cleanDetails(details);
       const summary = clip(args.summary_en, 400) || null;
+      if (recordedOutcome === 'booked') {
+        // already booked (e.g. Kita visit agreed): only add the extra answers, never downgrade booked -> completed
+        const merged = { ...lastResult, ...withoutReserved(clean) };
+        lastResult = merged;
+        await dbq('result after booking', c => c.from('calls').update({ result: merged, ...(summary ? { summary_en: summary } : {}) }).eq('id', callId));
+        summaryRecorded = summaryRecorded || !!summary;
+        await dbq('event result', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'result_recorded', payload: { result_type: clip(args.result_type || 'answer', 40), merged_into: 'booking' } }));
+        toBrowser({ type: 'relay', event: 'result', result: merged, summary_en: summary });
+        return { ok: true, note: 'Der Termin bleibt gebucht, die Angaben sind ergänzt. Jetzt in EINEM Satz verabschieden und end_call mit outcome "booked" aufrufen.' };
+      }
+      const result = { result_type: clip(args.result_type || 'answer', 40), ...withoutReserved(clean, ['result_type']) };
+      lastResult = result;
       recordedOutcome = 'completed';
       summaryRecorded = !!summary;
-      await dbq('result call', c => c.from('calls').update({ outcome: 'completed', result, summary_en: summary }).eq('id', callId));
-      await dbq('status completed', c => c.from('call_requests').update({ status: 'completed' }).eq('id', req.id));
-      await dbq('event result', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'result_recorded', payload: { result_type: result.result_type } }));
+      await Promise.all([
+        dbq('result call', c => c.from('calls').update({ outcome: 'completed', result, summary_en: summary }).eq('id', callId)),
+        dbq('status completed', c => c.from('call_requests').update({ status: 'completed' }).eq('id', req.id)),
+        dbq('event result', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'result_recorded', payload: { result_type: result.result_type } }))
+      ]);
       toBrowser({ type: 'relay', event: 'result', result, summary_en: summary });
       return { ok: true };
     }
     if (fn.name === 'needs_user') {
+      askedUser = true;
       const question = clip(args.question, 300);
       await dbq('status needs_user', c => c.from('call_requests').update({ status: 'needs_user' }).eq('id', req.id));
       await dbq('event needs_user', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'needs_user', payload: { question } }));
@@ -431,7 +503,8 @@ wss.on('connection', async (browser, httpReq) => {
     if (fn.name === 'end_call') {
       endAfterAudio = true;
       if (saidGoodbye) muteAfterEnd = true;
-      const outcome = END_OUTCOMES.includes(args.outcome) ? args.outcome : 'failed';
+      const asked = END_OUTCOMES.includes(args.outcome) ? args.outcome : 'failed';
+      const outcome = asked === 'completed' && recordedOutcome === 'booked' ? 'booked' : asked;   // a booking stays a booking
       const summary = clip(args.summary_en, 400) || null;
       if (!recordedOutcome || outcome !== recordedOutcome) {
         // booked/completed without the recording function = unverified: keep the outcome, don't flip the status
@@ -458,9 +531,13 @@ wss.on('connection', async (browser, httpReq) => {
           const text = stripStageDirections(msg.content);
           if (speaker === 'practice') { lastPracticeActivity = Date.now(); if (HOLD_RE.test(text)) holdUntil = Date.now() + HOLD_LIMIT_MS; }
           if (!text) break;
+          if (speaker === 'practice') practiceHeard = true;
           if (speaker === 'agent') {
             if (muteAfterEnd) { console.log(`[call ${callId || 'no-db'}] dropped post-goodbye line`); break; }
             saidGoodbye = GOODBYE_RE.test(text);
+            // Deepgram can send the end_call FunctionCallRequest BEFORE the goodbye text of the same turn (RUN-016):
+            // then this goodbye is the last line; anything after it is dropped (DEF-026).
+            if (endAfterAudio && saidGoodbye) muteAfterEnd = true;
           } else saidGoodbye = false;
           toBrowser({ type: 'line', speaker, text });
           if (callId) await dbq('transcript', c => c.from('transcript_lines').insert({ call_id: callId, speaker, text_de: text }));
@@ -469,7 +546,9 @@ wss.on('connection', async (browser, httpReq) => {
         case 'FunctionCallRequest': {
           for (const fn of msg.functions || []) {
             let result;
+            const t0 = Date.now();
             try { result = await handleFunction(fn); } catch (e) { console.error('[function]', fn.name, e.message); result = { ok: false, error: 'Interner Fehler, bitte kurz fortfahren.' }; }
+            console.log(`[call ${callId || 'no-db'}] ${fn.name} → ${result?.ok ? 'ok' : `rejected: ${result?.error}`} (${Date.now() - t0} ms)`);
             reply(fn, result);
           }
           break;
@@ -512,6 +591,7 @@ wss.on('connection', async (browser, httpReq) => {
     console.log(`[call ${callId || 'no-db'}] ended: ${reason} | mic audio received: ${secondsIn} s`);
     clearInterval(keepAlive);
     clearInterval(silenceWatch);
+    if (callId) await closeWithoutResult(reason.startsWith('browser closed') ? 'the call was closed on the other side' : 'a technical problem with the voice service', true);
     await dbq('ended_at', c => c.from('calls').update({ ended_at: new Date().toISOString() }).eq('id', callId));
     await dbq('event call_ended', c => c.from('events').insert({ request_id: req.id, source: 'voice', type: 'call_ended', payload: { reason, mic_seconds: Number(secondsIn) } }));
     toBrowser({ type: 'relay', event: 'call_ended', reason });
@@ -522,6 +602,8 @@ wss.on('connection', async (browser, httpReq) => {
   browser.on('close', () => finish('browser closed'));
   dg.on('close', (code, reason) => finish(`deepgram closed ${code} ${reason}`));
   dg.on('error', err => { console.error('[deepgram ws]', err.message); finish('deepgram error'); });
+  // the browser left while the request/call rows were being set up: its 'close' fired before the handler above existed
+  if (browserGone || browser.readyState !== WebSocket.OPEN) finish('browser closed before the call started');
 });
 
 // ---------- /listen: intake voice input, speech-to-text in the user's language (nothing stored) ----------
@@ -575,9 +657,9 @@ listenWss.on('connection', (browser, httpReq) => {
   }
 });
 
-export { buildAgent, berlinIso };
+export { buildAgent, berlinIso, originAllowed };
 
 // Only listen when run directly (lets tests import buildAgent without starting the server).
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  server.listen(PORT, '127.0.0.1', () => console.log(`Voice relay on http://127.0.0.1:${PORT}  (think: ${THINK_PROVIDER}/${THINK_MODEL}, speak: ${SPEAK_MODEL}, listen: ${LISTEN_MODEL})`));
+  server.listen(PORT, process.env.HOST || '127.0.0.1', () => console.log(`Voice relay on http://${process.env.HOST || '127.0.0.1'}:${PORT}  (think: ${THINK_PROVIDER}/${THINK_MODEL}, speak: ${SPEAK_MODEL}, listen: ${LISTEN_MODEL})`));
 }

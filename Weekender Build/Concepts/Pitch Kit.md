@@ -3,6 +3,8 @@ type: concept
 tags: [pitch, presentation]
 sources: []
 ---
+> Superseded by [[Pitch Kit v2 (merged)]] (26.09)
+
 # Pitch Kit
 
 **What this is:** everything we need to talk about the project: the 5-minute pod pitch, the 30-second pitch, the 3-minute Sunday demo, jury questions and a slide outline.
