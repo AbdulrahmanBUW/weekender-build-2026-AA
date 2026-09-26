@@ -3,7 +3,7 @@
 > Dresden · 25–27 Sep 2026 · **Build live under own URL by Sun 27.09 14:00**
 
 ## Status (Sat 26.09, 13:30) → full guide: `ONBOARDING.md` in the repo root
-- ✅ v2 direction: **any phone task, 12 languages** → [[Frontend and UX Plan v2]] · ✅ DB v2 live · ✅ voice relay + Deepgram books in role-play · ✅ 84 Dresden places + 4 guides (AR/TR/UK) · ✅ n8n v2 (01/04/05/06) + relay v2 live · 🟡 Lovable shell only · ⏳ **Idea B → merge**
+- ✅ v2 direction: **any phone task, 12 languages** → [[Frontend and UX Plan v2]] · ✅ DB v2 live · ✅ voice relay + Deepgram books in role-play · ✅ 84 Dresden places + 4 guides (AR/TR/UK) · ✅ n8n v2 (01/04/05/06) + relay v2 live · 🟡 Lovable shell only · ✅ Idea B in · 🟡 **merge proposed → [[Merged Concept]] / [[DEC-003 Merged concept (proposed)]]**
 - Latest handoff: [[2026-09-26 Handoff - v2 any-task multilingual, ready for Idea B]]
 
 ## Deliverables (from weekenderbuild.de)
@@ -35,7 +35,7 @@
 ![[Dashboard.base]]
 
 ## Map
-- Ideas: [[Idea A - HalloTermin (Abdul)]] · [[Idea B - (Teammate)]] → merged into [[Merged Concept]]
+- Ideas: [[Idea A - HalloTermin (Abdul)]] · [[Idea B - Dies-Das-Ana-Nas]] → merged into [[Merged Concept]] ("Find it. We call for you.")
 - Plan: [[Build Plan - 48h]] · [[Weekender Build - Event Format]] · [[Monday-Morning Plan]]
 - Product: [[Personas]] · [[Service Blueprint - Booking a Doctor]] · [[Moment of Truth - First 15 Seconds]] · [[Glossary - German Healthcare Terms]] · [[AI Disclosure]]
 - Stack: [[Stack Overview - Lovable n8n Supabase]] · [[Integration Patterns]] · [[Lovable - Practical Guide]] · [[Supabase - Practical Guide]] · [[n8n - Practical Guide]] · [[Data Model]] · [[Newcomer Resources - Crawler]] (Dresden places + guides, n8n workflow 02)

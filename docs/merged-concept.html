@@ -1,0 +1,386 @@
+<title>Find It, We Call</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#F7F4EC; --card:#FFFDF8; --deep:#EFE9DC; --ink:#1C2420; --muted:#5B635E; --line:#D9D2C3;
+  --a:#1F5C4A; --a-tint:#E6EEE9; --b:#8A5A00; --b-tint:#FBF0D9; --both:#3E4A43; --both-tint:#ECE8DD;
+  --ok:#1F5C4A; --new:#8A5A00; --later:#8C8577;
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141A17; --card:#1B221E; --deep:#212923; --ink:#ECE7DC; --muted:#A6ADA8; --line:#333D37;
+    --a:#7FC3A6; --a-tint:#1E3029; --b:#E3B45C; --b-tint:#33291A; --both:#C9CFC9; --both-tint:#262D28;
+    --ok:#7FC3A6; --new:#E3B45C; --later:#7C847F; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141A17; --card:#1B221E; --deep:#212923; --ink:#ECE7DC; --muted:#A6ADA8; --line:#333D37;
+  --a:#7FC3A6; --a-tint:#1E3029; --b:#E3B45C; --b-tint:#33291A; --both:#C9CFC9; --both-tint:#262D28;
+  --ok:#7FC3A6; --new:#E3B45C; --later:#7C847F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); font:17px/1.6 var(--sans); padding-inline:16px; padding-block:0 64px}
+.wrap{max-width:72rem; margin:0 auto}
+h1,h2,h3{font-family:var(--serif); font-weight:600; line-height:1.15; text-wrap:balance; margin:0}
+h1{font-size:clamp(34px,6vw,52px)}
+h2{font-size:26px}
+h3{font-size:19px}
+p{margin:0; max-width:65ch}
+small,.muted{color:var(--muted)}
+.label{font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600}
+section{display:grid; gap:20px; padding-block:40px 8px}
+hr{border:0; border-top:1px solid var(--line); margin:0}
+/* who chips */
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; padding:2px 8px; border-radius:6px; border:1px solid currentColor; white-space:nowrap}
+.chip.a{color:var(--a); background:var(--a-tint)}
+.chip.b{color:var(--b); background:var(--b-tint)}
+.chip.both{color:var(--both); background:var(--both-tint)}
+.chip.ok{color:var(--ok)} .chip.new{color:var(--new)} .chip.later{color:var(--later)}
+/* hero */
+header{padding-block:40px 8px; display:grid; gap:16px}
+.status{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.lede{font-size:20px; color:var(--muted); max-width:60ch}
+.lede strong{color:var(--ink)}
+/* two ideas */
+.pair{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.idea{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px; display:grid; gap:12px; align-content:start}
+.idea.a{border-top:4px solid var(--a)}
+.idea.b{border-top:4px solid var(--b)}
+.idea ul{margin:0; padding-inline-start:20px; display:grid; gap:4px}
+.idea .who{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:baseline}
+/* common ground table */
+.scroll{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--card)}
+table{border-collapse:collapse; width:100%; min-width:760px; font-size:16px}
+th,td{text-align:start; vertical-align:top; padding:12px 14px; border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+thead th{font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; background:var(--deep)}
+td.shared{background:var(--both-tint); font-weight:600}
+td.colA{color:var(--ink)} td.colB{color:var(--ink)}
+th.hA{color:var(--a)} th.hB{color:var(--b)}
+/* gap bridge */
+.bridge{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.gap{border-radius:10px; padding:18px 20px; display:grid; gap:8px}
+.gap.a{background:var(--a-tint)} .gap.b{background:var(--b-tint)}
+.gap h3{font-size:18px}
+/* loop */
+.loop{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; counter-reset:step}
+.step{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:grid; gap:8px; align-content:start; position:relative}
+.step .n{font-family:var(--serif); font-size:28px; color:var(--muted); line-height:1}
+.step .chips{display:flex; gap:6px; flex-wrap:wrap}
+.step ul{margin:0; padding-inline-start:18px; font-size:15px; display:grid; gap:2px}
+/* journey */
+.journey{background:var(--deep); border-radius:10px; padding:20px; display:grid; gap:14px}
+.beat{display:grid; grid-template-columns:120px 1fr; gap:12px; align-items:start}
+.beat .t{font-size:14px; font-weight:600; color:var(--muted); font-variant-numeric:tabular-nums}
+.de{font-family:var(--serif); font-style:normal}
+.quote{border-inline-start:3px solid var(--a); padding-inline-start:12px; display:grid; gap:2px}
+.quote.b{border-color:var(--b)}
+.quote small{font-size:14px}
+/* languages */
+.langs{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px}
+.lang{background:var(--card); border:1px solid var(--line); border-radius:6px; padding:10px 12px; display:grid; gap:4px}
+.lang .code{font-weight:600; font-variant-numeric:tabular-nums}
+.lang .nat{font-family:var(--serif)}
+.lang .src{display:flex; gap:4px; flex-wrap:wrap}
+.lang.ui{outline:2px solid var(--a); outline-offset:-2px}
+/* scope */
+.scope{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:16px}
+.col{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; display:grid; gap:10px; align-content:start}
+.col h3{display:flex; justify-content:space-between; gap:8px; align-items:baseline}
+.item{display:grid; gap:4px; padding-block:8px; border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item .top{display:flex; justify-content:space-between; gap:8px; align-items:baseline}
+.item .top strong{font-weight:600}
+.item .chips{display:flex; gap:4px; flex-wrap:wrap}
+/* build list */
+.build{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.build ul{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.build li{display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start; font-size:16px}
+/* team */
+.team{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.person{border-radius:10px; padding:18px 20px; display:grid; gap:8px}
+.person.a{background:var(--a-tint)} .person.b{background:var(--b-tint)}
+.person ul{margin:0; padding-inline-start:20px; display:grid; gap:4px}
+/* timeline */
+.timeline{display:grid; gap:0; border-inline-start:2px solid var(--line); margin-inline-start:8px}
+.tl{display:grid; grid-template-columns:150px 1fr; gap:14px; padding:10px 0 10px 18px; position:relative}
+.tl::before{content:""; position:absolute; inset-inline-start:-7px; top:17px; width:12px; height:12px; border-radius:50%; background:var(--card); border:2px solid var(--muted)}
+.tl.key::before{background:var(--a); border-color:var(--a)}
+.tl .when{font-weight:600; font-variant-numeric:tabular-nums}
+/* decisions */
+.decide{display:grid; gap:10px}
+.q{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 18px; display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start}
+.q .num{font-family:var(--serif); font-size:22px; color:var(--b); line-height:1.1}
+.q .prop{font-size:15px; color:var(--muted)}
+.q .prop b{color:var(--ink); font-weight:600}
+footer{padding-block:40px 0; color:var(--muted); font-size:15px; display:grid; gap:6px}
+@media (max-width:860px){
+  .pair,.bridge,.scope,.build,.team{grid-template-columns:1fr}
+  .loop{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .loop{grid-template-columns:1fr}
+  .beat{grid-template-columns:1fr; gap:4px}
+  .tl{grid-template-columns:1fr; gap:2px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="status">
+    <span class="label">Weekender Build Dresden · merged concept</span>
+    <span class="chip new">Proposed · Sat 26 Sep 2026</span>
+  </div>
+  <h1>Find it. We call for you.</h1>
+  <p class="lede"><strong>Dresden mit Kind</strong> helps international parents find the right course, Kita, doctor or community for their child. <strong>HalloTermin</strong> then phones that place in German for them and brings the answer back in their language.</p>
+  <div class="status">
+    <span class="chip b">Anastasia · Dresden mit Kind</span>
+    <span class="chip a">Abdul · HalloTermin</span>
+    <span class="chip both">Shared ground</span>
+  </div>
+</header>
+
+<section id="ideas" aria-labelledby="h-ideas">
+  <h2 id="h-ideas">Two ideas, one family in Dresden</h2>
+  <div class="pair">
+    <article class="idea b">
+      <div class="who"><h3>Dresden mit Kind</h3><span class="chip b">Anastasia</span></div>
+      <p>The place an expat parent opens in their first year in Dresden: what can we do, where can my child learn, who speaks our language, and how does this system work here.</p>
+      <ul>
+        <li>Four pillars: events, courses, bilingual communities, experience library</li>
+        <li>Provider pages with schedules; later self-service and reviews</li>
+        <li>11 launch languages, Arabic right-to-left</li>
+        <li>Personas: Maria (new parent), Ahmed (settled parent), Olga (music teacher)</li>
+      </ul>
+      <small>Status: PRD draft v0.2, content not yet built</small>
+    </article>
+    <article class="idea a">
+      <div class="who"><h3>HalloTermin</h3><span class="chip a">Abdul</span></div>
+      <p>The user says in their own language what they need done by phone. An honest AI assistant calls in German, stays inside their limits and returns the result in their language.</p>
+      <ul>
+        <li>Any phone task: doctor, Ausländerbehörde, landlord, pharmacy, bank, restaurant</li>
+        <li>Live call with German voice and subtitles in the user's language</li>
+        <li>12 input languages, 84 verified Dresden places, 4 translated guides</li>
+        <li>Personas: Priya (student), Amina (family reunion), Marco (engineer)</li>
+      </ul>
+      <small>Status: backend live and tested (database, n8n, voice relay); UI shell only</small>
+    </article>
+  </div>
+</section>
+
+<section id="common" aria-labelledby="h-common">
+  <h2 id="h-common">Common ground</h2>
+  <p class="muted">Same people, same city, same values, same core stack. The shaded column is what we already agree on.</p>
+  <div class="scroll" role="region" aria-label="Comparison table" tabindex="0">
+    <table>
+      <thead><tr><th scope="col">Topic</th><th scope="col" class="hB">Dresden mit Kind</th><th scope="col">Shared</th><th scope="col" class="hA">HalloTermin</th></tr></thead>
+      <tbody>
+        <tr><td>Who</td><td class="colB">International parents, 0–3 years in Dresden, children 0–12</td><td class="shared">Newcomers with little German who feel lost in German-only systems</td><td class="colA">Students, family-reunion spouses, skilled workers</td></tr>
+        <tr><td>Where</td><td class="colB">Dresden districts as a filter</td><td class="shared">Dresden first</td><td class="colA">Dresden data, works for any German number</td></tr>
+        <tr><td>Languages</td><td class="colB">11 launch languages incl. German</td><td class="shared">10 in both: en, uk, ru, ar, hi, zh, pl, vi, tr, es. Arabic right-to-left</td><td class="colA">12 input languages incl. Persian, French</td></tr>
+        <tr><td>Data</td><td class="colB">Providers, courses, events, communities, places, articles</td><td class="shared">A curated, sourced directory of Dresden places plus how-to guides</td><td class="colA">84 checked places (doctors, pharmacies, banks, offices), 4 guides in AR/TR/UK</td></tr>
+        <tr><td>Stack</td><td class="colB">Next.js, Tailwind, shadcn</td><td class="shared">Supabase in the EU with row-level security, mobile-first</td><td class="colA">Lovable, n8n, Deepgram voice relay</td></tr>
+        <tr><td>Values</td><td class="colB">No data about children, review moderation</td><td class="shared">GDPR, minimal data, plain language, WCAG AA</td><td class="colA">AI always discloses itself, no audio stored, no symptoms stored</td></tr>
+        <tr><td>The pain</td><td class="colB">Information scattered across German sites and chat groups</td><td class="shared">"I know what I need, but the system speaks German."</td><td class="colA">Phone-first offices, fast German, narrow call windows</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="gaps" aria-labelledby="h-gaps">
+  <h2 id="h-gaps">Each idea fills the other's gap</h2>
+  <div class="bridge">
+    <div class="gap b">
+      <h3>Dresden mit Kind alone</h3>
+      <p>Maria finds a Russian-speaking music class for her 4-year-old. The page says "call for a trial lesson". She has to call in German, during work hours, and ask about a waiting list. This is where she stops.</p>
+      <p><span class="chip a">HalloTermin adds</span> an "Ask for me" button that makes that call.</p>
+    </div>
+    <div class="gap a">
+      <h3>HalloTermin alone</h3>
+      <p>The assistant can call anyone, but the parent first has to know who to call and what to ask. Newcomers don't know which Kita, which course or which Kinderarzt takes new families.</p>
+      <p><span class="chip b">Dresden mit Kind adds</span> the curated directory and guides that answer "who" and "what".</p>
+    </div>
+  </div>
+</section>
+
+<section id="loop" aria-labelledby="h-loop">
+  <h2 id="h-loop">One solution in four steps</h2>
+  <div class="loop">
+    <div class="step">
+      <span class="n">1</span><h3>Discover</h3>
+      <div class="chips"><span class="chip b">Anastasia</span></div>
+      <ul><li>Courses and activities</li><li>Family events</li><li>Bilingual communities</li><li>Health and services <span class="chip a" style="font-size:11px">Abdul's data</span></li></ul>
+    </div>
+    <div class="step">
+      <span class="n">2</span><h3>Understand</h3>
+      <div class="chips"><span class="chip b">Anastasia</span><span class="chip a">Abdul</span></div>
+      <ul><li>Kita registration, school enrolment</li><li>Anmeldung, bank account, health insurance, Ausländerbehörde</li><li>In the parent's language</li></ul>
+    </div>
+    <div class="step">
+      <span class="n">3</span><h3>Act</h3>
+      <div class="chips"><span class="chip a">Abdul</span></div>
+      <ul><li>"Ask for me" on every provider and guide</li><li>Prefilled request, approval card</li><li>Honest German call, live subtitles</li></ul>
+    </div>
+    <div class="step">
+      <span class="n">4</span><h3>Result</h3>
+      <div class="chips"><span class="chip a">Abdul</span><span class="chip b">Anastasia</span></div>
+      <ul><li>Answer in the parent's language, add to calendar</li><li>Provider page shows "checked by phone on …"</li><li>Keeps listings fresh</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="journey" aria-labelledby="h-journey">
+  <h2 id="h-journey">Maria's Tuesday, end to end</h2>
+  <div class="journey">
+    <div class="beat"><span class="t">08:40 · Discover</span><p>Maria opens the site in Russian, filters Courses: age 3–6, music, language Russian, district Neustadt. Two results. <span class="chip b">directory</span></p></div>
+    <div class="beat"><span class="t">08:42 · Understand</span><p>The provider page shows ages, prices and "trial lesson on request". A guide card explains how course registrations usually work. <span class="chip b">provider page</span></p></div>
+    <div class="beat"><span class="t">08:43 · Act</span>
+      <div class="quote"><p>She taps "Ask for me": "Is there a free spot or a trial lesson for my 4-year-old on Tuesday or Thursday afternoon?" She approves the card. The assistant opens the call with:</p>
+        <p class="de" lang="de">"Guten Tag! Hier ist die KI-Assistentin von Maria Ivanova. Ich rufe für sie an und wollte fragen, ob es in Ihrem Musikkurs für Vierjährige noch einen Platz oder eine Probestunde gibt."</p>
+        <small>Good day, this is Maria Ivanova's AI assistant. I'm calling for her to ask whether your music course for four-year-olds has a free spot or a trial lesson.</small>
+      </div>
+    </div>
+    <div class="beat"><span class="t">08:46 · Result</span>
+      <div class="quote b"><p lang="ru">«Пробное занятие: четверг, 16:30. Возьмите сменную обувь.»</p><small>Trial lesson Thursday 16:30, bring indoor shoes. Added to her calendar; the course page now shows "checked by phone today".</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="languages" aria-labelledby="h-languages">
+  <h2 id="h-languages">Languages together</h2>
+  <p class="muted">13 codes across both ideas. Outlined = interface fully translated for Sunday (proposal). The rest get content, questions and results in their language with an English interface.</p>
+  <div class="langs">
+    <div class="lang ui"><span class="code">en</span><span class="nat">English</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang ui"><span class="code">de</span><span class="nat" lang="de">Deutsch</span><div class="src"><span class="chip b">Anastasia</span><span class="chip a">call language</span></div></div>
+    <div class="lang ui"><span class="code">ru</span><span class="nat" lang="ru">Русский</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang ui"><span class="code">uk</span><span class="nat" lang="uk">Українська</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang ui"><span class="code">ar</span><span class="nat" lang="ar" dir="rtl">العربية</span><div class="src"><span class="chip both">both · RTL</span></div></div>
+    <div class="lang ui"><span class="code">tr</span><span class="nat" lang="tr">Türkçe</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang"><span class="code">hi</span><span class="nat" lang="hi">हिन्दी</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang"><span class="code">zh</span><span class="nat" lang="zh-Hans">简体中文</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang"><span class="code">pl</span><span class="nat" lang="pl">Polski</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang"><span class="code">vi</span><span class="nat" lang="vi">Tiếng Việt</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang"><span class="code">es</span><span class="nat" lang="es">Español</span><div class="src"><span class="chip both">both</span></div></div>
+    <div class="lang"><span class="code">fa</span><span class="nat" lang="fa" dir="rtl">فارسی</span><div class="src"><span class="chip a">Abdul · RTL</span></div></div>
+    <div class="lang"><span class="code">fr</span><span class="nat" lang="fr">Français</span><div class="src"><span class="chip a">Abdul</span></div></div>
+  </div>
+</section>
+
+<section id="scope" aria-labelledby="h-scope">
+  <h2 id="h-scope">What we build by Sunday 14:00</h2>
+  <div class="scope">
+    <div class="col">
+      <h3>Must <span class="chip ok">demo</span></h3>
+      <div class="item"><div class="top"><strong>Home with pillars + "What do you need?" box</strong></div><div class="chips"><span class="chip b">B pillars</span><span class="chip a">A intake</span></div></div>
+      <div class="item"><div class="top"><strong>Directory with filters</strong></div><small>Child age, category, language of instruction, district. About 40–60 family providers plus 84 service places.</small><div class="chips"><span class="chip b">B</span><span class="chip a">A data</span></div></div>
+      <div class="item"><div class="top"><strong>Provider page with "Ask for me"</strong></div><div class="chips"><span class="chip b">B page</span><span class="chip a">A call</span></div></div>
+      <div class="item"><div class="top"><strong>Events list</strong></div><small>About 10 upcoming family events, marked "please verify".</small><div class="chips"><span class="chip b">B</span></div></div>
+      <div class="item"><div class="top"><strong>Library</strong></div><small>4 existing guides plus Kita place and school enrolment.</small><div class="chips"><span class="chip b">B</span><span class="chip a">A guides</span></div></div>
+      <div class="item"><div class="top"><strong>Call flow with live subtitles and result</strong></div><small>Backend already live and tested.</small><div class="chips"><span class="chip a">A</span></div></div>
+    </div>
+    <div class="col">
+      <h3>Should <span class="chip new">if time</span></h3>
+      <div class="item"><div class="top"><strong>"Suggest a place" form</strong></div><small>Goes to an admin queue.</small><div class="chips"><span class="chip b">B</span></div></div>
+      <div class="item"><div class="top"><strong>Communities filtered by language</strong></div><div class="chips"><span class="chip b">B</span></div></div>
+      <div class="item"><div class="top"><strong>"Checked by phone on …" badge</strong></div><small>Fed by call results.</small><div class="chips"><span class="chip both">both</span></div></div>
+      <div class="item"><div class="top"><strong>Voice input for the request box</strong></div><small>Already works in the relay (13 languages).</small><div class="chips"><span class="chip a">A</span></div></div>
+    </div>
+    <div class="col">
+      <h3>Later <span class="chip later">after Sunday</span></h3>
+      <div class="item"><div class="top"><strong>Parent and provider accounts</strong></div><div class="chips"><span class="chip b">B phase 2</span></div></div>
+      <div class="item"><div class="top"><strong>Provider self-service, claim flow</strong></div><div class="chips"><span class="chip b">B phase 2</span></div></div>
+      <div class="item"><div class="top"><strong>Reviews and ratings</strong></div><div class="chips"><span class="chip b">B phase 3</span></div></div>
+      <div class="item"><div class="top"><strong>Real phone line (Twilio +49)</strong></div><div class="chips"><span class="chip a">A</span></div></div>
+      <div class="item"><div class="top"><strong>Newsletter, payments</strong></div><div class="chips"><span class="chip b">B phase 4</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="build" aria-labelledby="h-build">
+  <h2 id="h-build">Backend: what exists and what we add</h2>
+  <div class="build">
+    <div class="col">
+      <h3>Already live <span class="chip ok">tested</span></h3>
+      <ul>
+        <li><span class="chip ok">live</span><span>Supabase: tasks, calls, live transcript, results in the user's language, places, guides</span></li>
+        <li><span class="chip ok">live</span><span>n8n: request brief (8 task types), intake from free text, line translation, result translation, Dresden crawler</span></li>
+        <li><span class="chip ok">live</span><span>Voice relay: German AI caller, booking and result recording, voice input in 13 languages</span></li>
+        <li><span class="chip ok">live</span><span>UI strings EN/AR/TR/UK, 4 guides in AR/TR/UK, UX plan v2</span></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>To add for the merge <span class="chip new">new</span></h3>
+      <ul>
+        <li><span class="chip new">DB</span><span>Family fields on places: age range, categories, price type, format, description with translations</span></li>
+        <li><span class="chip new">DB</span><span>New tables: events, suggestions</span></li>
+        <li><span class="chip new">calls</span><span>Two new task types: course enquiry (free spot, trial lesson), Kita enquiry (waiting list)</span></li>
+        <li><span class="chip new">data</span><span>Crawler jobs for family providers and events; Kita and school guides</span></li>
+        <li><span class="chip new">UI</span><span>Routes /courses, /events, /communities, /p/:id; "Ask for me" prefills the request</span></li>
+        <li><span class="chip new">i18n</span><span>Add German and Russian UI strings</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="team" aria-labelledby="h-team">
+  <h2 id="h-team">Who does what</h2>
+  <div class="team">
+    <div class="person b">
+      <h3>Anastasia</h3>
+      <ul>
+        <li>Name and brand decision</li>
+        <li>Curate seed providers and communities from her network</li>
+        <li>Kita and school articles; review Russian and Ukrainian texts</li>
+        <li>Build the UI in Lovable with the prepared prompts</li>
+        <li>Pitch, and play the German receptionist in the demo</li>
+      </ul>
+    </div>
+    <div class="person a">
+      <h3>Abdul (with Claude agents)</h3>
+      <ul>
+        <li>Database changes and two new call types</li>
+        <li>Crawler for family providers and events</li>
+        <li>Connect "Ask for me" to intake, n8n and the voice relay</li>
+        <li>Deploy, end-to-end tests, backup demo video</li>
+        <li>Security, launch video, architecture diagram</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="timeline" aria-labelledby="h-timeline">
+  <h2 id="h-timeline">Until the demo</h2>
+  <div class="timeline">
+    <div class="tl key"><span class="when">Sat 16:00–19:00</span><span>Confirm decisions below. Database changes, crawler for family data, new call types. Anastasia seeds her providers and communities.</span></div>
+    <div class="tl key"><span class="when">Sat 19:30</span><span>Pod #03 scope and deploy check: show the merged flow on the architecture diagram.</span></div>
+    <div class="tl"><span class="when">Sat 20:00–24:00</span><span>Lovable build: home, directory, provider page, "Ask for me", call and result screens.</span></div>
+    <div class="tl"><span class="when">Sun 09:00–10:00</span><span>Fix what broke, fill translations, test on phones.</span></div>
+    <div class="tl key"><span class="when">Sun 10:00</span><span>Pod #04 demo rehearsal (3 minutes, Maria's story).</span></div>
+    <div class="tl key"><span class="when">Sun 12:00</span><span>Code freeze, record the backup video, launch video.</span></div>
+    <div class="tl key"><span class="when">Sun 13:00–14:00</span><span>Demo session. Live under its own URL.</span></div>
+  </div>
+</section>
+
+<section id="decide" aria-labelledby="h-decide">
+  <h2 id="h-decide">Four decisions for Anastasia and Abdul</h2>
+  <div class="decide">
+    <div class="q"><span class="num">1</span><div><strong>Name</strong><p class="prop">Proposal: <b>Dresden mit Kind</b> is the product; <b>"Ask for me"</b> is the calling feature, powered by HalloTermin.</p></div></div>
+    <div class="q"><span class="num">2</span><div><strong>Focus</strong><p class="prop">Proposal: <b>families first</b>, with a "Health and services" pillar that keeps doctors, pharmacies and the Ausländerbehörde for everyone.</p></div></div>
+    <div class="q"><span class="num">3</span><div><strong>Interface languages by Sunday</strong><p class="prop">Proposal: <b>EN, DE, RU, UK, AR, TR</b> fully translated; the other 7 get content in their language with an English interface.</p></div></div>
+    <div class="q"><span class="num">4</span><div><strong>Translation review</strong><p class="prop">Proposal: native speakers from Anastasia's communities check <b>RU, UK and AR</b> texts before the demo.</p></div></div>
+  </div>
+</section>
+
+<footer>
+  <hr>
+  <p>Source notes in the team vault: Ideas/Merged Concept, Decisions/DEC-003 Merged concept (proposed), Ideas/Idea B – Dies-Das-Ana-Nas, Concepts/Frontend and UX Plan v2.</p>
+  <p>Weekender Build · Dresden · 25–27 September 2026</p>
+</footer>
+
+</div>
