@@ -1,0 +1,12 @@
+{
+  "name": "Voice 03 – Deepgram German round-trip test",
+  "id": "qtvcNReBCqLLO1nW",
+  "_notes": "Manual trigger. Credential not exported: Header Auth (name 'Authorization', value 'Token <DEEPGRAM_KEY>'), n8n name 'Header Auth account 2'. Audio only exists inside the execution.",
+  "flow": [
+    "Run Voice Test (manual trigger)",
+    "German Opening Line (Set): text + voice=aura-2-viktoria-de",
+    "Deepgram TTS: POST https://api.deepgram.com/v1/speak?model={{voice}}&encoding=mp3, JSON {text}, response=file -> binary 'audio'",
+    "Deepgram STT: POST https://api.deepgram.com/v1/listen?model=nova-3&language=de&smart_format=true, body=binary 'audio', Content-Type audio/mpeg",
+    "Compare Result (Set): original, transcript, confidence, audio_seconds, disclosure_heard"
+  ]
+}
