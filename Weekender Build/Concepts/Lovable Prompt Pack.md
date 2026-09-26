@@ -5,6 +5,8 @@ sources: [anti-ai-slop-ui-ux, component-reference-design, ui-ux-pro-max, "[[Idea
 ---
 # Lovable Prompt Pack (HalloTermin)
 
+> ⚠️ **v1 — superseded by [[Frontend and UX Plan v2]]** (26.09): the product is now any-task + multilingual. Keep this for the design tokens history; use v2 Knowledge + prompts P2–P10.
+
 **What this is:** everything we paste into Lovable, in order. Step 0 (setup), then the Knowledge block, then 7 build prompts. Each prompt is small enough to check in the preview before sending the next one.
 
 **Before you start (step 0, costs no credits):**
