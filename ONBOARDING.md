@@ -1,9 +1,11 @@
 # START HERE — Anastasia's guide (status + setup + how to vibecode)
 
 Weekender Build, Dresden, 25–27.09.2026 · **Goal: our build is live under its own URL by Sun 27.09, 14:00.**
-Last updated: Sat 26.09.2026, ~13:50 (by Abdul + Claude). **What changed: see the newest note in vault `Memory/` (now `Memory/2026-09-26 Handoff - merged build.md`).**
+Last updated: Sat 26.09.2026, ~19:00 (by Abdul + Claude). **What changed: see the newest note in vault `Memory/` (now `Memory/2026-09-26 Handoff - app live, UI improvements for Anastasia.md`).**
 
-- Repo (private): https://github.com/AbdulrahmanBUW/weekender-build-2026-AA
+**Live app: https://dresden-mit-kind.lovable.app** · Lovable code: https://github.com/AbdulrahmanBUW/hallotermin-paper (private, synced both ways with the Lovable project)
+
+- Repo: https://github.com/AbdulrahmanBUW/weekender-build-2026-AA (currently **public**; Abdul decides whether to make it private)
 - Task board: https://github.com/users/AbdulrahmanBUW/projects/2 (milestones = pod slots)
 - Knowledge base: the Obsidian vault in `Weekender Build/` → open `00-Home/Home.md`
 
@@ -20,10 +22,10 @@ Last updated: Sat 26.09.2026, ~13:50 (by Abdul + Claude). **What changed: see th
 | Call types | ✅ **10**: doctor, authority, landlord, contract, bank, pharmacy, restaurant, other + **course_enquiry** (free spot / trial lesson / waiting list) + **kita_enquiry** (Kita place / waiting list / visit). Full loop tested on a real course listing (RUN-023) | vault `Concepts/Task Types - How to extend.md`, `Runs/RUN-023 Merged flow E2E.md` |
 | n8n | ✅ 01 brief writer · 02 Dresden crawler (don't run before the demo, credits) · 03 Deepgram test · 04 task intake with provider prefill (`/webhook/task-intake`) · 05 live subtitles (other side only) · 06 result + assistant subtitles in the user's language — all on Claude Haiku to save credits | n8n: https://arahmandeaxo.app.n8n.cloud · `n8n/workflows/` |
 | Voice call (Deepgram, German) | ✅ relay: templates for all 10 types, trial lesson / Kita visit booking, `record_result`, voice input `/listen`; course, Kita, pharmacy and curveball role-plays pass. 🟡 not hosted publicly yet | `services/voice-relay/` (needs your own `.env`), `docs/deploy-relay.md` |
-| Lovable app | 🟡 P1 shell only → **next: build with Plan v3 prompts** | Lovable project |
+| Lovable app | ✅ **live** at https://dresden-mit-kind.lovable.app: all pages (home, courses, provider page, ask flow with dictation, live call, result, events, communities, services, library, guides, suggest, Impressum/Datenschutz), 6 languages incl. Arabic RTL, SEO head tags. End-to-end call tested on the live site ([[RUN-026]] in the vault) | Lovable project "HalloTermin Paper" · repo `hallotermin-paper` |
 | Presentation | ✅ Pitch Kit, Pixel Agents office, archify diagrams, competitors, Monday plan, security review | vault `Concepts/`, `docs/` |
 
-**Important:** backend and data are done and tested; what is missing for Sunday is the **Lovable UI** (Plan v3 prompts), a public host for the relay, the demo listing, and the RU/UK/AR translation review. "HalloTermin" is now only the engine name inside; the UI says **Dresden mit Kind** and **Ask for me**.
+**Important:** the app is live and the whole loop works (RUN-026). Open before the demo: Impressum operator details, P12 polish pass (UI improvements), public relay host (optional; the local relay works on the presenter laptop), reset the demo badge before the rehearsal.
 
 ---
 
@@ -35,7 +37,7 @@ Last updated: Sat 26.09.2026, ~13:50 (by Abdul + Claude). **What changed: see th
 | GitHub task board | Abdul: Project → ⋯ → Settings → Manage access | ✅ |
 | n8n Cloud | Abdul: n8n → Settings → Users → Invite | ⏳ ask Abdul |
 | Supabase | Abdul: Supabase → Organization → Team → Invite | ⏳ ask Abdul |
-| Lovable | Abdul: project "HalloTermin Paper" → **Invite** (top right) | ⏳ ask Abdul |
+| Lovable | Editor in Abdul's workspace (both your accounts) | ✅ |
 
 ---
 
