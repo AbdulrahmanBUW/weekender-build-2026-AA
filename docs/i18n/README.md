@@ -8,7 +8,7 @@
 { "<lang>": { "<screen>": { "<key>": "text" } } }
 ```
 
-- **6 UI languages:** `en` (source), `de`, `ru`, `uk`, `ar` (RTL), `tr`. All six have exactly the same screens and keys: 27 screens, 788 keys per language, 4,728 strings.
+- **6 UI languages:** `en` (source), `de`, `ru`, `uk`, `ar` (RTL), `tr`. All six have exactly the same screens and keys: 28 screens, 867 keys per language, 5,202 strings (the motion revamp of 26 Sep added the `fx*` keys in `home`, `provider`, `call`, `ask`, `events`, `guides`).
 - Lookup: `t("directory.years", { min: 3, max: 6 })` means `strings[uiLang].directory.years` with the placeholders replaced. Fallback: `strings.en[screen][key]`, then `""`. Never show the raw key.
 
 | Group | Screens |
@@ -53,7 +53,7 @@
 
 ## Placeholders
 
-Identical in every language; replace them in code, never translate them: `{language}`, `{place}`, `{name}`, `{duration}`, `{count}`, `{max}`, `{min}`, `{amount}`, `{date}`, `{month}`, `{band}`, `{source}`, `{code}`, `{list}`, `{task}`, `{items}`, `{phone}`.
+Identical in every language; replace them in code, never translate them: `{language}`, `{place}`, `{name}`, `{duration}`, `{count}`, `{max}`, `{min}`, `{amount}`, `{date}`, `{month}`, `{band}`, `{source}`, `{code}`, `{list}`, `{task}`, `{items}`, `{phone}`, `{age}`, `{day}`, `{n}`, `{done}`, `{total}`.
 
 - `{language}`: pass `languageNames[uiLang][code]` (the language named in the UI language: "Russisch", "русский", "الروسية"), not the native name. The sentences are built for that.
 - `{date}`: always from `src/lib/format.ts` (Gregorian calendar, Latin digits, Europe/Berlin).

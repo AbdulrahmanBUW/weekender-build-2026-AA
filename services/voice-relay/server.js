@@ -612,7 +612,7 @@ listenWss.on('connection', (browser, httpReq) => {
   activeCalls += 1;
   const lang = LISTEN_LANGS[new URL(httpReq.url, 'http://x').searchParams.get('lang')];
   const toBrowser = obj => browser.readyState === WebSocket.OPEN && browser.send(JSON.stringify(obj));
-  const qs = new URLSearchParams({ model: 'nova-3', language: lang, encoding: 'linear16', sample_rate: '16000', interim_results: 'true', smart_format: 'true', punctuate: 'true', mip_opt_out: 'true' });
+  const qs = new URLSearchParams({ model: 'nova-3', language: lang, encoding: 'linear16', sample_rate: '16000', interim_results: 'true', smart_format: 'true', punctuate: 'true', mip_opt_out: 'true', endpointing: '400', utterance_end_ms: '1500' });
   const dg = new WebSocket(`wss://api.deepgram.com/v1/listen?${qs}`, { headers: { Authorization: `Token ${DG_KEY}` } });
   const pending = [];
   let closed = false;
@@ -627,6 +627,8 @@ listenWss.on('connection', (browser, httpReq) => {
     if (m.type === 'Results') {
       const text = m.channel?.alternatives?.[0]?.transcript || '';
       if (text) toBrowser({ type: 'transcript', text, is_final: !!m.is_final, speech_final: !!m.speech_final });
+    } else if (m.type === 'UtteranceEnd') {
+      toBrowser({ type: 'utterance_end' }); // ~1.5 s of silence after speech: the voice intake treats this as "the parent finished"
     }
   });
   dg.on('close', () => done('dg closed'));
