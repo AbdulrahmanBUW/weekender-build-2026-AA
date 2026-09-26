@@ -1,12 +1,12 @@
 ---
-status: proposed
+status: accepted
 owners: [abdul, anastasia]
 date: 2026-09-26
 sources: ["[[Idea A - HalloTermin (Abdul)]]", "[[Idea B - Dies-Das-Ana-Nas]]", "[[Frontend and UX Plan v2]]"]
 ---
 # Merged Concept — "Find it. We call for you."
 
-> Visual overview for both of us: `docs/merged-concept.html` in the repo (open in a browser) · shared page https://claude.ai/artifact/UrzS6XF7vy5qNKtbKTXvQT (private until Abdul shares it). Decision to confirm: [[DEC-003 Merged concept (proposed)]].
+> Visual overview for both of us: `docs/merged-concept.html` in the repo (open in a browser) · shared page https://claude.ai/artifact/UrzS6XF7vy5qNKtbKTXvQT (private until Abdul shares it). Decision to confirm: [[DEC-003 Merged concept]].
 
 ## Idea A in one line (Abdul — HalloTermin)
 Newcomers tell an AI assistant in their own language what they need; it **phones German offices, practices and shops for them**, honestly says it is an AI, and returns the result in their language.
@@ -56,7 +56,10 @@ The place expat **parents** open in their first year in Dresden: **events, cours
 |---|---|
 | Name/brand decision, curation of seed providers & communities (her network), articles Kita/school, RU/UK translation review, UI in Lovable with the Designer prompts, pitch + receptionist role-play | DB migration (kids fields, events, suggestions, 2 new task types), crawler jobs for family providers/events, call templates `course_enquiry` + `kita_enquiry`, intake prefill, n8n/relay, deploy, demo backup video |
 
-## Open questions
+## Decisions (accepted 26.09)
+All four proposals accepted: name Dresden mit Kind + "Ask for me"; families first + Health & services pillar; UI languages EN, DE, RU, UK, AR, TR; RU/UK/AR reviewed by native speakers.
+
+## Open questions (resolved)
 1. Name: "Dresden mit Kind" (her brand) with "Ask for me" powered by HalloTermin — or one new name? (Proposal: keep **Dresden mit Kind** as the product, **"Ask for me"** as the feature.)
 2. Focus families only, or families first + "Newcomer services" pillar for everyone? (Proposal: families first; services pillar keeps A's doctor/pharmacy/Ausländerbehörde use cases.)
 3. Which UI languages must be fully translated by Sunday (proposal: EN, DE, RU, UK, AR, TR)?

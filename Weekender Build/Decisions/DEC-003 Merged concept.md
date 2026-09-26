@@ -1,7 +1,7 @@
 ---
 type: decision
 date: 2026-09-26
-status: proposed
+status: accepted
 deciders: [abdul, anastasia]
 ---
 # Decision: Merged concept — "Find it. We call for you."
@@ -14,7 +14,7 @@ Idea A (HalloTermin: AI calls in German for newcomers, any task, 12 languages �
 2. **Newcomer-general assistant with a family section** — HalloTermin stays the product; B's directory becomes one section.
 3. **Two products, shared backend** — build both separately; split the demo.
 
-## Decision (proposed)
+## Decision (accepted 26.09 by Abdul + Anastasia)
 **Option 1.** It gives the clearest story ("find it, we call for you"), uses B's content and A's working backend, keeps both founders' visions, and fixes each idea's weak spot (B: parents stuck at the phone call; A: who to call). Option 3 splits a 2-person team 24 h before the demo.
 
 ## Consequences
@@ -22,3 +22,11 @@ Idea A (HalloTermin: AI calls in German for newcomers, any task, 12 languages �
 - UI: [[Frontend and UX Plan v2]] stays the design base; routes add `/courses`, `/events`, `/communities`, `/p/:id` provider profile; intake gets "prefill from provider".
 - Accounts, reviews, provider self-service: B's Phase 2–3, not for Sunday.
 - Name/brand: to confirm with Anastasia (proposal: "Dresden mit Kind", feature "Ask for me").
+
+## Accepted details (26.09)
+1. Name: **Dresden mit Kind** is the product; **"Ask for me"** is the calling feature (powered by HalloTermin).
+2. Focus: **families first**, plus a "Health & services" pillar for everyone.
+3. UI languages by Sunday: **EN, DE, RU, UK, AR, TR** (others: content in their language, English UI).
+4. Translation review: native speakers from Anastasia's communities check RU, UK, AR.
+
+Schema implemented in `supabase/migrations/20260926200000_merged_family_hub.sql` (resources family fields, `family_events`, `suggestions`, task types `course_enquiry` + `kita_enquiry`, guide categories + `ask_task_type`, "checked by phone" trigger).
