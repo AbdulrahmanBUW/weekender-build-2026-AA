@@ -436,7 +436,8 @@
       "confirm": "Yes, call now",
       "changeSomething": "Change something",
       "saveChanges": "Save changes",
-      "unknownFactNote": "If they ask something not listed here, it will say you will answer that yourself."
+      "unknownFactNote": "If they ask something not listed here, it will say you will answer that yourself.",
+      "aiNote": "Our AI assistant wrote these questions and this card. Please check them before you approve."
     },
     "call": {
       "docTitle": "Live call",
@@ -500,7 +501,8 @@
       "hangUp": "Hang up",
       "micBlocked": "The microphone is blocked. Click the lock icon in the address bar, allow the microphone, then try again.",
       "micNotFound": "No microphone found. Plug one in or use headphones with a mic.",
-      "relayUnreachable": "Could not reach the call service."
+      "relayUnreachable": "Could not reach the call service.",
+      "briefFailed": "The call brief could not be written. The assistant uses a standard brief."
     },
     "result": {
       "endedSummary": "Call ended, {duration}",
@@ -1290,7 +1292,8 @@
       "confirm": "Ja, jetzt anrufen",
       "changeSomething": "Etwas ändern",
       "saveChanges": "Änderungen speichern",
-      "unknownFactNote": "Wenn nach etwas gefragt wird, das hier nicht steht, sagt sie, dass Sie das selbst beantworten."
+      "unknownFactNote": "Wenn nach etwas gefragt wird, das hier nicht steht, sagt sie, dass Sie das selbst beantworten.",
+      "aiNote": "Unser KI-Assistent hat diese Fragen und diese Karte geschrieben. Bitte prüfen Sie sie, bevor Sie zustimmen."
     },
     "call": {
       "docTitle": "Live-Anruf",
@@ -1354,7 +1357,8 @@
       "hangUp": "Auflegen",
       "micBlocked": "Das Mikrofon ist blockiert. Klicken Sie auf das Schloss in der Adressleiste, erlauben Sie das Mikrofon und versuchen Sie es noch einmal.",
       "micNotFound": "Kein Mikrofon gefunden. Schließen Sie eines an oder nutzen Sie ein Headset.",
-      "relayUnreachable": "Der Anrufdienst ist nicht erreichbar."
+      "relayUnreachable": "Der Anrufdienst ist nicht erreichbar.",
+      "briefFailed": "Der Anrufplan konnte nicht erstellt werden. Der Assistent nutzt einen Standardplan."
     },
     "result": {
       "endedSummary": "Anruf beendet, {duration}",
@@ -2144,7 +2148,8 @@
       "confirm": "Да, позвонить сейчас",
       "changeSomething": "Что-то изменить",
       "saveChanges": "Сохранить изменения",
-      "unknownFactNote": "Если спросят о чём-то, чего здесь нет, он скажет, что вы ответите на это сами."
+      "unknownFactNote": "Если спросят о чём-то, чего здесь нет, он скажет, что вы ответите на это сами.",
+      "aiNote": "Эти вопросы и эту карточку составил наш ИИ-ассистент. Пожалуйста, проверьте их, прежде чем подтвердить."
     },
     "call": {
       "docTitle": "Звонок в реальном времени",
@@ -2208,7 +2213,8 @@
       "hangUp": "Завершить звонок",
       "micBlocked": "Микрофон заблокирован. Нажмите на значок замка в адресной строке, разрешите микрофон и попробуйте ещё раз.",
       "micNotFound": "Микрофон не найден. Подключите микрофон или гарнитуру.",
-      "relayUnreachable": "Не удалось подключиться к сервису звонков."
+      "relayUnreachable": "Не удалось подключиться к сервису звонков.",
+      "briefFailed": "Не удалось составить план звонка. Ассистент использует стандартный план."
     },
     "result": {
       "endedSummary": "Звонок завершён, {duration}",
@@ -2998,7 +3004,8 @@
       "confirm": "Так, телефонуйте зараз",
       "changeSomething": "Щось змінити",
       "saveChanges": "Зберегти зміни",
-      "unknownFactNote": "Якщо запитають про щось, чого тут немає, він скаже, що ви відповісте самі."
+      "unknownFactNote": "Якщо запитають про щось, чого тут немає, він скаже, що ви відповісте самі.",
+      "aiNote": "Ці питання й цю картку склав наш ШІ-асистент. Будь ласка, перевірте їх, перш ніж підтвердити."
     },
     "call": {
       "docTitle": "Дзвінок наживо",
@@ -3062,7 +3069,8 @@
       "hangUp": "Завершити дзвінок",
       "micBlocked": "Мікрофон заблоковано. Натисніть значок замка в адресному рядку, дозвольте мікрофон і спробуйте ще раз.",
       "micNotFound": "Мікрофон не знайдено. Під’єднайте мікрофон або гарнітуру.",
-      "relayUnreachable": "Не вдалося під’єднатися до сервісу дзвінків."
+      "relayUnreachable": "Не вдалося під’єднатися до сервісу дзвінків.",
+      "briefFailed": "Не вдалося скласти план дзвінка. Асистент використовує стандартний план."
     },
     "result": {
       "endedSummary": "Дзвінок завершено, {duration}",
@@ -3852,7 +3860,8 @@
       "confirm": "نعم، اتصل الآن",
       "changeSomething": "تعديل شيء",
       "saveChanges": "حفظ التعديلات",
-      "unknownFactNote": "إذا سألوا عن شيء غير مذكور هنا، سيقول إنك ستجيب عنه بنفسك."
+      "unknownFactNote": "إذا سألوا عن شيء غير مذكور هنا، سيقول إنك ستجيب عنه بنفسك.",
+      "aiNote": "كتب مساعدنا بالذكاء الاصطناعي هذه الأسئلة وهذه البطاقة. يرجى مراجعتها قبل الموافقة."
     },
     "call": {
       "docTitle": "مكالمة مباشرة",
@@ -3916,7 +3925,8 @@
       "hangUp": "إنهاء المكالمة",
       "micBlocked": "الميكروفون محظور. اضغط على رمز القفل في شريط العنوان، واسمح باستخدام الميكروفون، ثم حاول مرة أخرى.",
       "micNotFound": "لم نجد ميكروفونًا. وصّل ميكروفونًا أو استخدم سماعات فيها ميكروفون.",
-      "relayUnreachable": "تعذّر الوصول إلى خدمة المكالمات."
+      "relayUnreachable": "تعذّر الوصول إلى خدمة المكالمات.",
+      "briefFailed": "تعذّر إعداد خطة المكالمة. سيستخدم المساعد خطة قياسية."
     },
     "result": {
       "endedSummary": "انتهت المكالمة، {duration}",
@@ -4706,7 +4716,8 @@
       "confirm": "Evet, şimdi ara",
       "changeSomething": "Bir şeyi değiştir",
       "saveChanges": "Değişiklikleri kaydet",
-      "unknownFactNote": "Burada olmayan bir şey sorarlarsa, bunu sizin yanıtlayacağınızı söyler."
+      "unknownFactNote": "Burada olmayan bir şey sorarlarsa, bunu sizin yanıtlayacağınızı söyler.",
+      "aiNote": "Bu soruları ve bu kartı yapay zekâ asistanımız hazırladı. Lütfen onaylamadan önce kontrol edin."
     },
     "call": {
       "docTitle": "Canlı arama",
@@ -4770,7 +4781,8 @@
       "hangUp": "Aramayı bitir",
       "micBlocked": "Mikrofon engellendi. Adres çubuğundaki kilit simgesine tıklayın, mikrofona izin verin ve tekrar deneyin.",
       "micNotFound": "Mikrofon bulunamadı. Bir mikrofon takın ya da mikrofonlu kulaklık kullanın.",
-      "relayUnreachable": "Arama hizmetine ulaşılamadı."
+      "relayUnreachable": "Arama hizmetine ulaşılamadı.",
+      "briefFailed": "Arama planı hazırlanamadı. Asistan standart bir plan kullanıyor."
     },
     "result": {
       "endedSummary": "Arama bitti, {duration}",
