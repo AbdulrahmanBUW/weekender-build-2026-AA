@@ -22,7 +22,7 @@ status: open
    - "The Berlin settling-in model (Eingewöhnung) and how Kitas work in Germany" (**guide does not exist yet**)
 
 ## Strings (done, 0 credits)
-Added to `docs/i18n/ui-strings.json` → screen `guides`, all 6 languages (804 keys each): `askHint`, `askHintText`, `askButton`, `relatedTitle`, `aboutTitle`, `aboutText`. AI translations; ru checked by Anastasia, uk/ar/tr still need a native speaker. **Next step (Abdul):** run the split command from `docs/i18n/README.md` into the `hallotermin-paper` clone and push, before sending the prompts below.
+Added to `docs/i18n/ui-strings.json` → screen `guides`, all 6 languages (804 keys each): `askHint`, `askHintText`, `askButton`, `relatedTitle`, `aboutTitle`, `aboutText`. AI translations; Anastasia to check ru, uk/ar/tr still need a native speaker. **Next step (Abdul):** run the split command from `docs/i18n/README.md` into the `hallotermin-paper` clone and push, before sending the prompts below.
 
 ## Related links: where they come from
 No new table. Order of sources, max 3 links:
