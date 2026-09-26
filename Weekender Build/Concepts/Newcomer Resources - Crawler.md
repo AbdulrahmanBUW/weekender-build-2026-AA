@@ -74,6 +74,13 @@ supabase.from('guides').select('*').eq('slug', 'bank-account-documents').single(
 ```
 Always show `source_url` / `sources` and the "check before you go" note.
 
+## Translations (i18n)
+- Column `public.guides.i18n jsonb` (migration `20260926190000_guides_i18n.sql`, default `{}`, must be a JSON object). Still read-only for the browser.
+- Shape: `{"ar": {"title", "summary", "checklist": [..]}, "tr": {...}, "uk": {...}}`. English stays in `title_en` / `summary_en` / `checklist`.
+- Filled for all 4 guides in **ar, tr, uk** (the demo UI languages). Plain B1 language; German official terms (Anmeldung, Bürgerbüro, Ausländerbehörde, Basiskonto, Mitgliedsbescheinigung …) stay in Latin script with the local explanation in brackets. Same number of checklist items as English, no extra facts.
+- App: `guide.i18n?.[lang]?.title ?? guide.title_en` (same for `summary`, `checklist`). Arabic needs `dir="rtl"`.
+- Add a language: translate title, summary and checklist (same item count), then `update guides set i18n = i18n || jsonb_build_object('fa', '{"title":"…","summary":"…","checklist":["…"]}'::jsonb) where slug = '…';` with the service key or `npx supabase db query --linked -f file.sql` (UTF-8 file, double single quotes). If the crawler re-writes a guide, re-check its translations.
+
 ## Costs (approx. per full run)
 - Brave: 16 place searches + 4 web searches = 20 calls.
 - Firecrawl: up to 8 scrapes (2 per guide), 1 credit each.
