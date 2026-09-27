@@ -41,7 +41,8 @@
       "footerListings": "Listings come from public websites. Please check before you visit.",
       "footerImpressum": "Imprint",
       "footerPrivacy": "Privacy",
-      "appTagline": "Your guide to starting in Germany"
+      "appTagline": "Your guide to starting in Germany",
+      "footerCredits": "Credits"
     },
     "nav": {
       "courses": "Courses & activities",
@@ -962,6 +963,20 @@
     },
     "fab": {
       "label": "Call for me: our AI assistant calls in German for you"
+    },
+    "pixel": {
+      "pause": "Pause animation",
+      "play": "Play animation"
+    },
+    "credits": {
+      "title": "Credits",
+      "intro": "Thank you to everyone whose work we use on this site. Here you find the pictures, fonts and icons and their licences.",
+      "pixelArt": "Pixel art",
+      "palette": "Colours",
+      "scenes": "The Ankommen team drew the Dresden scenes.",
+      "fonts": "Fonts",
+      "icons": "Icons",
+      "englishNote": "The licence text is in English, as it was published."
     }
   },
   "de": {
@@ -1006,7 +1021,8 @@
       "footerListings": "Die Einträge stammen von öffentlichen Websites. Bitte prüfen Sie sie vor dem Besuch.",
       "footerImpressum": "Impressum",
       "footerPrivacy": "Datenschutz",
-      "appTagline": "Ihr Wegweiser für den Start in Deutschland"
+      "appTagline": "Ihr Wegweiser für den Start in Deutschland",
+      "footerCredits": "Lizenzen"
     },
     "nav": {
       "courses": "Kurse & Aktivitäten",
@@ -1927,6 +1943,20 @@
     },
     "fab": {
       "label": "Für mich anrufen: Unsere KI-Assistentin ruft für Sie auf Deutsch an"
+    },
+    "pixel": {
+      "pause": "Animation anhalten",
+      "play": "Animation abspielen"
+    },
+    "credits": {
+      "title": "Lizenzen und Quellen",
+      "intro": "Danke an alle, deren Arbeit wir auf dieser Seite nutzen. Hier finden Sie die Bilder, Schriften und Symbole und ihre Lizenzen.",
+      "pixelArt": "Pixel-Grafik",
+      "palette": "Farben",
+      "scenes": "Die Bilder von Dresden hat das Ankommen-Team gezeichnet.",
+      "fonts": "Schriften",
+      "icons": "Symbole",
+      "englishNote": "Der Lizenztext ist auf Englisch, so wie er veröffentlicht wurde."
     }
   },
   "ru": {
@@ -1971,7 +2001,8 @@
       "footerListings": "Данные взяты с открытых сайтов. Пожалуйста, проверяйте их перед визитом.",
       "footerImpressum": "Выходные данные (Impressum)",
       "footerPrivacy": "Конфиденциальность",
-      "appTagline": "Ваш путеводитель для старта в Германии"
+      "appTagline": "Ваш путеводитель для старта в Германии",
+      "footerCredits": "Лицензии"
     },
     "nav": {
       "courses": "Курсы и занятия",
@@ -2892,6 +2923,20 @@
     },
     "fab": {
       "label": "Позвоните за меня: наш ИИ-ассистент позвонит за вас по-немецки"
+    },
+    "pixel": {
+      "pause": "Остановить анимацию",
+      "play": "Запустить анимацию"
+    },
+    "credits": {
+      "title": "Лицензии и источники",
+      "intro": "Спасибо всем, чью работу мы используем на этом сайте. Здесь вы найдёте картинки, шрифты и значки и их лицензии.",
+      "pixelArt": "Пиксельная графика",
+      "palette": "Цвета",
+      "scenes": "Картинки Дрездена нарисовала команда Ankommen.",
+      "fonts": "Шрифты",
+      "icons": "Значки",
+      "englishNote": "Текст лицензии на английском языке, как он был опубликован."
     }
   },
   "uk": {
@@ -2936,7 +2981,8 @@
       "footerListings": "Дані взято з відкритих вебсайтів. Будь ласка, перевіряйте їх перед візитом.",
       "footerImpressum": "Вихідні дані (Impressum)",
       "footerPrivacy": "Конфіденційність",
-      "appTagline": "Ваш путівник для старту в Німеччині"
+      "appTagline": "Ваш путівник для старту в Німеччині",
+      "footerCredits": "Ліцензії"
     },
     "nav": {
       "courses": "Курси та заняття",
@@ -3857,6 +3903,20 @@
     },
     "fab": {
       "label": "Зателефонуйте за мене: наш ШІ-асистент зателефонує за вас німецькою"
+    },
+    "pixel": {
+      "pause": "Зупинити анімацію",
+      "play": "Запустити анімацію"
+    },
+    "credits": {
+      "title": "Ліцензії та джерела",
+      "intro": "Дякуємо всім, чию роботу ми використовуємо на цьому сайті. Тут ви знайдете зображення, шрифти й значки та їхні ліцензії.",
+      "pixelArt": "Піксельна графіка",
+      "palette": "Кольори",
+      "scenes": "Зображення Дрездена намалювала команда Ankommen.",
+      "fonts": "Шрифти",
+      "icons": "Значки",
+      "englishNote": "Текст ліцензії англійською мовою, як його було опубліковано."
     }
   },
   "ar": {
@@ -3901,7 +3961,8 @@
       "footerListings": "المعلومات مأخوذة من مواقع عامة. يُرجى التحقق منها قبل الزيارة.",
       "footerImpressum": "بيانات الناشر (Impressum)",
       "footerPrivacy": "الخصوصية",
-      "appTagline": "دليلك لبداية جديدة في ألمانيا"
+      "appTagline": "دليلك لبداية جديدة في ألمانيا",
+      "footerCredits": "التراخيص"
     },
     "nav": {
       "courses": "دورات وأنشطة",
@@ -4822,6 +4883,20 @@
     },
     "fab": {
       "label": "اتصلوا نيابةً عني: مساعدنا بالذكاء الاصطناعي يتصل نيابةً عنكم بالألمانية"
+    },
+    "pixel": {
+      "pause": "إيقاف الحركة مؤقتًا",
+      "play": "تشغيل الحركة"
+    },
+    "credits": {
+      "title": "التراخيص والمصادر",
+      "intro": "شكرًا لكل من نستخدم عمله في هذا الموقع. هنا تجد الصور والخطوط والأيقونات وتراخيصها.",
+      "pixelArt": "رسوم البكسل",
+      "palette": "الألوان",
+      "scenes": "رسم فريق Ankommen صور دريسدن.",
+      "fonts": "الخطوط",
+      "icons": "الأيقونات",
+      "englishNote": "نص الترخيص باللغة الإنجليزية كما نُشر."
     }
   },
   "tr": {
@@ -4866,7 +4941,8 @@
       "footerListings": "Kayıtlar herkese açık web sitelerinden alınmıştır. Lütfen gitmeden önce kontrol edin.",
       "footerImpressum": "Künye (Impressum)",
       "footerPrivacy": "Gizlilik",
-      "appTagline": "Almanya'da yeni başlangıcınız için rehberiniz"
+      "appTagline": "Almanya'da yeni başlangıcınız için rehberiniz",
+      "footerCredits": "Lisanslar"
     },
     "nav": {
       "courses": "Kurslar ve aktiviteler",
@@ -5787,6 +5863,20 @@
     },
     "fab": {
       "label": "Benim için arayın: yapay zekâ asistanımız sizin yerinize Almanca arar"
+    },
+    "pixel": {
+      "pause": "Animasyonu durdur",
+      "play": "Animasyonu oynat"
+    },
+    "credits": {
+      "title": "Lisanslar ve kaynaklar",
+      "intro": "Bu sitede çalışmalarını kullandığımız herkese teşekkür ederiz. Burada resimleri, yazı tiplerini, simgeleri ve lisanslarını bulabilirsiniz.",
+      "pixelArt": "Piksel çizimler",
+      "palette": "Renkler",
+      "scenes": "Dresden resimlerini Ankommen ekibi çizdi.",
+      "fonts": "Yazı tipleri",
+      "icons": "Simgeler",
+      "englishNote": "Lisans metni, yayımlandığı gibi İngilizcedir."
     }
   }
 }

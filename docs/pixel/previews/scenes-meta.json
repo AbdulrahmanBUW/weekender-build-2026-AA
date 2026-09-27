@@ -1,0 +1,96 @@
+{
+ "services": {
+  "focusX": 163,
+  "lanes": [
+   {
+    "y": 90,
+    "x0": 8,
+    "x1": 312,
+    "stops": [
+     69,
+     163,
+     252
+    ]
+   }
+  ],
+  "walkers": 2
+ },
+ "courses": {
+  "focusX": 80,
+  "lanes": [
+   {
+    "y": 90,
+    "x0": 8,
+    "x1": 312,
+    "stops": [
+     79,
+     152,
+     221
+    ]
+   }
+  ],
+  "walkers": 2
+ },
+ "events": {
+  "focusX": 98,
+  "lanes": [
+   {
+    "y": 90,
+    "x0": 8,
+    "x1": 312,
+    "stops": [
+     98,
+     248
+    ]
+   }
+  ],
+  "walkers": 2
+ },
+ "communities": {
+  "focusX": 110,
+  "lanes": [
+   {
+    "y": 90,
+    "x0": 8,
+    "x1": 312,
+    "stops": [
+     51,
+     132,
+     236,
+     270
+    ]
+   }
+  ],
+  "walkers": 2
+ },
+ "library": {
+  "focusX": 87,
+  "lanes": [
+   {
+    "y": 90,
+    "x0": 8,
+    "x1": 312,
+    "stops": [
+     87,
+     202,
+     266
+    ]
+   }
+  ],
+  "walkers": 2
+ },
+ "notfound": {
+  "focusX": 160,
+  "lanes": [
+   {
+    "y": 90,
+    "x0": 80,
+    "x1": 240,
+    "stops": [
+     158
+    ]
+   }
+  ],
+  "walkers": 0
+ }
+}
