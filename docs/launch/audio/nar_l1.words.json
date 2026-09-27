@@ -1,0 +1,47 @@
+[
+  {
+    "w": "She",
+    "start": 0.0,
+    "end": 0.08
+  },
+  {
+    "w": "found",
+    "start": 0.12,
+    "end": 0.32
+  },
+  {
+    "w": "the",
+    "start": 0.36,
+    "end": 0.48
+  },
+  {
+    "w": "right",
+    "start": 0.52,
+    "end": 0.72
+  },
+  {
+    "w": "music",
+    "start": 0.787,
+    "end": 1.12
+  },
+  {
+    "w": "course",
+    "start": 1.166,
+    "end": 1.44
+  },
+  {
+    "w": "for",
+    "start": 1.48,
+    "end": 1.6
+  },
+  {
+    "w": "her",
+    "start": 1.62,
+    "end": 1.68
+  },
+  {
+    "w": "daughter.",
+    "start": 1.733,
+    "end": 2.32
+  }
+]

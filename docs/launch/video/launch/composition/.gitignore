@@ -1,0 +1,8 @@
+node_modules/
+.hyperframes/
+.cache/
+renders/
+snapshots/
+*.log
+AGENTS.md
+CLAUDE.md

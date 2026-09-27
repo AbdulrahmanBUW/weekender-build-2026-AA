@@ -1,0 +1,121 @@
+[
+  {
+    "file": "01-new-request-brief.png",
+    "paper_svg": "01-new-request-brief.paper.svg",
+    "workflow": "01-new-request-brief.json",
+    "n8n_name": "HalloTermin 01 – New task → German call brief",
+    "title": "01 · Writes the German call brief",
+    "what_it_does": "When a parent sends a new request, Claude writes a short German brief for the call and saves it in the database.",
+    "trigger": "A new row in call_requests (Supabase calls the webhook)",
+    "node_count": 8,
+    "main_path": [
+      "New Call Request (from Supabase)",
+      "Prepare Task Brief",
+      "Valid Task?",
+      "Write German Call Brief (Claude)",
+      "Parse Brief + Re-check",
+      "Save Brief (PATCH call_requests)",
+      "Log Events (brief_created, sensitive_stripped)"
+    ],
+    "renderer": "n8n-demo-component",
+    "png_size": [
+      3840,
+      2160
+    ],
+    "paper_viewbox": [
+      161,
+      174,
+      1678,
+      476
+    ]
+  },
+  {
+    "file": "04-task-intake.png",
+    "paper_svg": "04-task-intake.paper.svg",
+    "workflow": "04-task-intake.json",
+    "n8n_name": "HalloTermin 04 – Task intake (free text → task draft)",
+    "title": "04 · Turns free text into a call task",
+    "what_it_does": "The parent says what they need in their own language, and Claude turns it into a clear call task and lists what is still missing.",
+    "trigger": "The app sends the parent's text (browser POST, nothing is saved)",
+    "node_count": 11,
+    "main_path": [
+      "Task Intake (browser POST)",
+      "Check Origin + Size",
+      "Allowed?",
+      "Draft Task (Claude)",
+      "Validate + Clean Draft",
+      "Respond Draft (200)"
+    ],
+    "renderer": "n8n-demo-component",
+    "png_size": [
+      3840,
+      2160
+    ],
+    "paper_viewbox": [
+      161,
+      174,
+      1618,
+      706
+    ]
+  },
+  {
+    "file": "05-translate-transcript-line.png",
+    "paper_svg": "05-translate-transcript-line.paper.svg",
+    "workflow": "05-translate-transcript-line.json",
+    "n8n_name": "HalloTermin 05 – Translate transcript line",
+    "title": "05 · Translates each call line",
+    "what_it_does": "During the call, each new German line from the other side is translated into the parent's language and saved as a subtitle.",
+    "trigger": "A new row in transcript_lines (Supabase calls the webhook)",
+    "node_count": 5,
+    "main_path": [
+      "Translate Line Request",
+      "Translate (Claude Haiku)",
+      "Parse Translation",
+      "Save Subtitles (PATCH transcript_lines)"
+    ],
+    "renderer": "n8n-demo-component",
+    "png_size": [
+      3840,
+      2160
+    ],
+    "paper_viewbox": [
+      161,
+      174,
+      1118,
+      466
+    ]
+  },
+  {
+    "file": "06-call-result.png",
+    "paper_svg": "06-call-result.paper.svg",
+    "workflow": "06-call-result.json",
+    "n8n_name": "HalloTermin 06 – Call result in user language",
+    "title": "06 · Brings the answer back in the parent's language",
+    "what_it_does": "When the call ends, Claude writes the result in the parent's language, saves it and marks the request as booked or done.",
+    "trigger": "The call outcome changes in the calls table (Supabase calls the webhook)",
+    "node_count": 12,
+    "main_path": [
+      "Call Result Request",
+      "Get Task Type (GET call_requests)",
+      "Get Untranslated Lines (GET transcript_lines)",
+      "Prepare Result",
+      "Write Result in User Language (Claude)",
+      "Parse Result",
+      "Save Summary (PATCH calls)",
+      "Booked or Completed?",
+      "Set Request Status (only if not final)",
+      "Log Event: result_translated"
+    ],
+    "renderer": "n8n-demo-component",
+    "png_size": [
+      3840,
+      2160
+    ],
+    "paper_viewbox": [
+      161,
+      174,
+      1369,
+      846
+    ]
+  }
+]

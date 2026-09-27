@@ -1,0 +1,107 @@
+[
+  {
+    "w": "The",
+    "start": 0.0,
+    "end": 0.08
+  },
+  {
+    "w": "answer",
+    "start": 0.126,
+    "end": 0.4
+  },
+  {
+    "w": "comes",
+    "start": 0.453,
+    "end": 0.72
+  },
+  {
+    "w": "back",
+    "start": 0.768,
+    "end": 0.96
+  },
+  {
+    "w": "in",
+    "start": 1.013,
+    "end": 1.12
+  },
+  {
+    "w": "Russian.",
+    "start": 1.18,
+    "end": 2.12
+  },
+  {
+    "w": "No",
+    "start": 2.293,
+    "end": 2.64
+  },
+  {
+    "w": "audio",
+    "start": 2.72,
+    "end": 3.12
+  },
+  {
+    "w": "is",
+    "start": 3.173,
+    "end": 3.28
+  },
+  {
+    "w": "stored,",
+    "start": 3.349,
+    "end": 4.08
+  },
+  {
+    "w": "only",
+    "start": 4.144,
+    "end": 4.4
+  },
+  {
+    "w": "text.",
+    "start": 4.512,
+    "end": 5.04
+  },
+  {
+    "w": "And",
+    "start": 5.22,
+    "end": 5.76
+  },
+  {
+    "w": "the",
+    "start": 5.8,
+    "end": 5.92
+  },
+  {
+    "w": "course",
+    "start": 5.966,
+    "end": 6.24
+  },
+  {
+    "w": "page",
+    "start": 6.304,
+    "end": 6.56
+  },
+  {
+    "w": "now",
+    "start": 6.62,
+    "end": 6.8
+  },
+  {
+    "w": "shows:",
+    "start": 6.88,
+    "end": 7.72
+  },
+  {
+    "w": "checked",
+    "start": 7.775,
+    "end": 8.16
+  },
+  {
+    "w": "by",
+    "start": 8.24,
+    "end": 8.4
+  },
+  {
+    "w": "phone.",
+    "start": 8.48,
+    "end": 9.04
+  }
+]

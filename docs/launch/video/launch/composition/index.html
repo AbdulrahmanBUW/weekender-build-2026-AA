@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Ankommen launch</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/data.js"></script>
+    <style>
+      @font-face { font-family: "Fraunces"; font-style: normal; font-weight: 100 900; font-display: block; src: url("assets/fonts/fraunces-latin-full-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "Fraunces"; font-style: normal; font-weight: 100 900; font-display: block; src: url("assets/fonts/fraunces-latin-ext-full-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113; }
+      @font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 200 900; font-display: block; src: url("assets/fonts/source-sans-3-latin-wght-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 200 900; font-display: block; src: url("assets/fonts/source-sans-3-latin-ext-wght-normal.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C0; }
+      @font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 200 900; font-display: block; src: url("assets/fonts/source-sans-3-cyrillic-wght-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+      @font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: block; src: url("assets/fonts/source-serif-4-cyrillic-600-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+      @font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: block; src: url("assets/fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "Noto Naskh Arabic"; font-style: normal; font-weight: 600; font-display: block; src: url("assets/fonts/noto-naskh-arabic-arabic-600-normal.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC; }
+
+      :root {
+        --paper: #F7F4EC; --card: #FFFDF8; --deep: #EFE9DC; --border: #D9D2C3;
+        --ink: #1C2420; --muted: #5B635E; --pine: #1F5C4A; --pine-dark: #174A3B; --tint: #E6EEE9;
+        --amber: #D98E04; --amber-ring: #8A5A00; --amber-text: #8A5A00; --amber-tint: #FBF0D9;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      body { font-family: "Source Sans 3", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--paper); }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+      .display { font-family: "Fraunces", serif; font-weight: 600; font-variation-settings: "SOFT" 50; }
+
+      /* ---------- browser frame ---------- */
+      .frame-wrap { position: absolute; left: 240px; top: 64px; width: 1440px; height: 832px; }
+      .frame-shadow { position: absolute; inset: 0; border-radius: 16px; box-shadow: 0 30px 60px -34px rgba(28, 36, 32, 0.34); }
+      .bframe { position: absolute; inset: 0; background: var(--card); border: 2px solid var(--border); border-radius: 16px; overflow: hidden; }
+      .bbar { position: absolute; left: 0; right: 0; top: 0; height: 50px; background: var(--deep); border-bottom: 2px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 10px; }
+      .bbar i { display: block; width: 13px; height: 13px; border-radius: 50%; background: var(--border); }
+      .url { position: relative; margin-left: 22px; height: 32px; width: 700px; background: var(--paper); border: 2px solid var(--border); border-radius: 8px; overflow: hidden; }
+      .url span { position: absolute; left: 14px; top: 0; line-height: 28px; font-size: 19px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+      .vp { position: absolute; left: 0; right: 0; top: 50px; bottom: 0; overflow: hidden; background: var(--paper); }
+      .cam { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; transform-origin: 0 0; }
+      .cam img, .layer img { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; display: block; }
+      .layer { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; }
+
+      /* ---------- captions ---------- */
+      #captions { position: absolute; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none; }
+      .cap { position: absolute; left: 160px; right: 160px; top: 928px; height: 110px; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; visibility: hidden; }
+      .cap span { display: inline-block; font-size: 46px; line-height: 56px; font-weight: 600; color: var(--ink); margin: 0 0.13em; opacity: 0; }
+      .cap span.em { color: var(--pine); font-weight: 700; }
+
+      /* ---------- scene 1 ---------- */
+      #s1-ring { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; overflow: visible; }
+
+      /* ---------- scene 2 ---------- */
+      #s2-inner { position: absolute; inset: 0; transform-origin: 160px 460px; }
+      #s2-label { position: absolute; left: 160px; top: 150px; font-size: 32px; font-weight: 600; color: var(--muted); }
+      #s2-de { position: absolute; left: 160px; top: 214px; width: 1320px; font-family: "Fraunces", serif; font-weight: 400; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 60; font-size: 118px; line-height: 1.12; color: var(--ink); }
+      #s2-de .w { position: relative; display: inline-block; margin-right: 0.22em; opacity: 0; }
+      #s2-de .u { position: absolute; left: 0; right: -0.22em; bottom: 0.02em; height: 7px; background: var(--pine); transform-origin: 0 50%; }
+      #s2-de .w.last .u { right: 0; }
+      #s2-phone { position: absolute; left: 160px; top: 596px; display: flex; align-items: center; gap: 26px; opacity: 0; }
+      #s2-phone .num { font-size: 44px; font-weight: 600; color: var(--ink); letter-spacing: 0.01em; }
+      .bars { display: flex; align-items: center; gap: 7px; height: 56px; }
+      .bars b { display: block; width: 9px; height: 56px; border-radius: 3px; background: var(--pine); transform-origin: 50% 50%; }
+      #s2-ivr { position: absolute; left: 160px; top: 690px; width: 1640px; white-space: nowrap; font-family: "Fraunces", serif; font-weight: 400; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 36; font-size: 44px; color: var(--muted); }
+      #s2-ivr span { display: inline-block; margin-right: 0.24em; opacity: 0; }
+      #s2-ivr-label { position: absolute; left: 160px; top: 760px; font-size: 26px; font-weight: 600; color: var(--muted); opacity: 0; }
+
+      /* ---------- scene 3 ---------- */
+      #s3-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-bottom: 60px; }
+      #wm { display: flex; font-size: 250px; line-height: 1.02; letter-spacing: -0.01em; }
+      #wm .m { display: block; overflow: hidden; padding: 0 0.005em 0.08em; }
+      #wm .m b { display: block; font-weight: 600; }
+      #wm .ink b { color: var(--ink); }
+      #wm .pine b { color: var(--pine); }
+      #s3-tag { display: flex; gap: 0.26em; margin-top: 10px; font-size: 60px; font-weight: 500; color: var(--muted); }
+      #s3-tag span { display: inline-block; opacity: 0; }
+      #s3-rule { width: 640px; height: 5px; margin-top: 44px; background: var(--pine); transform-origin: 50% 50%; }
+
+      /* ---------- scene 4/5 ---------- */
+      #af { position: absolute; left: 240px; top: 64px; width: 1440px; height: 832px; transform-origin: 50% 50%; }
+      #af .frame-wrap { left: 0; top: 0; }
+      #langs { position: absolute; left: 118px; top: 118px; width: 520px; }
+      #langs .row { position: relative; height: 104px; display: flex; align-items: center; padding-left: 44px; font-size: 62px; color: var(--muted); opacity: 0; }
+      #langs .row.lat { font-family: "Fraunces", serif; font-weight: 600; font-variation-settings: "SOFT" 50; }
+      #langs .row.cyr { font-family: "Source Serif 4", serif; font-weight: 600; }
+      #langs .row.ar { font-family: "Noto Naskh Arabic", serif; font-weight: 600; font-size: 60px; }
+      #lmark { position: absolute; left: 0; top: 26px; width: 8px; height: 52px; border-radius: 3px; background: var(--pine); opacity: 0; }
+      #dim { position: absolute; inset: 0; background: var(--paper); opacity: 0; }
+      #lift { position: absolute; left: 933px; top: 461px; width: 310px; height: 44px; border-radius: 6px; overflow: hidden; background-image: url("assets/screens/desktop-provider-en.png"); background-size: 1440px 900px; background-position: -933px -461px; transform-origin: 50% 50%; }
+      #lift-dark { position: absolute; inset: 0; background: #0E2A21; opacity: 0; }
+      #lift-ring { position: absolute; left: 925px; top: 453px; width: 326px; height: 60px; border: 3px solid var(--pine); border-radius: 10px; opacity: 0; transform-origin: 50% 50%; }
+      #cursor { position: absolute; left: 0; top: 0; width: 40px; height: 52px; opacity: 0; transform-origin: 6px 4px; }
+
+      .callcard { position: absolute; left: 170px; top: 120px; width: 1100px; background: var(--card); border: 2px solid var(--border); border-radius: 18px; padding: 44px 56px 50px; opacity: 0; }
+      .cc-top { display: flex; align-items: center; gap: 18px; }
+      .cc-name { font-family: "Fraunces", serif; font-weight: 600; font-variation-settings: "SOFT" 50; font-size: 40px; color: var(--ink); }
+      .cc-num { font-size: 28px; color: var(--muted); font-weight: 500; }
+      .cc-right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
+      .cc-live { position: relative; display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 16px 0 14px; background: var(--amber-tint); border-radius: 8px; }
+      .cc-live .dot { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 2px var(--amber-ring); }
+      .cc-live .pulse { position: absolute; left: 14px; top: 14px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--amber-ring); opacity: 0; transform-origin: 50% 50%; }
+      .cc-live span { font-size: 26px; font-weight: 700; color: var(--amber-text); }
+      .cc-timer { font-size: 30px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; width: 88px; }
+      .cc-rule { height: 2px; background: var(--border); margin: 30px 0 28px; }
+      .cc-speaker { display: flex; align-items: center; gap: 18px; font-size: 28px; font-weight: 600; color: var(--muted); }
+      .cc-speaker .bars { height: 40px; gap: 6px; }
+      .cc-speaker .bars b { width: 7px; height: 40px; }
+      .cc-de { margin-top: 22px; font-family: "Fraunces", serif; font-weight: 400; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 48; font-size: 54px; line-height: 1.22; color: var(--ink); }
+      .cc-de .w { position: relative; display: inline-block; margin-right: 0.22em; opacity: 0; }
+      .cc-de .w.hl .hlbg { position: absolute; left: -0.1em; right: -0.1em; top: 0.08em; bottom: 0.02em; background: var(--tint); border-radius: 6px; transform-origin: 0 50%; z-index: -1; }
+      .cc-de .w.hl { color: var(--pine); isolation: isolate; }
+      .cc-ru { margin-top: 18px; font-size: 34px; line-height: 1.3; color: var(--muted); opacity: 0; }
+
+      /* result card: real card shortened below the bring-list (German details table left out), real bottom edge kept */
+      #rcard { position: absolute; left: 220px; top: 108px; width: 1000px; height: 561px; transform-origin: 0 0; opacity: 0; }
+      #rcard img { width: 1000px; height: 561px; display: block; }
+      #rcheck { position: absolute; left: 36px; top: 38px; width: 46px; height: 46px; overflow: visible; }
+
+      /* ---------- scene 6 ---------- */
+      #s6-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-bottom: 20px; }
+      #s6-wm { font-size: 132px; line-height: 1.05; }
+      #s6-wm .a { color: var(--ink); }
+      #s6-wm .k { color: var(--pine); }
+      #s6-tag { margin-top: 6px; font-size: 42px; font-weight: 500; color: var(--muted); }
+      #s6-url { position: relative; margin-top: 70px; font-size: 96px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; white-space: nowrap; }
+      #s6-url .txt { display: block; clip-path: inset(0 100% 0 0); }
+      #s6-rule { position: absolute; left: 0; right: 0; bottom: -18px; height: 6px; background: var(--pine); transform-origin: 0 50%; }
+      #s6-langs { display: flex; gap: 40px; margin-top: 76px; font-size: 38px; color: var(--muted); align-items: baseline; }
+      #s6-langs span { display: inline-block; opacity: 0; }
+      #s6-langs .cyr { font-family: "Source Serif 4", serif; font-weight: 600; }
+      #s6-langs .lat { font-family: "Fraunces", serif; font-weight: 600; font-variation-settings: "SOFT" 50; }
+      #s6-langs .ar { font-family: "Noto Naskh Arabic", serif; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="25.9">
+
+      <!-- Scene 1: found the course (real courses page, ru) -->
+      <section id="s1" class="clip scene" data-start="0" data-duration="2.6" data-track-index="1">
+        <div class="frame-wrap">
+          <div class="frame-shadow"></div>
+          <div class="bframe">
+            <div class="bbar"><i></i><i></i><i></i><div class="url"><span>ankommen-dresden.lovable.app/courses?age=3-6&amp;act=music&amp;lang=ru</span></div></div>
+            <div class="vp">
+              <div class="cam" id="cam1" data-layout-allow-overflow>
+                <img src="assets/screens/desktop-courses-ru.png" alt="" />
+                <svg id="s1-ring" viewBox="0 0 1440 900"><rect id="s1-rect" x="160" y="784" width="660" height="88" rx="8" fill="none" stroke="#1F5C4A" stroke-width="2.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" /></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 2: the German wall -->
+      <section id="s2" class="clip scene" data-start="2.6" data-duration="4.25" data-track-index="2">
+        <div id="s2-inner">
+          <div id="s2-label">Olgas Musikstudio &middot; Probestunde</div>
+          <div id="s2-de"></div>
+          <div id="s2-phone">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1F5C4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+            <div class="num">+49 351 0000000</div>
+            <div class="bars" id="ivr-bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+          </div>
+          <div id="s2-ivr"></div>
+        </div>
+      </section>
+
+      <!-- Scene 3: reveal -->
+      <section id="s3" class="clip scene" data-start="6.85" data-duration="3.4" data-track-index="3">
+        <div id="s3-inner">
+          <div id="wm" class="display"></div>
+          <div id="s3-tag"></div>
+          <div id="s3-rule"></div>
+        </div>
+      </section>
+
+      <!-- Scene 4+5: six languages, then Call for me (one continuous browser frame) -->
+      <section id="s45" class="clip scene" data-start="10.05" data-duration="12.15" data-track-index="4">
+        <div id="langs">
+          <div id="lmark"></div>
+          <div class="row lat">English</div>
+          <div class="row lat">Deutsch</div>
+          <div class="row cyr">Русский</div>
+          <div class="row cyr">Українська</div>
+          <div class="row ar"><span dir="rtl" lang="ar">العربية</span></div>
+          <div class="row lat">Türkçe</div>
+        </div>
+        <div id="af">
+          <div class="frame-wrap">
+            <div class="frame-shadow" id="af-shadow"></div>
+            <div class="bframe">
+              <div class="bbar"><i></i><i></i><i></i><div class="url"><span id="url-home">ankommen-dresden.lovable.app</span><span id="url-prov" style="opacity:0">ankommen-dresden.lovable.app/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d</span></div></div>
+              <div class="vp">
+                <div class="cam" id="cam4" data-layout-allow-overflow>
+                  <div class="layer" id="h-en"><img src="assets/screens/desktop-home-en.png" alt="" /></div>
+                  <div class="layer hl2" id="h-de"><img src="assets/screens/desktop-home-de.png" alt="" /></div>
+                  <div class="layer hl2" id="h-ru"><img src="assets/screens/desktop-home-ru.png" alt="" /></div>
+                  <div class="layer hl2" id="h-uk"><img src="assets/screens/desktop-home-uk.png" alt="" /></div>
+                  <div class="layer hl2" id="h-ar"><img src="assets/screens/desktop-home-ar.png" alt="" /></div>
+                  <div class="layer hl2" id="h-tr"><img src="assets/screens/desktop-home-tr.png" alt="" /></div>
+                </div>
+                <div class="layer" id="prov">
+                  <div class="cam" id="cam5" data-layout-allow-overflow>
+                    <img src="assets/screens/desktop-provider-en.png" alt="" />
+                    <div id="lift-ring"></div>
+                    <div id="lift"><div id="lift-dark"></div></div>
+                  </div>
+                </div>
+                <svg id="cursor" viewBox="0 0 40 52"><path d="M4 3 L4 40 L13.5 31 L20 46 L27 43 L20.5 28.5 L34 28.5 Z" fill="#1C2420" stroke="#FFFDF8" stroke-width="2.6" stroke-linejoin="round"/></svg>
+                <div id="dim"></div>
+                <div class="callcard" id="callcard">
+                  <div class="cc-top">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F5C4A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+                    <div class="cc-name">Olgas Musikstudio</div>
+                    <div class="cc-num">+49 351 0000000</div>
+                    <div class="cc-right">
+                      <div class="cc-live"><div class="dot"></div><div class="pulse" id="pulse"></div><span>Live</span></div>
+                      <div class="cc-timer" id="timer">00:00</div>
+                    </div>
+                  </div>
+                  <div class="cc-rule"></div>
+                  <div class="cc-speaker"><div class="bars" id="cc-bars"><b></b><b></b><b></b><b></b><b></b></div><span>AI assistant, speaking German</span></div>
+                  <p class="cc-de" id="cc-de"></p>
+                  <p class="cc-ru" id="cc-ru" lang="ru">Добрый день! Это ИИ-ассистент Марии Петровой.</p>
+                </div>
+                <div id="rcard" data-layout-allow-overflow>
+                  <img src="assets/screens/crop-resultcard-ru-short.png" alt="" />
+                  <svg id="rcheck" viewBox="0 0 46 46">
+                    <circle cx="23" cy="23" r="21" fill="#FFFDF8" />
+                    <circle id="rc-circle" cx="23" cy="23" r="14.6" fill="none" stroke="#1F5C4A" stroke-width="3" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" transform="rotate(-90 23 23)" />
+                    <path id="rc-tick" d="M16.8 23.4 L21.2 27.6 L29.4 18.8" fill="none" stroke="#1F5C4A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 6: end card -->
+      <section id="s6" class="clip scene" data-start="22.05" data-duration="3.85" data-track-index="5">
+        <div id="s6-inner">
+          <div id="s6-wm" class="display"><span class="a">An</span><span class="k">kommen</span></div>
+          <div id="s6-tag">Your guide to starting in Germany</div>
+          <div id="s6-url"><span class="txt">ankommen-dresden.lovable.app</span><div id="s6-rule"></div></div>
+          <div id="s6-langs">
+            <span class="lat">English</span><span class="lat">Deutsch</span><span class="cyr">Русский</span><span class="cyr">Українська</span><span class="ar" dir="rtl" lang="ar">العربية</span><span class="lat">Türkçe</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kinetic captions (narration word timings) -->
+      <div id="captions" class="clip" data-start="0" data-duration="25.9" data-track-index="6"></div>
+
+      <!-- Narration: ElevenLabs George, PRODUCTION.md 3.6 -->
+      <audio id="vo-l1" src="assets/audio/nar_l1.mp3" data-start="0.2" data-duration="2.32" data-track-index="20" data-volume="1" data-audio-group="voiceover"></audio>
+      <audio id="vo-l2" src="assets/audio/nar_l2.mp3" data-start="2.6" data-duration="3.1" data-track-index="21" data-volume="1" data-audio-group="voiceover"></audio>
+      <audio id="vo-l3" src="assets/audio/nar_l3.mp3" data-start="6.95" data-duration="3.04" data-track-index="22" data-volume="1" data-audio-group="voiceover"></audio>
+      <audio id="vo-l4" src="assets/audio/nar_l4.mp3" data-start="10.2" data-duration="3.12" data-track-index="23" data-volume="1" data-audio-group="voiceover"></audio>
+      <audio id="vo-l5" src="assets/audio/nar_l5_110.mp3" data-start="13.45" data-duration="8.59" data-track-index="24" data-volume="1" data-audio-group="voiceover"></audio>
+      <audio id="vo-l6" src="assets/audio/nar_l6.mp3" data-start="22.3" data-duration="3.04" data-track-index="25" data-volume="1" data-audio-group="voiceover"></audio>
+
+      <!-- German phone menu under the problem beat (Deepgram aurelia), phone-line band -->
+      <audio id="ivr" src="assets/audio/ivr_de.mp3" data-start="3.6" data-duration="3.35" data-media-start="6.70" data-track-index="26" data-volume="1"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Phone line low cut&quot;,&quot;params&quot;:{&quot;frequency&quot;:320,&quot;q&quot;:0.707}},{&quot;type&quot;:&quot;lowpass&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Phone line high cut&quot;,&quot;params&quot;:{&quot;frequency&quot;:3300,&quot;q&quot;:0.707}}]}"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.25,&quot;v&quot;:0.34},{&quot;t&quot;:2.08,&quot;v&quot;:0.34},{&quot;t&quot;:2.3,&quot;v&quot;:0.85},{&quot;t&quot;:3.28,&quot;v&quot;:0.85},{&quot;t&quot;:3.35,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- Music bed: bundled brag track (vol-12), enters on the reveal -->
+      <audio id="music" src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3" data-start="6.84" data-duration="19.06" data-media-start="0.5" data-track-index="10" data-volume="1" data-audio-group="music"
+        data-fx-carve="{&quot;enabled&quot;:true,&quot;sources&quot;:[&quot;voiceover&quot;],&quot;strength&quot;:0.3}" data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;fromCarve&quot;:true,&quot;params&quot;:{&quot;frequency&quot;:160,&quot;gain&quot;:-3.4,&quot;q&quot;:1.46}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;fromCarve&quot;:true,&quot;params&quot;:{&quot;frequency&quot;:1000,&quot;gain&quot;:-3.4,&quot;q&quot;:1.46}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n3&quot;,&quot;fromCarve&quot;:true,&quot;params&quot;:{&quot;frequency&quot;:1600,&quot;gain&quot;:-6.8,&quot;q&quot;:1.46}},{&quot;type&quot;:&quot;gain&quot;,&quot;id&quot;:&quot;n4&quot;,&quot;fromCarve&quot;:true,&quot;params&quot;:{&quot;gain&quot;:0}}]}" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.2},{&quot;t&quot;:0.12,&quot;v&quot;:0.6},{&quot;t&quot;:18.2,&quot;v&quot;:0.6},{&quot;t&quot;:19.06,&quot;v&quot;:0}]},{&quot;target&quot;:&quot;fx.n1.gain&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.128,&quot;v&quot;:0},{&quot;t&quot;:0.213,&quot;v&quot;:-1.3},{&quot;t&quot;:0.299,&quot;v&quot;:-2.7},{&quot;t&quot;:0.384,&quot;v&quot;:-2.5},{&quot;t&quot;:0.469,&quot;v&quot;:-1.8},{&quot;t&quot;:0.555,&quot;v&quot;:-1.3},{&quot;t&quot;:0.64,&quot;v&quot;:-0.9},{&quot;t&quot;:0.725,&quot;v&quot;:-0.7},{&quot;t&quot;:1.067,&quot;v&quot;:-0.2},{&quot;t&quot;:1.152,&quot;v&quot;:0},{&quot;t&quot;:1.493,&quot;v&quot;:0},{&quot;t&quot;:1.579,&quot;v&quot;:-0.5},{&quot;t&quot;:1.664,&quot;v&quot;:-1.3},{&quot;t&quot;:2.091,&quot;v&quot;:-0.9},{&quot;t&quot;:2.176,&quot;v&quot;:-2.3},{&quot;t&quot;:2.347,&quot;v&quot;:-1.8},{&quot;t&quot;:2.432,&quot;v&quot;:-1.5},{&quot;t&quot;:2.517,&quot;v&quot;:-1},{&quot;t&quot;:2.688,&quot;v&quot;:-1.3},{&quot;t&quot;:2.773,&quot;v&quot;:-2.6},{&quot;t&quot;:2.859,&quot;v&quot;:-2.2},{&quot;t&quot;:2.944,&quot;v&quot;:-1.6},{&quot;t&quot;:3.029,&quot;v&quot;:-1.1},{&quot;t&quot;:3.115,&quot;v&quot;:-0.8},{&quot;t&quot;:3.2,&quot;v&quot;:-0.6},{&quot;t&quot;:3.371,&quot;v&quot;:-0.3},{&quot;t&quot;:3.456,&quot;v&quot;:-2.3},{&quot;t&quot;:3.541,&quot;v&quot;:-3},{&quot;t&quot;:3.627,&quot;v&quot;:-2.8},{&quot;t&quot;:3.712,&quot;v&quot;:-2},{&quot;t&quot;:3.797,&quot;v&quot;:-2.6},{&quot;t&quot;:3.883,&quot;v&quot;:-2.5},{&quot;t&quot;:3.968,&quot;v&quot;:-1.8},{&quot;t&quot;:4.053,&quot;v&quot;:-1.3},{&quot;t&quot;:4.139,&quot;v&quot;:-2.4},{&quot;t&quot;:4.395,&quot;v&quot;:-2.5},{&quot;t&quot;:4.48,&quot;v&quot;:-1.8},{&quot;t&quot;:4.565,&quot;v&quot;:-1.3},{&quot;t&quot;:4.651,&quot;v&quot;:-3},{&quot;t&quot;:4.736,&quot;v&quot;:-2.1},{&quot;t&quot;:4.821,&quot;v&quot;:-3},{&quot;t&quot;:4.907,&quot;v&quot;:-2.2},{&quot;t&quot;:4.992,&quot;v&quot;:-1.6},{&quot;t&quot;:5.077,&quot;v&quot;:-1.1},{&quot;t&quot;:5.163,&quot;v&quot;:-0.8},{&quot;t&quot;:5.248,&quot;v&quot;:-0.6},{&quot;t&quot;:5.333,&quot;v&quot;:-1.3},{&quot;t&quot;:5.419,&quot;v&quot;:-1.9},{&quot;t&quot;:5.504,&quot;v&quot;:-1.4},{&quot;t&quot;:5.845,&quot;v&quot;:-1.2},{&quot;t&quot;:5.931,&quot;v&quot;:-2.4},{&quot;t&quot;:6.016,&quot;v&quot;:-2.1},{&quot;t&quot;:6.101,&quot;v&quot;:-1.5},{&quot;t&quot;:6.187,&quot;v&quot;:-1.1},{&quot;t&quot;:6.272,&quot;v&quot;:-1},{&quot;t&quot;:6.443,&quot;v&quot;:-0.6},{&quot;t&quot;:6.528,&quot;v&quot;:-0.4},{&quot;t&quot;:6.613,&quot;v&quot;:-0.3},{&quot;t&quot;:6.699,&quot;v&quot;:-1.7},{&quot;t&quot;:6.869,&quot;v&quot;:-1.3},{&quot;t&quot;:6.955,&quot;v&quot;:-1.1},{&quot;t&quot;:7.04,&quot;v&quot;:-0.9},{&quot;t&quot;:7.125,&quot;v&quot;:-2.5},{&quot;t&quot;:7.211,&quot;v&quot;:-2.1},{&quot;t&quot;:7.296,&quot;v&quot;:-1.5},{&quot;t&quot;:7.381,&quot;v&quot;:-1.1},{&quot;t&quot;:7.467,&quot;v&quot;:-2.6},{&quot;t&quot;:7.637,&quot;v&quot;:-2.3},{&quot;t&quot;:7.723,&quot;v&quot;:-1.6},{&quot;t&quot;:7.808,&quot;v&quot;:-1.2},{&quot;t&quot;:7.893,&quot;v&quot;:-0.9},{&quot;t&quot;:7.979,&quot;v&quot;:-0.6},{&quot;t&quot;:8.064,&quot;v&quot;:-0.4},{&quot;t&quot;:8.149,&quot;v&quot;:-1.2},{&quot;t&quot;:8.235,&quot;v&quot;:-0.8},{&quot;t&quot;:8.32,&quot;v&quot;:-0.6},{&quot;t&quot;:8.576,&quot;v&quot;:-0.2},{&quot;t&quot;:8.661,&quot;v&quot;:0},{&quot;t&quot;:9.088,&quot;v&quot;:-0.2},{&quot;t&quot;:9.173,&quot;v&quot;:-2.3},{&quot;t&quot;:9.259,&quot;v&quot;:-2},{&quot;t&quot;:9.344,&quot;v&quot;:-3},{&quot;t&quot;:9.429,&quot;v&quot;:-2.7},{&quot;t&quot;:9.515,&quot;v&quot;:-2.3},{&quot;t&quot;:9.6,&quot;v&quot;:-1.7},{&quot;t&quot;:9.685,&quot;v&quot;:-1.2},{&quot;t&quot;:9.771,&quot;v&quot;:-0.9},{&quot;t&quot;:9.856,&quot;v&quot;:-0.6},{&quot;t&quot;:10.112,&quot;v&quot;:-0.2},{&quot;t&quot;:10.197,&quot;v&quot;:0},{&quot;t&quot;:10.453,&quot;v&quot;:0},{&quot;t&quot;:10.539,&quot;v&quot;:-1.3},{&quot;t&quot;:10.709,&quot;v&quot;:-0.9},{&quot;t&quot;:10.795,&quot;v&quot;:-1.9},{&quot;t&quot;:10.88,&quot;v&quot;:-2.4},{&quot;t&quot;:10.965,&quot;v&quot;:-1.9},{&quot;t&quot;:11.051,&quot;v&quot;:-1.4},{&quot;t&quot;:11.136,&quot;v&quot;:-2},{&quot;t&quot;:11.221,&quot;v&quot;:-2.6},{&quot;t&quot;:11.648,&quot;v&quot;:-2.3},{&quot;t&quot;:11.733,&quot;v&quot;:-2.1},{&quot;t&quot;:11.819,&quot;v&quot;:-1.5},{&quot;t&quot;:11.904,&quot;v&quot;:-1},{&quot;t&quot;:11.989,&quot;v&quot;:-0.7},{&quot;t&quot;:12.075,&quot;v&quot;:-0.5},{&quot;t&quot;:12.245,&quot;v&quot;:-0.3},{&quot;t&quot;:12.331,&quot;v&quot;:-1.6},{&quot;t&quot;:12.416,&quot;v&quot;:-2.1},{&quot;t&quot;:12.501,&quot;v&quot;:-1.5},{&quot;t&quot;:12.587,&quot;v&quot;:-1.1},{&quot;t&quot;:12.672,&quot;v&quot;:-0.9},{&quot;t&quot;:12.757,&quot;v&quot;:-0.6},{&quot;t&quot;:12.843,&quot;v&quot;:-2.2},{&quot;t&quot;:12.928,&quot;v&quot;:-1.6},{&quot;t&quot;:13.013,&quot;v&quot;:-1.1},{&quot;t&quot;:13.099,&quot;v&quot;:-0.8},{&quot;t&quot;:13.184,&quot;v&quot;:-0.6},{&quot;t&quot;:13.355,&quot;v&quot;:-0.3},{&quot;t&quot;:13.44,&quot;v&quot;:-1.3},{&quot;t&quot;:13.525,&quot;v&quot;:-2.1},{&quot;t&quot;:13.611,&quot;v&quot;:-1.7},{&quot;t&quot;:13.696,&quot;v&quot;:-1.2},{&quot;t&quot;:13.781,&quot;v&quot;:-1.4},{&quot;t&quot;:13.867,&quot;v&quot;:-2.4},{&quot;t&quot;:13.952,&quot;v&quot;:-2.4},{&quot;t&quot;:14.037,&quot;v&quot;:-1.7},{&quot;t&quot;:14.293,&quot;v&quot;:-1.4},{&quot;t&quot;:14.379,&quot;v&quot;:-1},{&quot;t&quot;:14.464,&quot;v&quot;:-1.5},{&quot;t&quot;:14.549,&quot;v&quot;:-1.1},{&quot;t&quot;:14.635,&quot;v&quot;:-0.8},{&quot;t&quot;:14.72,&quot;v&quot;:-0.5},{&quot;t&quot;:14.805,&quot;v&quot;:-2.5},{&quot;t&quot;:14.891,&quot;v&quot;:-2.1},{&quot;t&quot;:14.976,&quot;v&quot;:-1.5},{&quot;t&quot;:15.061,&quot;v&quot;:-1.1},{&quot;t&quot;:15.147,&quot;v&quot;:-0.8},{&quot;t&quot;:15.317,&quot;v&quot;:-0.4},{&quot;t&quot;:15.403,&quot;v&quot;:-0.3},{&quot;t&quot;:15.488,&quot;v&quot;:0},{&quot;t&quot;:15.573,&quot;v&quot;:-1.2},{&quot;t&quot;:15.659,&quot;v&quot;:-2.9},{&quot;t&quot;:15.744,&quot;v&quot;:-2.1},{&quot;t&quot;:15.829,&quot;v&quot;:-2.5},{&quot;t&quot;:15.915,&quot;v&quot;:-2.9},{&quot;t&quot;:16,&quot;v&quot;:-3.1},{&quot;t&quot;:16.085,&quot;v&quot;:-2.2},{&quot;t&quot;:16.171,&quot;v&quot;:-1.7},{&quot;t&quot;:16.256,&quot;v&quot;:-1.2},{&quot;t&quot;:16.341,&quot;v&quot;:-0.8},{&quot;t&quot;:16.427,&quot;v&quot;:-0.7},{&quot;t&quot;:16.683,&quot;v&quot;:-0.3},{&quot;t&quot;:16.768,&quot;v&quot;:0},{&quot;t&quot;:16.853,&quot;v&quot;:-1.1},{&quot;t&quot;:17.365,&quot;v&quot;:-0.9},{&quot;t&quot;:17.451,&quot;v&quot;:-0.6},{&quot;t&quot;:17.707,&quot;v&quot;:-0.2},{&quot;t&quot;:17.792,&quot;v&quot;:0},{&quot;t&quot;:18.048,&quot;v&quot;:0},{&quot;t&quot;:18.133,&quot;v&quot;:-0.5},{&quot;t&quot;:18.304,&quot;v&quot;:-0.2},{&quot;t&quot;:18.389,&quot;v&quot;:0},{&quot;t&quot;:18.475,&quot;v&quot;:0},{&quot;t&quot;:18.5,&quot;v&quot;:0}]},{&quot;target&quot;:&quot;fx.n2.gain&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.128,&quot;v&quot;:0},{&quot;t&quot;:0.213,&quot;v&quot;:-1.7},{&quot;t&quot;:0.469,&quot;v&quot;:-1.9},{&quot;t&quot;:0.555,&quot;v&quot;:-2.5},{&quot;t&quot;:0.64,&quot;v&quot;:-2},{&quot;t&quot;:0.725,&quot;v&quot;:-1.4},{&quot;t&quot;:0.811,&quot;v&quot;:-1},{&quot;t&quot;:0.896,&quot;v&quot;:-0.7},{&quot;t&quot;:1.152,&quot;v&quot;:-0.3},{&quot;t&quot;:1.237,&quot;v&quot;:0},{&quot;t&quot;:1.323,&quot;v&quot;:0},{&quot;t&quot;:1.408,&quot;v&quot;:-1.8},{&quot;t&quot;:1.579,&quot;v&quot;:-1.4},{&quot;t&quot;:1.664,&quot;v&quot;:-2.4},{&quot;t&quot;:1.749,&quot;v&quot;:-2.4},{&quot;t&quot;:1.835,&quot;v&quot;:-1.8},{&quot;t&quot;:1.92,&quot;v&quot;:-1.4},{&quot;t&quot;:2.005,&quot;v&quot;:-1},{&quot;t&quot;:2.091,&quot;v&quot;:-0.7},{&quot;t&quot;:2.176,&quot;v&quot;:-1.9},{&quot;t&quot;:2.261,&quot;v&quot;:-2.9},{&quot;t&quot;:2.347,&quot;v&quot;:-2.1},{&quot;t&quot;:2.603,&quot;v&quot;:-1.7},{&quot;t&quot;:2.688,&quot;v&quot;:-1.2},{&quot;t&quot;:2.773,&quot;v&quot;:-1.2},{&quot;t&quot;:2.859,&quot;v&quot;:-1.9},{&quot;t&quot;:2.944,&quot;v&quot;:-1.4},{&quot;t&quot;:3.115,&quot;v&quot;:-1},{&quot;t&quot;:3.2,&quot;v&quot;:-0.7},{&quot;t&quot;:3.371,&quot;v&quot;:-0.3},{&quot;t&quot;:3.456,&quot;v&quot;:-1.7},{&quot;t&quot;:3.627,&quot;v&quot;:-1.4},{&quot;t&quot;:3.712,&quot;v&quot;:-1},{&quot;t&quot;:3.797,&quot;v&quot;:-0.7},{&quot;t&quot;:3.883,&quot;v&quot;:-0.5},{&quot;t&quot;:4.224,&quot;v&quot;:-0.3},{&quot;t&quot;:4.309,&quot;v&quot;:-1.5},{&quot;t&quot;:4.48,&quot;v&quot;:-1.3},{&quot;t&quot;:4.565,&quot;v&quot;:-0.9},{&quot;t&quot;:4.651,&quot;v&quot;:-1.7},{&quot;t&quot;:4.821,&quot;v&quot;:-1.9},{&quot;t&quot;:4.907,&quot;v&quot;:-2.2},{&quot;t&quot;:4.992,&quot;v&quot;:-1.6},{&quot;t&quot;:5.077,&quot;v&quot;:-1.1},{&quot;t&quot;:5.163,&quot;v&quot;:-0.8},{&quot;t&quot;:5.248,&quot;v&quot;:-0.6},{&quot;t&quot;:5.333,&quot;v&quot;:-0.4},{&quot;t&quot;:5.419,&quot;v&quot;:-1.8},{&quot;t&quot;:5.504,&quot;v&quot;:-1.3},{&quot;t&quot;:5.589,&quot;v&quot;:-0.9},{&quot;t&quot;:5.675,&quot;v&quot;:-0.7},{&quot;t&quot;:5.845,&quot;v&quot;:-0.7},{&quot;t&quot;:5.931,&quot;v&quot;:-1.9},{&quot;t&quot;:6.016,&quot;v&quot;:-2.4},{&quot;t&quot;:6.101,&quot;v&quot;:-2.1},{&quot;t&quot;:6.187,&quot;v&quot;:-1.5},{&quot;t&quot;:6.272,&quot;v&quot;:-1.1},{&quot;t&quot;:6.357,&quot;v&quot;:-0.8},{&quot;t&quot;:6.528,&quot;v&quot;:-0.4},{&quot;t&quot;:6.613,&quot;v&quot;:-0.3},{&quot;t&quot;:6.699,&quot;v&quot;:-1.3},{&quot;t&quot;:6.784,&quot;v&quot;:-2},{&quot;t&quot;:6.869,&quot;v&quot;:-1.5},{&quot;t&quot;:6.955,&quot;v&quot;:-1.1},{&quot;t&quot;:7.04,&quot;v&quot;:-2.3},{&quot;t&quot;:7.211,&quot;v&quot;:-1.8},{&quot;t&quot;:7.296,&quot;v&quot;:-1.5},{&quot;t&quot;:7.381,&quot;v&quot;:-1},{&quot;t&quot;:7.467,&quot;v&quot;:-0.9},{&quot;t&quot;:7.552,&quot;v&quot;:-1.5},{&quot;t&quot;:7.637,&quot;v&quot;:-1.4},{&quot;t&quot;:7.723,&quot;v&quot;:-1},{&quot;t&quot;:7.979,&quot;v&quot;:-0.6},{&quot;t&quot;:8.064,&quot;v&quot;:-0.4},{&quot;t&quot;:8.917,&quot;v&quot;:0},{&quot;t&quot;:9.003,&quot;v&quot;:-2.7},{&quot;t&quot;:9.088,&quot;v&quot;:-1.9},{&quot;t&quot;:9.173,&quot;v&quot;:-1.6},{&quot;t&quot;:9.259,&quot;v&quot;:-1.4},{&quot;t&quot;:9.344,&quot;v&quot;:-2.3},{&quot;t&quot;:9.429,&quot;v&quot;:-1.8},{&quot;t&quot;:9.515,&quot;v&quot;:-1.3},{&quot;t&quot;:9.6,&quot;v&quot;:-1},{&quot;t&quot;:9.685,&quot;v&quot;:-0.7},{&quot;t&quot;:9.941,&quot;v&quot;:-0.2},{&quot;t&quot;:10.027,&quot;v&quot;:0},{&quot;t&quot;:10.709,&quot;v&quot;:0},{&quot;t&quot;:10.795,&quot;v&quot;:-1.5},{&quot;t&quot;:10.88,&quot;v&quot;:-1.4},{&quot;t&quot;:10.965,&quot;v&quot;:-1},{&quot;t&quot;:11.051,&quot;v&quot;:-0.7},{&quot;t&quot;:11.136,&quot;v&quot;:-0.5},{&quot;t&quot;:11.221,&quot;v&quot;:-0.4},{&quot;t&quot;:11.307,&quot;v&quot;:-1},{&quot;t&quot;:11.648,&quot;v&quot;:-1.1},{&quot;t&quot;:11.733,&quot;v&quot;:-2},{&quot;t&quot;:11.819,&quot;v&quot;:-1.9},{&quot;t&quot;:11.904,&quot;v&quot;:-1.4},{&quot;t&quot;:11.989,&quot;v&quot;:-1},{&quot;t&quot;:12.075,&quot;v&quot;:-0.7},{&quot;t&quot;:12.672,&quot;v&quot;:-0.3},{&quot;t&quot;:12.757,&quot;v&quot;:-2.1},{&quot;t&quot;:12.843,&quot;v&quot;:-1.7},{&quot;t&quot;:12.928,&quot;v&quot;:-1.2},{&quot;t&quot;:13.013,&quot;v&quot;:-0.9},{&quot;t&quot;:13.099,&quot;v&quot;:-0.6},{&quot;t&quot;:13.355,&quot;v&quot;:-0.8},{&quot;t&quot;:13.44,&quot;v&quot;:-1.8},{&quot;t&quot;:13.696,&quot;v&quot;:-1.4},{&quot;t&quot;:13.781,&quot;v&quot;:-1},{&quot;t&quot;:13.867,&quot;v&quot;:-2.4},{&quot;t&quot;:13.952,&quot;v&quot;:-3.2},{&quot;t&quot;:14.037,&quot;v&quot;:-2.3},{&quot;t&quot;:14.293,&quot;v&quot;:-2.2},{&quot;t&quot;:14.379,&quot;v&quot;:-1.6},{&quot;t&quot;:14.464,&quot;v&quot;:-1.2},{&quot;t&quot;:14.549,&quot;v&quot;:-1},{&quot;t&quot;:14.635,&quot;v&quot;:-2.2},{&quot;t&quot;:14.891,&quot;v&quot;:-1.8},{&quot;t&quot;:14.976,&quot;v&quot;:-1.3},{&quot;t&quot;:15.061,&quot;v&quot;:-0.9},{&quot;t&quot;:15.147,&quot;v&quot;:-0.7},{&quot;t&quot;:15.403,&quot;v&quot;:-0.2},{&quot;t&quot;:15.488,&quot;v&quot;:-1.2},{&quot;t&quot;:15.573,&quot;v&quot;:-2.3},{&quot;t&quot;:15.829,&quot;v&quot;:-2.7},{&quot;t&quot;:15.915,&quot;v&quot;:-2.9},{&quot;t&quot;:16,&quot;v&quot;:-2.4},{&quot;t&quot;:16.085,&quot;v&quot;:-1.9},{&quot;t&quot;:16.171,&quot;v&quot;:-1.8},{&quot;t&quot;:16.256,&quot;v&quot;:-1.4},{&quot;t&quot;:16.341,&quot;v&quot;:-1},{&quot;t&quot;:16.427,&quot;v&quot;:-0.7},{&quot;t&quot;:16.853,&quot;v&quot;:-0.4},{&quot;t&quot;:16.939,&quot;v&quot;:-2.6},{&quot;t&quot;:17.024,&quot;v&quot;:-1.9},{&quot;t&quot;:17.109,&quot;v&quot;:-1.3},{&quot;t&quot;:17.195,&quot;v&quot;:-2.2},{&quot;t&quot;:17.365,&quot;v&quot;:-2},{&quot;t&quot;:17.451,&quot;v&quot;:-1.7},{&quot;t&quot;:17.536,&quot;v&quot;:-1.3},{&quot;t&quot;:17.621,&quot;v&quot;:-0.9},{&quot;t&quot;:17.877,&quot;v&quot;:-0.5},{&quot;t&quot;:17.963,&quot;v&quot;:-2.3},{&quot;t&quot;:18.048,&quot;v&quot;:-1.9},{&quot;t&quot;:18.133,&quot;v&quot;:-1.3},{&quot;t&quot;:18.219,&quot;v&quot;:-2.1},{&quot;t&quot;:18.304,&quot;v&quot;:-2},{&quot;t&quot;:18.389,&quot;v&quot;:-1.4},{&quot;t&quot;:18.475,&quot;v&quot;:-1},{&quot;t&quot;:18.5,&quot;v&quot;:0}]},{&quot;target&quot;:&quot;fx.n3.gain&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.128,&quot;v&quot;:0},{&quot;t&quot;:0.213,&quot;v&quot;:-4.9},{&quot;t&quot;:0.299,&quot;v&quot;:-4.7},{&quot;t&quot;:0.384,&quot;v&quot;:-3.3},{&quot;t&quot;:0.469,&quot;v&quot;:-3.2},{&quot;t&quot;:0.555,&quot;v&quot;:-2.3},{&quot;t&quot;:0.64,&quot;v&quot;:-1.6},{&quot;t&quot;:0.725,&quot;v&quot;:-1.1},{&quot;t&quot;:0.811,&quot;v&quot;:-0.8},{&quot;t&quot;:0.896,&quot;v&quot;:-0.6},{&quot;t&quot;:1.152,&quot;v&quot;:-0.2},{&quot;t&quot;:1.237,&quot;v&quot;:0},{&quot;t&quot;:1.493,&quot;v&quot;:0},{&quot;t&quot;:1.579,&quot;v&quot;:-4.5},{&quot;t&quot;:1.664,&quot;v&quot;:-3.2},{&quot;t&quot;:1.749,&quot;v&quot;:-2.9},{&quot;t&quot;:1.835,&quot;v&quot;:-2.3},{&quot;t&quot;:2.005,&quot;v&quot;:-2.2},{&quot;t&quot;:2.091,&quot;v&quot;:-1.5},{&quot;t&quot;:2.176,&quot;v&quot;:-1.2},{&quot;t&quot;:2.261,&quot;v&quot;:-0.8},{&quot;t&quot;:2.432,&quot;v&quot;:-0.5},{&quot;t&quot;:2.517,&quot;v&quot;:-0.3},{&quot;t&quot;:2.603,&quot;v&quot;:-0.2},{&quot;t&quot;:2.688,&quot;v&quot;:-1.6},{&quot;t&quot;:2.773,&quot;v&quot;:-4.3},{&quot;t&quot;:2.859,&quot;v&quot;:-3},{&quot;t&quot;:2.944,&quot;v&quot;:-2.4},{&quot;t&quot;:3.029,&quot;v&quot;:-1.7},{&quot;t&quot;:3.115,&quot;v&quot;:-1.2},{&quot;t&quot;:3.2,&quot;v&quot;:-0.9},{&quot;t&quot;:3.285,&quot;v&quot;:-0.6},{&quot;t&quot;:3.541,&quot;v&quot;:-0.2},{&quot;t&quot;:3.627,&quot;v&quot;:-2.2},{&quot;t&quot;:3.712,&quot;v&quot;:-2},{&quot;t&quot;:3.797,&quot;v&quot;:-1.4},{&quot;t&quot;:3.883,&quot;v&quot;:-1},{&quot;t&quot;:3.968,&quot;v&quot;:-0.7},{&quot;t&quot;:4.053,&quot;v&quot;:-0.5},{&quot;t&quot;:4.139,&quot;v&quot;:-2.4},{&quot;t&quot;:4.224,&quot;v&quot;:-2.2},{&quot;t&quot;:4.309,&quot;v&quot;:-4.8},{&quot;t&quot;:4.395,&quot;v&quot;:-3.4},{&quot;t&quot;:4.48,&quot;v&quot;:-2.4},{&quot;t&quot;:4.565,&quot;v&quot;:-1.9},{&quot;t&quot;:4.651,&quot;v&quot;:-1.6},{&quot;t&quot;:4.736,&quot;v&quot;:-3.3},{&quot;t&quot;:4.821,&quot;v&quot;:-4.9},{&quot;t&quot;:4.907,&quot;v&quot;:-3.5},{&quot;t&quot;:4.992,&quot;v&quot;:-2.5},{&quot;t&quot;:5.077,&quot;v&quot;:-1.8},{&quot;t&quot;:5.163,&quot;v&quot;:-1.3},{&quot;t&quot;:5.248,&quot;v&quot;:-0.9},{&quot;t&quot;:5.333,&quot;v&quot;:-0.6},{&quot;t&quot;:5.675,&quot;v&quot;:-0.4},{&quot;t&quot;:5.76,&quot;v&quot;:-3.5},{&quot;t&quot;:5.845,&quot;v&quot;:-2.5},{&quot;t&quot;:5.931,&quot;v&quot;:-4.6},{&quot;t&quot;:6.016,&quot;v&quot;:-3.3},{&quot;t&quot;:6.101,&quot;v&quot;:-2.3},{&quot;t&quot;:6.187,&quot;v&quot;:-1.7},{&quot;t&quot;:6.272,&quot;v&quot;:-1.2},{&quot;t&quot;:6.528,&quot;v&quot;:-0.9},{&quot;t&quot;:6.613,&quot;v&quot;:-0.7},{&quot;t&quot;:6.784,&quot;v&quot;:-0.3},{&quot;t&quot;:6.869,&quot;v&quot;:-2.7},{&quot;t&quot;:6.955,&quot;v&quot;:-1.9},{&quot;t&quot;:7.04,&quot;v&quot;:-1.4},{&quot;t&quot;:7.211,&quot;v&quot;:-1},{&quot;t&quot;:7.296,&quot;v&quot;:-0.7},{&quot;t&quot;:7.381,&quot;v&quot;:-0.5},{&quot;t&quot;:7.467,&quot;v&quot;:-3.6},{&quot;t&quot;:7.552,&quot;v&quot;:-4.7},{&quot;t&quot;:7.637,&quot;v&quot;:-4.5},{&quot;t&quot;:7.723,&quot;v&quot;:-3.6},{&quot;t&quot;:7.808,&quot;v&quot;:-2.6},{&quot;t&quot;:7.893,&quot;v&quot;:-1.8},{&quot;t&quot;:7.979,&quot;v&quot;:-1.3},{&quot;t&quot;:8.064,&quot;v&quot;:-0.9},{&quot;t&quot;:8.149,&quot;v&quot;:-0.8},{&quot;t&quot;:8.32,&quot;v&quot;:-0.4},{&quot;t&quot;:8.405,&quot;v&quot;:-0.3},{&quot;t&quot;:9.173,&quot;v&quot;:-0.3},{&quot;t&quot;:9.259,&quot;v&quot;:-0.9},{&quot;t&quot;:9.6,&quot;v&quot;:-0.6},{&quot;t&quot;:9.685,&quot;v&quot;:-0.4},{&quot;t&quot;:10.709,&quot;v&quot;:0},{&quot;t&quot;:10.795,&quot;v&quot;:-4.5},{&quot;t&quot;:10.88,&quot;v&quot;:-4.4},{&quot;t&quot;:10.965,&quot;v&quot;:-3.2},{&quot;t&quot;:11.051,&quot;v&quot;:-2.3},{&quot;t&quot;:11.136,&quot;v&quot;:-1.6},{&quot;t&quot;:11.392,&quot;v&quot;:-1.3},{&quot;t&quot;:11.477,&quot;v&quot;:-2.8},{&quot;t&quot;:11.648,&quot;v&quot;:-2.8},{&quot;t&quot;:11.733,&quot;v&quot;:-2.1},{&quot;t&quot;:11.819,&quot;v&quot;:-1.7},{&quot;t&quot;:11.904,&quot;v&quot;:-3},{&quot;t&quot;:11.989,&quot;v&quot;:-2.1},{&quot;t&quot;:12.075,&quot;v&quot;:-1.5},{&quot;t&quot;:12.16,&quot;v&quot;:-1.1},{&quot;t&quot;:12.245,&quot;v&quot;:-0.8},{&quot;t&quot;:12.331,&quot;v&quot;:-0.5},{&quot;t&quot;:12.416,&quot;v&quot;:-2.7},{&quot;t&quot;:12.501,&quot;v&quot;:-3},{&quot;t&quot;:12.587,&quot;v&quot;:-2.2},{&quot;t&quot;:12.672,&quot;v&quot;:-2},{&quot;t&quot;:12.757,&quot;v&quot;:-1.5},{&quot;t&quot;:12.843,&quot;v&quot;:-1.1},{&quot;t&quot;:12.928,&quot;v&quot;:-0.7},{&quot;t&quot;:13.184,&quot;v&quot;:-0.3},{&quot;t&quot;:13.269,&quot;v&quot;:0},{&quot;t&quot;:13.355,&quot;v&quot;:-1.9},{&quot;t&quot;:13.44,&quot;v&quot;:-1.8},{&quot;t&quot;:13.525,&quot;v&quot;:-3.7},{&quot;t&quot;:13.611,&quot;v&quot;:-2.7},{&quot;t&quot;:13.696,&quot;v&quot;:-2},{&quot;t&quot;:13.781,&quot;v&quot;:-1.4},{&quot;t&quot;:13.952,&quot;v&quot;:-1},{&quot;t&quot;:14.037,&quot;v&quot;:-0.7},{&quot;t&quot;:14.123,&quot;v&quot;:-1.2},{&quot;t&quot;:14.208,&quot;v&quot;:-1.2},{&quot;t&quot;:14.293,&quot;v&quot;:-4.4},{&quot;t&quot;:14.379,&quot;v&quot;:-3.3},{&quot;t&quot;:14.464,&quot;v&quot;:-2.3},{&quot;t&quot;:14.549,&quot;v&quot;:-1.7},{&quot;t&quot;:14.635,&quot;v&quot;:-1.2},{&quot;t&quot;:14.72,&quot;v&quot;:-3.4},{&quot;t&quot;:14.805,&quot;v&quot;:-3.3},{&quot;t&quot;:14.891,&quot;v&quot;:-2.3},{&quot;t&quot;:14.976,&quot;v&quot;:-2.3},{&quot;t&quot;:15.061,&quot;v&quot;:-1.6},{&quot;t&quot;:15.147,&quot;v&quot;:-1.1},{&quot;t&quot;:15.232,&quot;v&quot;:-0.8},{&quot;t&quot;:15.317,&quot;v&quot;:-0.6},{&quot;t&quot;:15.403,&quot;v&quot;:-0.4},{&quot;t&quot;:15.488,&quot;v&quot;:-3},{&quot;t&quot;:15.573,&quot;v&quot;:-5},{&quot;t&quot;:15.659,&quot;v&quot;:-3.6},{&quot;t&quot;:15.744,&quot;v&quot;:-2.9},{&quot;t&quot;:15.829,&quot;v&quot;:-2.1},{&quot;t&quot;:15.915,&quot;v&quot;:-1.9},{&quot;t&quot;:16,&quot;v&quot;:-1.4},{&quot;t&quot;:16.085,&quot;v&quot;:-2.8},{&quot;t&quot;:16.171,&quot;v&quot;:-3.2},{&quot;t&quot;:16.256,&quot;v&quot;:-4.1},{&quot;t&quot;:16.341,&quot;v&quot;:-2.9},{&quot;t&quot;:16.427,&quot;v&quot;:-3},{&quot;t&quot;:16.512,&quot;v&quot;:-2.2},{&quot;t&quot;:16.597,&quot;v&quot;:-1.5},{&quot;t&quot;:16.683,&quot;v&quot;:-1.1},{&quot;t&quot;:16.768,&quot;v&quot;:-0.8},{&quot;t&quot;:16.853,&quot;v&quot;:-2.3},{&quot;t&quot;:16.939,&quot;v&quot;:-1.6},{&quot;t&quot;:17.024,&quot;v&quot;:-1.1},{&quot;t&quot;:17.109,&quot;v&quot;:-0.8},{&quot;t&quot;:17.195,&quot;v&quot;:-1.6},{&quot;t&quot;:17.28,&quot;v&quot;:-1.2},{&quot;t&quot;:17.365,&quot;v&quot;:-0.8},{&quot;t&quot;:17.536,&quot;v&quot;:-0.4},{&quot;t&quot;:17.621,&quot;v&quot;:-0.3},{&quot;t&quot;:17.792,&quot;v&quot;:0},{&quot;t&quot;:17.877,&quot;v&quot;:-1.5},{&quot;t&quot;:17.963,&quot;v&quot;:-1.1},{&quot;t&quot;:18.048,&quot;v&quot;:-0.8},{&quot;t&quot;:18.133,&quot;v&quot;:-2.3},{&quot;t&quot;:18.219,&quot;v&quot;:-6},{&quot;t&quot;:18.304,&quot;v&quot;:-5.6},{&quot;t&quot;:18.389,&quot;v&quot;:-4},{&quot;t&quot;:18.475,&quot;v&quot;:-2.8},{&quot;t&quot;:18.5,&quot;v&quot;:0}]},{&quot;target&quot;:&quot;fx.n4.gain&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.128,&quot;v&quot;:0},{&quot;t&quot;:0.213,&quot;v&quot;:-5.9},{&quot;t&quot;:0.384,&quot;v&quot;:-5.7},{&quot;t&quot;:0.469,&quot;v&quot;:-6.9},{&quot;t&quot;:1.067,&quot;v&quot;:-6.5},{&quot;t&quot;:1.152,&quot;v&quot;:-6.2},{&quot;t&quot;:1.237,&quot;v&quot;:-6},{&quot;t&quot;:1.323,&quot;v&quot;:-7},{&quot;t&quot;:4.224,&quot;v&quot;:-6.8},{&quot;t&quot;:4.309,&quot;v&quot;:-6.5},{&quot;t&quot;:4.395,&quot;v&quot;:-7.1},{&quot;t&quot;:6.699,&quot;v&quot;:-6.7},{&quot;t&quot;:6.784,&quot;v&quot;:-6.5},{&quot;t&quot;:6.869,&quot;v&quot;:-6.4},{&quot;t&quot;:6.955,&quot;v&quot;:-7.1},{&quot;t&quot;:7.211,&quot;v&quot;:-6.8},{&quot;t&quot;:7.296,&quot;v&quot;:-6.6},{&quot;t&quot;:7.381,&quot;v&quot;:-7.1},{&quot;t&quot;:7.637,&quot;v&quot;:-6.8},{&quot;t&quot;:7.723,&quot;v&quot;:-6.6},{&quot;t&quot;:7.808,&quot;v&quot;:-7.1},{&quot;t&quot;:8.32,&quot;v&quot;:-6.7},{&quot;t&quot;:8.405,&quot;v&quot;:-6.5},{&quot;t&quot;:8.491,&quot;v&quot;:-6.2},{&quot;t&quot;:8.576,&quot;v&quot;:-6},{&quot;t&quot;:8.747,&quot;v&quot;:-5.6},{&quot;t&quot;:8.832,&quot;v&quot;:-5.4},{&quot;t&quot;:8.917,&quot;v&quot;:-5.2},{&quot;t&quot;:9.003,&quot;v&quot;:-6.8},{&quot;t&quot;:9.856,&quot;v&quot;:-6.5},{&quot;t&quot;:9.941,&quot;v&quot;:-6.2},{&quot;t&quot;:10.112,&quot;v&quot;:-5.8},{&quot;t&quot;:10.197,&quot;v&quot;:-5.6},{&quot;t&quot;:10.368,&quot;v&quot;:-5.2},{&quot;t&quot;:10.453,&quot;v&quot;:-5},{&quot;t&quot;:10.539,&quot;v&quot;:-6.8},{&quot;t&quot;:18.645,&quot;v&quot;:-6.4},{&quot;t&quot;:18.731,&quot;v&quot;:-6.2},{&quot;t&quot;:18.901,&quot;v&quot;:-5.8},{&quot;t&quot;:18.987,&quot;v&quot;:-5.6},{&quot;t&quot;:19.157,&quot;v&quot;:-5.2},{&quot;t&quot;:19.243,&quot;v&quot;:-5},{&quot;t&quot;:19.413,&quot;v&quot;:-4.7},{&quot;t&quot;:19.499,&quot;v&quot;:-4.5},{&quot;t&quot;:19.669,&quot;v&quot;:-4.2},{&quot;t&quot;:19.755,&quot;v&quot;:-4},{&quot;t&quot;:20.011,&quot;v&quot;:-3.6},{&quot;t&quot;:20.096,&quot;v&quot;:-3.5},{&quot;t&quot;:20.352,&quot;v&quot;:-3.2},{&quot;t&quot;:20.437,&quot;v&quot;:-3},{&quot;t&quot;:20.864,&quot;v&quot;:-2.6},{&quot;t&quot;:20.949,&quot;v&quot;:-2.5},{&quot;t&quot;:21.376,&quot;v&quot;:-2.1},{&quot;t&quot;:21.461,&quot;v&quot;:-2},{&quot;t&quot;:22.059,&quot;v&quot;:-1.6},{&quot;t&quot;:22.144,&quot;v&quot;:-1.5},{&quot;t&quot;:22.912,&quot;v&quot;:-1.1},{&quot;t&quot;:22.997,&quot;v&quot;:-1},{&quot;t&quot;:24.533,&quot;v&quot;:-0.6},{&quot;t&quot;:24.619,&quot;v&quot;:-0.5},{&quot;t&quot;:26.923,&quot;v&quot;:-0.2},{&quot;t&quot;:27.008,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- SFX (Kenney CC0, low high-frequency risk) -->
+      <audio id="sfx-reveal" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="6.87" data-duration="0.18" data-track-index="30" data-volume="0.6" data-audio-group="sfx"></audio>
+      <audio id="sfx-click" src="assets/sfx/ui/click2.ogg" data-start="15.62" data-duration="0.06" data-track-index="31" data-volume="0.7" data-audio-group="sfx"></audio>
+      <audio id="sfx-check" src="assets/sfx/interface/bong_001.ogg" data-start="20.5" data-duration="0.12" data-track-index="32" data-volume="0.5" data-audio-group="sfx"></audio>
+    </div>
+
+    <script>
+      (function () {
+        const D = window.ANK;
+        const T = D.T;
+        const q = (s) => document.querySelector(s);
+        const qa = (s) => Array.from(document.querySelectorAll(s));
+        const tl = gsap.timeline({ paused: true });
+        const VW = 1440, VH = 782; // browser viewport
+        const pose = (s, cx, cy) => ({ scale: s, x: VW / 2 - cx * s, y: VH / 2 - cy * s });
+        // seeded PRNG for the call card speaking bars (deterministic)
+        let seed = 20260927;
+        const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+
+        /* ---------------- captions ---------------- */
+        const capRoot = q("#captions");
+        function caption(words, show, hide, emph) {
+          const g = document.createElement("div");
+          g.className = "cap";
+          capRoot.appendChild(g);
+          const spans = words.map((w, i) => {
+            const s = document.createElement("span");
+            s.textContent = w.w;
+            if (emph.includes(i)) s.className = "em";
+            g.appendChild(s);
+            return s;
+          });
+          tl.set(g, { visibility: "visible", opacity: 1, y: 0 }, show);
+          words.forEach((w, i) => {
+            tl.fromTo(spans[i], { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out", immediateRender: false }, Math.max(show, w.s - 0.04));
+          });
+          tl.to(g, { opacity: 0, y: -10, duration: 0.18, ease: "power2.in" }, hide - 0.18);
+          tl.set(g, { visibility: "hidden" }, hide);
+        }
+        const L5 = D.cap.l5;
+        caption(D.cap.l1, 0.12, 2.56, [4, 5]);
+        caption(D.cap.l2, 2.57, 6.86, [4, 5, 6, 7]);
+        caption(D.cap.l4, 10.12, 13.42, [5, 6]);
+        caption(L5.slice(0, 11), 13.4, 16.66, [5, 8, 9, 10]);
+        caption(L5.slice(11, 20), 16.7, 20.06, [5]);
+        caption(L5.slice(20), 20.07, 22.12, [6, 7]);
+
+        /* ---------------- scene 1: found it ---------------- */
+        const cam1 = q("#cam1");
+        // start below the app header (no wordmark before the reveal); end with the outline's bottom edge in view
+        const p1a = pose(1.12, 720, 470), p1b = pose(1.35, 560, 591);
+        tl.set(cam1, p1a, 0);
+        tl.to(cam1, { keyframes: [
+          { ...pose(1.16, 700, 495), duration: 0.5, ease: "power1.in" },
+          { ...p1b, duration: 1.7, ease: "power3.out" },
+        ] }, 0.05);
+        tl.to("#s1-rect", { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, 1.05);
+        // hard turn: scene 2 covers it at 2.6
+
+        /* ---------------- scene 2: the German wall ---------------- */
+        const deWords = "Für eine Probestunde rufen Sie uns bitte an.".split(" ");
+        const deBox = q("#s2-de");
+        const deSpans = deWords.map((w, i) => {
+          const s = document.createElement("span");
+          s.className = "w" + (i === deWords.length - 1 ? " last" : "");
+          s.textContent = w;
+          if (i >= 3) { const u = document.createElement("i"); u.className = "u"; s.appendChild(u); }
+          deBox.appendChild(s);
+          return s;
+        });
+        const us = qa("#s2-de .u");
+        tl.set(us, { scaleX: 0 }, 0);
+        tl.fromTo("#s2-inner", { scale: 1 }, { scale: 1.035, duration: 4.25, ease: "none" }, 2.6);
+        tl.fromTo("#s2-label", { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }, 2.6);
+        deSpans.forEach((s, i) => {
+          tl.fromTo(s, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 2.64 + i * 0.05);
+        });
+        // "call us" (voice 3.61)
+        tl.to(us, { scaleX: 1, duration: 0.32, ease: "power2.out", stagger: 0.07 }, 3.58);
+        tl.fromTo("#s2-phone", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 3.5);
+        // phone-menu bars follow the IVR audio's own RMS (audio-reactive)
+        const bw = [0.5, 0.78, 1.0, 0.86, 0.64, 0.9, 0.55];
+        const bars = qa("#ivr-bars b");
+        tl.set(bars, { scaleY: 0.14 }, 0);
+        bars.forEach((b, j) => {
+          const kf = D.ivrRms.map((v, k) => {
+            const vv = D.ivrRms[Math.max(0, k - (j % 3))];
+            return { scaleY: Math.max(0.14, Math.min(1, 0.14 + vv * bw[j] * 1.05)), duration: 1 / 30, ease: "none" };
+          });
+          tl.to(b, { keyframes: kf }, T.ivr_start);
+        });
+        // IVR words stream as they are heard
+        const ivrBox = q("#s2-ivr");
+        const ell = document.createElement("span");
+        ell.textContent = "…";
+        ivrBox.appendChild(ell);
+        tl.fromTo(ell, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.16, ease: "power2.out" }, 3.6);
+        D.ivr.filter((w) => w.s > 3.5 && w.s < 6.8).forEach((w) => {
+          const s = document.createElement("span");
+          s.textContent = w.w;
+          ivrBox.appendChild(s);
+          tl.fromTo(s, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.16, ease: "power2.out" }, Math.max(3.62, w.s - 0.02));
+        });
+
+        /* ---------------- scene 3: reveal ---------------- */
+        const wm = q("#wm");
+        const letters = [];
+        "Ankommen".split("").forEach((ch, i) => {
+          const m = document.createElement("span");
+          m.className = "m " + (i < 2 ? "ink" : "pine");
+          const b = document.createElement("b");
+          b.textContent = ch;
+          m.appendChild(b);
+          wm.appendChild(m);
+          letters.push(b);
+        });
+        // beat-locked: 6.90s (track beat 0.56s) — wordmark lands with the first beat
+        tl.fromTo(letters, { yPercent: 105 }, { yPercent: 0, duration: 0.8, ease: "expo.out", stagger: 0.035 }, 6.86);
+        const tagBox = q("#s3-tag");
+        D.cap.l3.slice(1).forEach((w) => {
+          const s = document.createElement("span");
+          s.textContent = w.w.replace(/\.$/, "");
+          tagBox.appendChild(s);
+          tl.fromTo(s, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, w.s - 0.05);
+        });
+        tl.fromTo("#s3-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.out" }, 9.0);
+        tl.fromTo("#s3-inner", { scale: 1 }, { scale: 1.025, duration: 3.4, ease: "none" }, 6.85);
+        tl.to("#s3-inner", { opacity: 0, duration: 0.22, ease: "power2.in" }, 9.88);
+
+        /* ---------------- scene 4: six languages ---------------- */
+        const af = q("#af");
+        const afS4 = { x: 318, y: -4, scale: 0.78 };
+        tl.fromTo(af, { x: afS4.x + 90, y: afS4.y, scale: afS4.scale, opacity: 0 }, { x: afS4.x, opacity: 1, duration: 0.65, ease: "power3.out" }, 10.1);
+        const rows = qa("#langs .row");
+        tl.fromTo(rows, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.06 }, 10.08);
+        tl.fromTo("#cam4", { scale: 1, x: 0, y: 0 }, { scale: 1.05, x: -36, y: -10, duration: 3.3, ease: "none" }, 10.05);
+        const flips = ["#h-en", "#h-de", "#h-ru", "#h-uk", "#h-ar", "#h-tr"];
+        // beat-grid: 10.16 / 10.73 / 11.25 / 11.68 / 12.34 / 12.90 (track beats 3.82..6.56)
+        const beatT = [10.16, 10.73, 11.25, 11.68, 12.34, 12.9];
+        tl.set(".hl2", { clipPath: "inset(0% 0% 100% 0%)" }, 0);
+        tl.set("#lmark", { y: 0, opacity: 0 }, 0);
+        tl.to("#lmark", { opacity: 1, duration: 0.25, ease: "power2.out" }, beatT[0]);
+        tl.to(rows[0], { color: "#1C2420", duration: 0.2 }, beatT[0]);
+        for (let i = 1; i < 6; i++) {
+          const t = beatT[i];
+          tl.fromTo(flips[i], { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.34, ease: "power2.inOut", immediateRender: false }, t - 0.08);
+          tl.to("#lmark", { y: i * 104, duration: 0.3, ease: "power3.out" }, t - 0.06);
+          tl.to(rows[i - 1], { color: "#5B635E", duration: 0.2 }, t - 0.06);
+          tl.to(rows[i], { color: "#1C2420", duration: 0.2 }, t - 0.06);
+        }
+        // exit list, frame glides to center (continuous subject)
+        tl.to(["#lmark", ...rows], { opacity: 0, x: -40, duration: 0.4, ease: "power2.in", stagger: 0.025 }, 13.2);
+        tl.to(af, { x: 0, y: 0, scale: 1, duration: 0.85, ease: "power3.inOut" }, 13.22);
+
+        /* ---------------- scene 5: Call for me ---------------- */
+        tl.set("#prov", { clipPath: "inset(0% 0% 100% 0%)" }, 0);
+        tl.to("#prov", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power2.inOut" }, 13.34);
+        tl.to("#url-home", { opacity: 0, duration: 0.25 }, 13.36);
+        tl.to("#url-prov", { opacity: 1, duration: 0.25 }, 13.45);
+        const cam5 = q("#cam5");
+        const p5a = pose(1.0, 720, 391), p5b = pose(1.5, 960, 385);
+        tl.set(cam5, p5a, 0);
+        tl.to(cam5, { keyframes: [
+          { ...pose(1.02, 740, 395), duration: 0.8, ease: "none" },
+          { ...p5b, duration: 1.05, ease: "power2.inOut" },
+        ] }, 13.4);
+        // cursor glides to the real button (viewport coords at pose B)
+        const btnV = { x: (1088 - 960) * 1.5 + VW / 2, y: (483 - 385) * 1.5 + VH / 2 };
+        tl.fromTo("#cursor", { x: 1230, y: 700, opacity: 0 }, { opacity: 1, duration: 0.2 }, 14.85);
+        tl.to("#cursor", { x: btnV.x - 6, y: btnV.y - 4, duration: 0.6, ease: "power2.inOut" }, 14.95);
+        // beat-locked: 15.63s (strong cue 9.29s) — press on "Call for me"
+        tl.to("#cursor", { keyframes: [ { scale: 0.86, duration: 0.07, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.out" } ] }, 15.6);
+        tl.to("#lift", { keyframes: [ { scale: 0.962, duration: 0.07, ease: "power2.out" }, { scale: 1, duration: 0.3, ease: "power2.out" } ] }, 15.6);
+        tl.to("#lift-dark", { keyframes: [ { opacity: 0.32, duration: 0.07 }, { opacity: 0.16, duration: 0.5 } ] }, 15.6);
+        tl.fromTo("#lift-ring", { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.14, duration: 0.6, ease: "power2.out", immediateRender: false }, 15.62);
+        tl.set("#lift-ring", { opacity: 0 }, 0);
+        tl.to("#cursor", { opacity: 0, duration: 0.25 }, 16.3);
+        // page steps back, call card opens
+        tl.to(cam5, { ...pose(1.56, 960, 385), duration: 3.4, ease: "none" }, 16.45);
+        tl.to("#dim", { opacity: 0.88, duration: 0.45, ease: "power2.out" }, 16.3);
+        tl.set("#callcard", { opacity: 0, y: 50 }, 0);
+        tl.fromTo("#callcard", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, 16.5);
+        tl.fromTo("#callcard", { y: 50 }, { y: 0, duration: 0.6, ease: "power3.out", immediateRender: false }, 16.5);
+        // live dot ring (live thing, finite loop)
+        tl.fromTo("#pulse", { opacity: 0.7, scale: 1 }, { opacity: 0, scale: 2.4, duration: 1.0, ease: "power1.out", repeat: 2 }, 16.7);
+        ["00:01", "00:02", "00:03", "00:04"].forEach((s, i) => tl.set("#timer", { innerText: s }, 17.1 + i));
+        tl.set("#timer", { innerText: "00:00" }, 0);
+        // assistant speaking bars
+        const ccb = qa("#cc-bars b");
+        tl.set(ccb, { scaleY: 0.2 }, 0);
+        ccb.forEach((b) => {
+          const kf = [];
+          for (let k = 0; k < 30; k++) kf.push({ scaleY: 0.2 + 0.8 * rnd(), duration: 0.1, ease: "sine.inOut" });
+          kf.push({ scaleY: 0.2, duration: 0.15 });
+          tl.to(b, { keyframes: kf }, 16.75);
+        });
+        // German first sentence, "KI-Assistentin" marked on "AI"
+        const ccWords = "Guten Tag! Hier ist die KI-Assistentin von Maria Petrova.".split(" ");
+        const ccBox = q("#cc-de");
+        ccWords.forEach((w, i) => {
+          const s = document.createElement("span");
+          s.className = "w" + (w === "KI-Assistentin" ? " hl" : "");
+          s.textContent = w;
+          if (w === "KI-Assistentin") { const bg = document.createElement("i"); bg.className = "hlbg"; s.appendChild(bg); }
+          ccBox.appendChild(s);
+          tl.fromTo(s, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 16.7 + i * 0.09);
+        });
+        tl.set(".hlbg", { scaleX: 0 }, 0);
+        tl.to(".hlbg", { scaleX: 1, duration: 0.4, ease: "power2.out" }, 18.34);
+        tl.fromTo("#cc-ru", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 17.8);
+        // result comes back in Russian (real result card)
+        tl.to("#callcard", { opacity: 0, y: -34, duration: 0.35, ease: "power2.in" }, 19.85);
+        tl.fromTo("#rcard", { opacity: 0, y: 150 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 19.95);
+        // beat-grid: check draws at 20.52
+        tl.to("#rc-circle", { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, 20.5);
+        tl.to("#rc-tick", { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }, 20.78);
+        tl.to("#rcard", { scale: 1.07, x: -22, duration: 1.5, ease: "power1.inOut" }, 20.65);
+        // frame depth breathes with the music (audio-reactive, subtle)
+        const mr = D.musicRms;
+        const t0 = T.music_start;
+        const i0 = Math.max(0, Math.round((10.05 - t0) * 30));
+        const i1 = Math.min(mr.length - 1, Math.round((22.2 - t0) * 30));
+        const skf = [];
+        let sm = mr[i0] || 0;
+        for (let k = i0; k <= i1; k += 2) { sm = sm * 0.6 + (mr[k] || 0) * 0.4; skf.push({ opacity: 0.55 + 0.45 * sm, duration: 2 / 30, ease: "none" }); }
+        tl.set("#af-shadow", { opacity: 0.55 }, 0);
+        tl.to("#af-shadow", { keyframes: skf }, 10.05);
+
+        tl.to("#af", { opacity: 0, duration: 0.2, ease: "power2.in" }, 21.9);
+
+        /* ---------------- scene 6: end card ---------------- */
+        tl.fromTo("#s6-wm", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 22.12);
+        tl.fromTo("#s6-tag", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 22.24);
+        // URL writes on with the voice (22.30-25.34)
+        tl.fromTo("#s6-url .txt", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.9, ease: "power1.inOut" }, 22.32);
+        tl.fromTo("#s6-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 23.21); // beat-locked: lands 23.81s (strong cue 17.47s)
+        tl.fromTo("#s6-langs span", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", stagger: 0.08 }, 23.9);
+        tl.fromTo("#s6-inner", { scale: 1 }, { scale: 1.02, duration: 3.85, ease: "none" }, 22.05);
+
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>

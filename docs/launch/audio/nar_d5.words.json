@@ -1,0 +1,47 @@
+[
+  {
+    "w": "Now",
+    "start": 0.0,
+    "end": 0.24
+  },
+  {
+    "w": "the",
+    "start": 0.26,
+    "end": 0.32
+  },
+  {
+    "w": "assistant",
+    "start": 0.368,
+    "end": 0.8
+  },
+  {
+    "w": "calls.",
+    "start": 0.88,
+    "end": 1.36
+  },
+  {
+    "w": "Listen",
+    "start": 1.486,
+    "end": 2.24
+  },
+  {
+    "w": "to",
+    "start": 2.293,
+    "end": 2.4
+  },
+  {
+    "w": "the",
+    "start": 2.42,
+    "end": 2.48
+  },
+  {
+    "w": "first",
+    "start": 2.547,
+    "end": 2.88
+  },
+  {
+    "w": "sentence.",
+    "start": 2.942,
+    "end": 3.6
+  }
+]

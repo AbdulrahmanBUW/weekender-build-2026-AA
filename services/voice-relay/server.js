@@ -298,10 +298,13 @@ const server = http.createServer((req, res) => {
 });
 
 // ---------- /speak: the voice intake's warm voice (26 Sep) ----------
-// German = the call agent's own voice (Aura-2 Viktoria), English = Aura-2 Helena (caring, natural). Aura-2 has no
+// German = the call agent's own voice (Aura-2 Viktoria), English = ElevenLabs when a key is set, else Aura-2 Helena. Aura-2 has no
 // ru/uk/ar/tr voices: those use ElevenLabs (multilingual v2) or OpenAI (gpt-4o-mini-tts) when a key is set in .env,
 // otherwise 501 and the page falls back to the browser voice. No text is logged; Deepgram model training is off.
 const SPEAK_DG_VOICES = { en: process.env.SPEAK_VOICE_EN || 'aura-2-helena-en', de: process.env.SPEAK_VOICE_DE || 'aura-2-viktoria-de' };
+// 27 Sep: English uses the same ElevenLabs voice as ru/uk/ar/tr when a key is set (Helena sounded too synthetic next to it);
+// Helena stays the fallback. SPEAK_EN_PROVIDER=deepgram switches back.
+const SPEAK_EN_ELEVEN = process.env.SPEAK_EN_PROVIDER !== 'deepgram';
 const SPEAK_LANGS = new Set(['en', 'de', 'ru', 'uk', 'ar', 'tr', 'fa', 'es', 'fr', 'pl', 'vi', 'zh', 'hi']);
 const SPEAK_MAX_CHARS = 600;
 const speakHits = new Map(); // ip -> { n, t }: 40 requests per minute
@@ -310,18 +313,24 @@ function speakRateOk(ip) {
   if (!h || now - h.t > 60000) { speakHits.set(ip, { n: 1, t: now }); return true; }
   h.n += 1; return h.n <= 40;
 }
+async function deepgramSpeak(text, lang) {
+  const qs = new URLSearchParams({ model: SPEAK_DG_VOICES[lang], encoding: 'mp3', mip_opt_out: 'true' });
+  const r = await fetch(`https://api.deepgram.com/v1/speak?${qs}`, { method: 'POST', headers: { Authorization: `Token ${DG_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+  if (!r.ok) throw new Error(`deepgram ${r.status}`);
+  return { provider: 'deepgram', buf: Buffer.from(await r.arrayBuffer()) };
+}
 async function ttsAudio(text, lang) {
-  if (SPEAK_DG_VOICES[lang]) {
-    const qs = new URLSearchParams({ model: SPEAK_DG_VOICES[lang], encoding: 'mp3', mip_opt_out: 'true' });
-    const r = await fetch(`https://api.deepgram.com/v1/speak?${qs}`, { method: 'POST', headers: { Authorization: `Token ${DG_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
-    if (!r.ok) throw new Error(`deepgram ${r.status}`);
-    return { provider: 'deepgram', buf: Buffer.from(await r.arrayBuffer()) };
-  }
+  const elevenFirst = lang === 'en' && SPEAK_EN_ELEVEN && process.env.ELEVENLABS_API_KEY;
+  if (SPEAK_DG_VOICES[lang] && !elevenFirst) return deepgramSpeak(text, lang);
   if (process.env.ELEVENLABS_API_KEY) {
-    const voice = process.env.ELEVENLABS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL';
-    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, { method: 'POST', headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.75 } }) });
-    if (!r.ok) throw new Error(`elevenlabs ${r.status}`);
-    return { provider: 'elevenlabs', buf: Buffer.from(await r.arrayBuffer()) };
+    if (elevenFirst) {
+      try {
+        return await elevenSpeak(text);
+      } catch {
+        return deepgramSpeak(text, lang);
+      }
+    }
+    return elevenSpeak(text);
   }
   if (process.env.OPENAI_API_KEY) {
     const r = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts', voice: process.env.OPENAI_TTS_VOICE || 'coral', input: text, response_format: 'mp3', instructions: 'Speak warmly, calmly and kindly, like a friendly helper on the phone. Natural pace, clear pronunciation.' }) });
@@ -329,6 +338,12 @@ async function ttsAudio(text, lang) {
     return { provider: 'openai', buf: Buffer.from(await r.arrayBuffer()) };
   }
   return null;
+}
+async function elevenSpeak(text) {
+  const voice = process.env.ELEVENLABS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL';
+  const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, { method: 'POST', headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.75 } }) });
+  if (!r.ok) throw new Error(`elevenlabs ${r.status}`);
+  return { provider: 'elevenlabs', buf: Buffer.from(await r.arrayBuffer()) };
 }
 function handleSpeak(req, res) {
   const origin = req.headers.origin;

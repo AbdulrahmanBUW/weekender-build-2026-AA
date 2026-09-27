@@ -1,0 +1,8 @@
+node_modules/
+build/
+composition/.hyperframes/
+composition/snapshots/
+composition/renders/
+snapshots/
+*.log
+demo_raw.mp4

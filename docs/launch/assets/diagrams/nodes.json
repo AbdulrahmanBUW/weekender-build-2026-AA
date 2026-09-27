@@ -1,0 +1,115 @@
+{
+  "png": "architecture-light.png",
+  "width": 2734,
+  "height": 1166,
+  "scale": 2,
+  "nodes": [
+    {
+      "id": "relay-voice",
+      "label": "Relay /listen /speak",
+      "x": 80,
+      "y": 141,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "voice-apis",
+      "label": "Deepgram + ElevenLabs",
+      "x": 643,
+      "y": 141,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "x": 2332,
+      "y": 141,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "app",
+      "label": "Ankommen app",
+      "x": 80,
+      "y": 523,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "requests",
+      "label": "call_requests",
+      "x": 643,
+      "y": 523,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "brief",
+      "label": "n8n 01 brief",
+      "x": 1206,
+      "y": 523,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "relay-call",
+      "label": "Voice relay /call",
+      "x": 1769,
+      "y": 523,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "agent",
+      "label": "Deepgram Voice Agent",
+      "x": 2332,
+      "y": 523,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "intake",
+      "label": "n8n 04 intake",
+      "x": 80,
+      "y": 905,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "result",
+      "label": "n8n 05 + 06",
+      "x": 643,
+      "y": 905,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "store",
+      "label": "calls + transcript",
+      "x": 1769,
+      "y": 905,
+      "w": 322,
+      "h": 129
+    },
+    {
+      "id": "receptionist",
+      "label": "Receptionist",
+      "x": 2332,
+      "y": 905,
+      "w": 322,
+      "h": 129
+    }
+  ],
+  "main_path": [
+    "app",
+    "requests",
+    "brief",
+    "relay-call",
+    "agent",
+    "receptionist",
+    "store",
+    "result",
+    "app"
+  ]
+}

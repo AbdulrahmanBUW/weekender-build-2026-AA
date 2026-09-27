@@ -1,0 +1,8 @@
+# Raw API outputs and render intermediates (regenerable with scripts/launch/make_audio.py --rebuild)
+audio/raw/
+**/node_modules/
+**/.cache/
+# Music with an unconfirmed licence (brag bundled ende.app track): keep local until the licence is confirmed
+video/launch/composition/assets/music/
+video/launch/launch.mp4
+video/launch/launch-stage.mp4

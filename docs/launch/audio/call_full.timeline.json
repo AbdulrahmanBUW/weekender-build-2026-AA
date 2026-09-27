@@ -1,0 +1,832 @@
+[
+  {
+    "id": "call_01_r",
+    "speaker": "receptionist",
+    "start": 0.0,
+    "end": 2.853,
+    "de": "Musikstudio Olga, Böhme, guten Tag?",
+    "ru": "Музыкальная студия Ольги, Бёме, добрый день?",
+    "words": [
+      {
+        "w": "Musikstudio",
+        "start": 0.0,
+        "end": 0.96
+      },
+      {
+        "w": "Olga,",
+        "start": 0.96,
+        "end": 1.44
+      },
+      {
+        "w": "Böhme,",
+        "start": 1.44,
+        "end": 2.0
+      },
+      {
+        "w": "guten",
+        "start": 2.0,
+        "end": 2.4
+      },
+      {
+        "w": "Tag?",
+        "start": 2.4,
+        "end": 2.72
+      }
+    ]
+  },
+  {
+    "id": "call_02_a",
+    "speaker": "assistant",
+    "start": 3.303,
+    "end": 16.208,
+    "de": "Guten Tag! Hier ist die KI-Assistentin von Maria Petrova. Ich rufe für sie an, weil ihr Deutsch noch nicht so gut ist, und wollte fragen, ob es in Ihrem Kurs für ein vierjähriges Kind noch einen Platz oder eine Probestunde gibt.",
+    "ru": "Добрый день! Это ИИ-ассистент Марии Петровой. Я звоню за неё, потому что она пока плохо говорит по-немецки, и хотела спросить, есть ли место или пробный урок для ребёнка четырёх лет.",
+    "words": [
+      {
+        "w": "Guten",
+        "start": 3.303,
+        "end": 3.623
+      },
+      {
+        "w": "Tag!",
+        "start": 3.623,
+        "end": 4.103
+      },
+      {
+        "w": "Hier",
+        "start": 4.103,
+        "end": 4.263
+      },
+      {
+        "w": "ist",
+        "start": 4.263,
+        "end": 4.423
+      },
+      {
+        "w": "die",
+        "start": 4.423,
+        "end": 4.583
+      },
+      {
+        "w": "KI-Assistentin",
+        "start": 4.583,
+        "end": 5.623
+      },
+      {
+        "w": "von",
+        "start": 5.623,
+        "end": 5.863
+      },
+      {
+        "w": "Maria",
+        "start": 5.863,
+        "end": 6.183
+      },
+      {
+        "w": "Petrova.",
+        "start": 6.183,
+        "end": 7.223
+      },
+      {
+        "w": "Ich",
+        "start": 7.223,
+        "end": 7.463
+      },
+      {
+        "w": "rufe",
+        "start": 7.463,
+        "end": 7.783
+      },
+      {
+        "w": "für",
+        "start": 7.783,
+        "end": 8.023
+      },
+      {
+        "w": "sie",
+        "start": 8.023,
+        "end": 8.183
+      },
+      {
+        "w": "an,",
+        "start": 8.183,
+        "end": 8.423
+      },
+      {
+        "w": "weil",
+        "start": 8.423,
+        "end": 8.583
+      },
+      {
+        "w": "ihr",
+        "start": 8.583,
+        "end": 8.823
+      },
+      {
+        "w": "Deutsch",
+        "start": 8.823,
+        "end": 9.063
+      },
+      {
+        "w": "noch",
+        "start": 9.063,
+        "end": 9.303
+      },
+      {
+        "w": "nicht",
+        "start": 9.303,
+        "end": 9.463
+      },
+      {
+        "w": "so",
+        "start": 9.463,
+        "end": 9.623
+      },
+      {
+        "w": "gut",
+        "start": 9.623,
+        "end": 9.863
+      },
+      {
+        "w": "ist,",
+        "start": 9.863,
+        "end": 10.023
+      },
+      {
+        "w": "und",
+        "start": 10.023,
+        "end": 10.343
+      },
+      {
+        "w": "wollte",
+        "start": 10.343,
+        "end": 10.663
+      },
+      {
+        "w": "fragen,",
+        "start": 10.663,
+        "end": 11.143
+      },
+      {
+        "w": "ob",
+        "start": 11.143,
+        "end": 11.303
+      },
+      {
+        "w": "es",
+        "start": 11.303,
+        "end": 11.463
+      },
+      {
+        "w": "in",
+        "start": 11.463,
+        "end": 11.623
+      },
+      {
+        "w": "Ihrem",
+        "start": 11.623,
+        "end": 11.863
+      },
+      {
+        "w": "Kurs",
+        "start": 11.863,
+        "end": 12.263
+      },
+      {
+        "w": "für",
+        "start": 12.263,
+        "end": 12.503
+      },
+      {
+        "w": "ein",
+        "start": 12.503,
+        "end": 12.743
+      },
+      {
+        "w": "vierjähriges",
+        "start": 12.743,
+        "end": 13.383
+      },
+      {
+        "w": "Kind",
+        "start": 13.383,
+        "end": 13.703
+      },
+      {
+        "w": "noch",
+        "start": 13.703,
+        "end": 14.023
+      },
+      {
+        "w": "einen",
+        "start": 14.023,
+        "end": 14.263
+      },
+      {
+        "w": "Platz",
+        "start": 14.263,
+        "end": 14.503
+      },
+      {
+        "w": "oder",
+        "start": 14.503,
+        "end": 14.823
+      },
+      {
+        "w": "eine",
+        "start": 14.823,
+        "end": 15.143
+      },
+      {
+        "w": "Probestunde",
+        "start": 15.143,
+        "end": 15.783
+      },
+      {
+        "w": "gibt.",
+        "start": 15.783,
+        "end": 16.103
+      }
+    ]
+  },
+  {
+    "id": "call_03_r",
+    "speaker": "receptionist",
+    "start": 16.808,
+    "end": 26.737,
+    "de": "Nu, da haben Sie Glück. Die Früherziehung für Vier- bis Sechsjährige ist dienstags und donnerstags um halb fünf. Ich könnte Ihnen aber auch Samstag früh um zehn anbieten.",
+    "ru": "Вам повезло. Занятия для детей 4–6 лет по вторникам и четвергам в 16:30. Могу предложить и субботу в 10 утра.",
+    "words": [
+      {
+        "w": "Nu,",
+        "start": 16.808,
+        "end": 17.288
+      },
+      {
+        "w": "da",
+        "start": 17.288,
+        "end": 17.448
+      },
+      {
+        "w": "haben",
+        "start": 17.448,
+        "end": 17.688
+      },
+      {
+        "w": "Sie",
+        "start": 17.688,
+        "end": 17.848
+      },
+      {
+        "w": "Glück.",
+        "start": 17.848,
+        "end": 18.488
+      },
+      {
+        "w": "Die",
+        "start": 18.568,
+        "end": 18.808
+      },
+      {
+        "w": "Früherziehung",
+        "start": 18.808,
+        "end": 19.448
+      },
+      {
+        "w": "für",
+        "start": 19.448,
+        "end": 19.688
+      },
+      {
+        "w": "Vier-",
+        "start": 19.688,
+        "end": 20.008
+      },
+      {
+        "w": "bis",
+        "start": 20.008,
+        "end": 20.168
+      },
+      {
+        "w": "Sechsjährige",
+        "start": 20.168,
+        "end": 20.728
+      },
+      {
+        "w": "ist",
+        "start": 20.728,
+        "end": 21.048
+      },
+      {
+        "w": "dienstags",
+        "start": 21.048,
+        "end": 21.448
+      },
+      {
+        "w": "und",
+        "start": 21.448,
+        "end": 21.768
+      },
+      {
+        "w": "donnerstags",
+        "start": 21.768,
+        "end": 22.328
+      },
+      {
+        "w": "um",
+        "start": 22.328,
+        "end": 22.648
+      },
+      {
+        "w": "halb",
+        "start": 22.648,
+        "end": 22.888
+      },
+      {
+        "w": "fünf.",
+        "start": 22.888,
+        "end": 23.528
+      },
+      {
+        "w": "Ich",
+        "start": 23.848,
+        "end": 24.008
+      },
+      {
+        "w": "könnte",
+        "start": 24.008,
+        "end": 24.248
+      },
+      {
+        "w": "Ihnen",
+        "start": 24.248,
+        "end": 24.488
+      },
+      {
+        "w": "aber",
+        "start": 24.488,
+        "end": 24.728
+      },
+      {
+        "w": "auch",
+        "start": 24.728,
+        "end": 24.888
+      },
+      {
+        "w": "Samstag",
+        "start": 24.888,
+        "end": 25.288
+      },
+      {
+        "w": "früh",
+        "start": 25.288,
+        "end": 25.688
+      },
+      {
+        "w": "um",
+        "start": 25.688,
+        "end": 25.848
+      },
+      {
+        "w": "zehn",
+        "start": 25.848,
+        "end": 26.088
+      },
+      {
+        "w": "anbieten.",
+        "start": 26.088,
+        "end": 26.648
+      }
+    ]
+  },
+  {
+    "id": "call_04_a",
+    "speaker": "assistant",
+    "start": 27.287,
+    "end": 37.264,
+    "de": "Danke! Samstag passt leider nicht, Frau Petrova kann nur dienstags oder donnerstags ab fünfzehn Uhr. Geht eine Probestunde am Donnerstag um sechzehn Uhr dreißig?",
+    "ru": "Спасибо! Суббота, к сожалению, не подходит: госпожа Петрова может только во вторник или четверг после 15:00. Можно пробный урок в четверг в 16:30?",
+    "words": [
+      {
+        "w": "Danke!",
+        "start": 27.287,
+        "end": 27.927
+      },
+      {
+        "w": "Samstag",
+        "start": 28.247,
+        "end": 28.727
+      },
+      {
+        "w": "passt",
+        "start": 28.727,
+        "end": 29.047
+      },
+      {
+        "w": "leider",
+        "start": 29.047,
+        "end": 29.447
+      },
+      {
+        "w": "nicht,",
+        "start": 29.447,
+        "end": 29.847
+      },
+      {
+        "w": "Frau",
+        "start": 29.847,
+        "end": 30.087
+      },
+      {
+        "w": "Petrova",
+        "start": 30.087,
+        "end": 30.727
+      },
+      {
+        "w": "kann",
+        "start": 30.727,
+        "end": 30.967
+      },
+      {
+        "w": "nur",
+        "start": 30.967,
+        "end": 31.127
+      },
+      {
+        "w": "dienstags",
+        "start": 31.127,
+        "end": 31.527
+      },
+      {
+        "w": "oder",
+        "start": 31.527,
+        "end": 31.847
+      },
+      {
+        "w": "donnerstags",
+        "start": 31.847,
+        "end": 32.407
+      },
+      {
+        "w": "ab",
+        "start": 32.407,
+        "end": 32.727
+      },
+      {
+        "w": "fünfzehn",
+        "start": 32.727,
+        "end": 33.047
+      },
+      {
+        "w": "Uhr.",
+        "start": 33.047,
+        "end": 33.767
+      },
+      {
+        "w": "Geht",
+        "start": 33.767,
+        "end": 34.087
+      },
+      {
+        "w": "eine",
+        "start": 34.087,
+        "end": 34.327
+      },
+      {
+        "w": "Probestunde",
+        "start": 34.327,
+        "end": 34.967
+      },
+      {
+        "w": "am",
+        "start": 34.967,
+        "end": 35.287
+      },
+      {
+        "w": "Donnerstag",
+        "start": 35.287,
+        "end": 35.767
+      },
+      {
+        "w": "um",
+        "start": 35.767,
+        "end": 36.087
+      },
+      {
+        "w": "sechzehn",
+        "start": 36.087,
+        "end": 36.407
+      },
+      {
+        "w": "Uhr",
+        "start": 36.407,
+        "end": 36.727
+      },
+      {
+        "w": "dreißig?",
+        "start": 36.727,
+        "end": 37.047
+      }
+    ]
+  },
+  {
+    "id": "call_05_r",
+    "speaker": "receptionist",
+    "start": 37.764,
+    "end": 43.514,
+    "de": "Donnerstag, halb fünf, das geht. Die Probestunde ist kostenlos. Bringen Sie bitte Hausschuhe mit.",
+    "ru": "Четверг, 16:30, подходит. Пробный урок бесплатный. Возьмите, пожалуйста, сменную обувь.",
+    "words": [
+      {
+        "w": "Donnerstag,",
+        "start": 37.764,
+        "end": 38.244
+      },
+      {
+        "w": "halb",
+        "start": 38.484,
+        "end": 38.804
+      },
+      {
+        "w": "fünf,",
+        "start": 38.804,
+        "end": 39.364
+      },
+      {
+        "w": "das",
+        "start": 39.364,
+        "end": 39.604
+      },
+      {
+        "w": "geht.",
+        "start": 39.604,
+        "end": 40.164
+      },
+      {
+        "w": "Die",
+        "start": 40.324,
+        "end": 40.564
+      },
+      {
+        "w": "Probestunde",
+        "start": 40.564,
+        "end": 41.204
+      },
+      {
+        "w": "ist",
+        "start": 41.204,
+        "end": 41.364
+      },
+      {
+        "w": "kostenlos.",
+        "start": 41.364,
+        "end": 42.084
+      },
+      {
+        "w": "Bringen",
+        "start": 42.084,
+        "end": 42.404
+      },
+      {
+        "w": "Sie",
+        "start": 42.404,
+        "end": 42.564
+      },
+      {
+        "w": "bitte",
+        "start": 42.564,
+        "end": 42.804
+      },
+      {
+        "w": "Hausschuhe",
+        "start": 42.804,
+        "end": 43.284
+      },
+      {
+        "w": "mit.",
+        "start": 43.284,
+        "end": 43.515
+      }
+    ]
+  },
+  {
+    "id": "call_06_a",
+    "speaker": "assistant",
+    "start": 44.014,
+    "end": 52.961,
+    "de": "Ich wiederhole: Probestunde am Donnerstag, dem ersten Oktober, um sechzehn Uhr dreißig, kostenlos, bitte Hausschuhe mitbringen. Ist das richtig?",
+    "ru": "Повторяю: пробный урок в четверг, 1 октября, в 16:30, бесплатно, взять сменную обувь. Всё верно?",
+    "words": [
+      {
+        "w": "Ich",
+        "start": 44.014,
+        "end": 44.174
+      },
+      {
+        "w": "wiederhole:",
+        "start": 44.174,
+        "end": 44.814
+      },
+      {
+        "w": "Probestunde",
+        "start": 44.814,
+        "end": 45.454
+      },
+      {
+        "w": "am",
+        "start": 45.454,
+        "end": 45.694
+      },
+      {
+        "w": "Donnerstag,",
+        "start": 45.694,
+        "end": 46.574
+      },
+      {
+        "w": "dem",
+        "start": 46.574,
+        "end": 46.654
+      },
+      {
+        "w": "ersten",
+        "start": 46.654,
+        "end": 46.894
+      },
+      {
+        "w": "Oktober,",
+        "start": 46.894,
+        "end": 47.454
+      },
+      {
+        "w": "um",
+        "start": 47.454,
+        "end": 47.774
+      },
+      {
+        "w": "sechzehn",
+        "start": 47.774,
+        "end": 48.094
+      },
+      {
+        "w": "Uhr",
+        "start": 48.094,
+        "end": 48.414
+      },
+      {
+        "w": "dreißig,",
+        "start": 48.414,
+        "end": 48.734
+      },
+      {
+        "w": "kostenlos,",
+        "start": 48.734,
+        "end": 49.934
+      },
+      {
+        "w": "bitte",
+        "start": 49.934,
+        "end": 50.334
+      },
+      {
+        "w": "Hausschuhe",
+        "start": 50.334,
+        "end": 50.894
+      },
+      {
+        "w": "mitbringen.",
+        "start": 50.894,
+        "end": 51.774
+      },
+      {
+        "w": "Ist",
+        "start": 51.934,
+        "end": 52.174
+      },
+      {
+        "w": "das",
+        "start": 52.174,
+        "end": 52.414
+      },
+      {
+        "w": "richtig?",
+        "start": 52.414,
+        "end": 52.814
+      }
+    ]
+  },
+  {
+    "id": "call_07_r",
+    "speaker": "receptionist",
+    "start": 53.361,
+    "end": 54.704,
+    "de": "Ja, genau so.",
+    "ru": "Да, именно так.",
+    "words": [
+      {
+        "w": "Ja,",
+        "start": 53.361,
+        "end": 54.081
+      },
+      {
+        "w": "genau",
+        "start": 54.081,
+        "end": 54.401
+      },
+      {
+        "w": "so.",
+        "start": 54.401,
+        "end": 54.641
+      }
+    ]
+  },
+  {
+    "id": "call_08_a",
+    "speaker": "assistant",
+    "start": 55.154,
+    "end": 60.24,
+    "de": "Wunderbar, ich notiere das. Vielen Dank, Herr Böhme, und auf Wiederhören!",
+    "ru": "Отлично, записываю. Большое спасибо, господин Бёме, до свидания!",
+    "words": [
+      {
+        "w": "Wunderbar,",
+        "start": 55.154,
+        "end": 56.034
+      },
+      {
+        "w": "ich",
+        "start": 56.274,
+        "end": 56.434
+      },
+      {
+        "w": "notiere",
+        "start": 56.434,
+        "end": 56.994
+      },
+      {
+        "w": "das.",
+        "start": 56.994,
+        "end": 57.634
+      },
+      {
+        "w": "Vielen",
+        "start": 57.634,
+        "end": 57.954
+      },
+      {
+        "w": "Dank,",
+        "start": 57.954,
+        "end": 58.194
+      },
+      {
+        "w": "Herr",
+        "start": 58.194,
+        "end": 58.434
+      },
+      {
+        "w": "Böhme,",
+        "start": 58.434,
+        "end": 58.914
+      },
+      {
+        "w": "und",
+        "start": 58.914,
+        "end": 59.154
+      },
+      {
+        "w": "auf",
+        "start": 59.154,
+        "end": 59.474
+      },
+      {
+        "w": "Wiederhören!",
+        "start": 59.474,
+        "end": 60.114
+      }
+    ]
+  },
+  {
+    "id": "call_09_r",
+    "speaker": "receptionist",
+    "start": 60.59,
+    "end": 62.382,
+    "de": "Gerne, auf Wiederhören.",
+    "ru": "Пожалуйста, до свидания.",
+    "words": [
+      {
+        "w": "Gerne,",
+        "start": 60.59,
+        "end": 61.31
+      },
+      {
+        "w": "auf",
+        "start": 61.39,
+        "end": 61.71
+      },
+      {
+        "w": "Wiederhören.",
+        "start": 61.71,
+        "end": 62.27
+      }
+    ]
+  }
+]

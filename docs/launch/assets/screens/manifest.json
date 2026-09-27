@@ -1,0 +1,472 @@
+[
+  {
+    "file": "desktop-ask-approval-ru.png",
+    "kind": "desktop",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Approval card in Russian (viewport at the card): heading 'Here is what I will say', German opening line ('Hier ist die KI-Assistentin von Maria Petrova ...') with Russian below, goal, what it will ask, time windows Tue 29 Sep and Thu 1 Oct 15:00-19:00, allowed fact 'Alter des Kindes: 4 Jahre'. Heading has a keyboard focus outline."
+  },
+  {
+    "file": "desktop-ask-questions-ru.png",
+    "kind": "desktop",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Call-for-me in Russian after the first intake answer: the understood goal in Russian and the follow-up question 'What is your name (to introduce you to the studio)?' with Continue."
+  },
+  {
+    "file": "desktop-ask-reading-ru.png",
+    "kind": "desktop",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Call-for-me in Russian right after Continue: 'Reading your request...' with 'your words' and a skeleton of the German call card being prepared."
+  },
+  {
+    "file": "desktop-ask-ru.png",
+    "kind": "desktop",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Call-for-me page in Russian for Olgas Musikstudio: 4-step progress bar, 'where we will call' card with name and phone, title 'Find out about a free place or trial lesson', voice start button."
+  },
+  {
+    "file": "desktop-ask-typed-ru.png",
+    "kind": "desktop",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Call-for-me typed path in Russian: place card, title, Maria's request typed into the text field ('Хочу записать дочку на музыку ...'), dictate button, quick chips."
+  },
+  {
+    "file": "desktop-communities-ru.png",
+    "kind": "desktop",
+    "route": "/communities",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Bilingual communities page in Russian: language chips with counts (Russian 6, Arabic 4, Ukrainian 5 ...), Russian-speaking groups listed first, each with a Call-for-me link."
+  },
+  {
+    "file": "desktop-courses-all-ru.png",
+    "kind": "desktop",
+    "route": "/courses",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Courses and activities page in Russian, unfiltered: view switch (all / courses / places), age buttons, filter dropdowns and the first listings."
+  },
+  {
+    "file": "desktop-courses-ru.png",
+    "kind": "desktop",
+    "route": "/courses?age=3-6&act=music&lang=ru",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Courses page in Russian filtered to age 3-6, music and Russian: active filter chips, result count (2) and the matching listings (Musikschule Adagio, Olgas Musikstudio with the 'checked by phone' badge at the bottom edge)."
+  },
+  {
+    "file": "desktop-events-ru.png",
+    "kind": "desktop",
+    "route": "/events",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Events page in Russian: 'Family events in the next 5 weeks', age and language filters, 'free only', 29 events, this week's list with date blocks and 'today' marks."
+  },
+  {
+    "file": "desktop-guide-kita-ar.png",
+    "kind": "desktop",
+    "route": "/guides/kita-place-dresden",
+    "lang": "ar",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Guide 'Finding a Kita place in Dresden: Kita-Portal, waiting list and costs' in Arabic (RTL): title, summary, update date, checklist '0 of 10 done', related guides column."
+  },
+  {
+    "file": "desktop-guide-kita-ru.png",
+    "kind": "desktop",
+    "route": "/guides/kita-place-dresden",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Guide 'Finding a Kita place in Dresden: Kita-Portal, waiting list and costs' in Russian: title, summary, update date, checklist '0 of 10 done', related guides column."
+  },
+  {
+    "file": "desktop-home-ar.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "ar",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Arabic (RTL): header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-left."
+  },
+  {
+    "file": "desktop-home-de.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "de",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in German: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-right."
+  },
+  {
+    "file": "desktop-home-en.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "en",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in English: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-right."
+  },
+  {
+    "file": "desktop-home-ru.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Russian: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-right."
+  },
+  {
+    "file": "desktop-home-tr.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "tr",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Turkish: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-right."
+  },
+  {
+    "file": "desktop-home-uk.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "uk",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Ukrainian: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-right."
+  },
+  {
+    "file": "desktop-library-ru.png",
+    "kind": "desktop",
+    "route": "/library",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Library (guides) page in Russian: guides grouped by topic (Kita and school, documents and registration), each with summary, update date and a Call-for-me link."
+  },
+  {
+    "file": "desktop-provider-ar.png",
+    "kind": "desktop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "ar",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Olgas Musikstudio provider page (marked as demo listing) in Arabic (RTL): German name, description, offer table (age 3-6, music, languages, format, price, address); Call-for-me box on the left with 3 steps and the button to ask about a free place or trial lesson."
+  },
+  {
+    "file": "desktop-provider-en.png",
+    "kind": "desktop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "en",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Olgas Musikstudio provider page (marked as demo listing) in English: German name, description, offer table (age 3-6, music, languages, format, price, address); Call-for-me box on the right with 3 steps and the button to ask about a free place or trial lesson."
+  },
+  {
+    "file": "desktop-provider-ru.png",
+    "kind": "desktop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Olgas Musikstudio provider page (marked as demo listing) in Russian: German name, description, offer table (age 3-6, music, languages, format, price, address); Call-for-me box on the right with 3 steps and the button to ask about a free place or trial lesson."
+  },
+  {
+    "file": "desktop-result-en.png",
+    "kind": "desktop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "en",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Result page of the real end-to-end test call (RUN-026) in English: 4-step stepper done, 'your task' column (goal, time windows, allowed facts), result card 'booked for a trial lesson, Thursday 1 October at 14:00' with summary, things to bring (German + translation) and details."
+  },
+  {
+    "file": "desktop-result-ru.png",
+    "kind": "desktop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Result page of the real end-to-end test call (RUN-026) in Russian: 4-step stepper done, 'your task' column (goal, time windows, allowed facts), result card 'booked for a trial lesson, Thursday 1 October at 14:00' with summary, things to bring (German + translation) and details."
+  },
+  {
+    "file": "desktop-services-ru.png",
+    "kind": "desktop",
+    "route": "/services",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Health and services page in Russian: category buttons (Kita and school, doctors, pharmacies, authorities, banks, counselling), name search, district filter, 94 places."
+  },
+  {
+    "file": "full-ask-approval-ru.png",
+    "kind": "full",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 2681,
+    "scale": 2,
+    "shows": "Full Call-for-me page in Russian with the typed request and the approval card."
+  },
+  {
+    "file": "full-home-ru.png",
+    "kind": "full",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 4256,
+    "scale": 2,
+    "shows": "Full home page in Russian, top to footer: hero with age chart, 'what is here' pillars with counts, this week's events, guides, footer."
+  },
+  {
+    "file": "full-provider-ru.png",
+    "kind": "full",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 1361,
+    "scale": 2,
+    "shows": "Full Olgas Musikstudio page in Russian: description, offer table, 'checked by phone 26 Sep 2026 - booked' badge, Call-for-me box with contact."
+  },
+  {
+    "file": "full-result-ru.png",
+    "kind": "full",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 2483,
+    "scale": 2,
+    "shows": "Full result page in Russian with the call expanded: result card (Thu 1 Oct 14:00), call card (1:38, 'said it is an AI at the start') and the German transcript with Russian lines (the list scrolls inside its box, so only the later lines show)."
+  },
+  {
+    "file": "mobile-ask-ru.png",
+    "kind": "mobile",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Call-for-me page on a phone in Russian: step 1 of 4, 'where we will call' card, title, big round 'Speak' mic button."
+  },
+  {
+    "file": "mobile-home-ar.png",
+    "kind": "mobile",
+    "route": "/",
+    "lang": "ar",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Home page on a phone in Arabic, right-to-left: headline, buttons, age card; Call-for-me mic button bottom-left."
+  },
+  {
+    "file": "mobile-home-ru.png",
+    "kind": "mobile",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Home page on a phone (390 px) in Russian: hero headline, two buttons, top of the age card; round Call-for-me mic button bottom-right."
+  },
+  {
+    "file": "mobile-provider-ru.png",
+    "kind": "mobile",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "ru",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Olgas Musikstudio page on a phone in Russian: name, demo-listing mark, description and the Call-for-me box in the page flow."
+  },
+  {
+    "file": "mobile-result-card-ru.png",
+    "kind": "mobile",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Result page on a phone in Russian scrolled to the result card: 'booked for a trial lesson, Thursday 1 October at 14:00', summary and things to bring."
+  },
+  {
+    "file": "mobile-result-ru.png",
+    "kind": "mobile",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Result page on a phone in Russian, top: title 'Live call', 4-step stepper done, 'your task' summary (goal, time windows, allowed facts); the booked result card is further down, see mobile-result-card-ru."
+  },
+  {
+    "file": "crop-approval-ru.png",
+    "kind": "crop",
+    "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
+    "lang": "ru",
+    "css_width": 704,
+    "css_height": 1322,
+    "scale": 2,
+    "shows": "The whole approval card in Russian: German opening line with Russian below, goal, place and phone, what it will ask, time windows (Tue 29 Sep / Thu 1 Oct 15:00-19:00), allowed facts, what it never does, consent checkbox (not ticked), disabled 'Call now' button. Heading has a keyboard focus outline."
+  },
+  {
+    "file": "crop-askbox-en.png",
+    "kind": "crop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "en",
+    "css_width": 376,
+    "css_height": 489,
+    "scale": 2,
+    "shows": "Call-for-me box on the Olgas Musikstudio page in English: title, three steps, pine button, contact phone."
+  },
+  {
+    "file": "crop-askbox-ru.png",
+    "kind": "crop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "ru",
+    "css_width": 376,
+    "css_height": 529,
+    "scale": 2,
+    "shows": "Call-for-me box on the Olgas Musikstudio page in Russian: 'We can call there for you', AI says it is an AI, three steps, pine button 'Find out about a free place or trial lesson', contact phone."
+  },
+  {
+    "file": "crop-callcard-ru.png",
+    "kind": "crop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 792,
+    "css_height": 230,
+    "scale": 2,
+    "shows": "Call card of the test call: Olgas Musikstudio, phone, timer 01:38, call ended, assistant and course organiser tiles, 'at the start the assistant said it is an AI'; Russian UI."
+  },
+  {
+    "file": "crop-checked-en.png",
+    "kind": "crop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "en",
+    "css_width": 446,
+    "css_height": 48,
+    "scale": 2,
+    "shows": "'Checked by phone' badge on the Olgas Musikstudio page in English."
+  },
+  {
+    "file": "crop-checked-ru.png",
+    "kind": "crop",
+    "route": "/p/ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d",
+    "lang": "ru",
+    "css_width": 495,
+    "css_height": 48,
+    "scale": 2,
+    "shows": "'Checked by phone' badge on the Olgas Musikstudio page in Russian: 'checked by phone 26 September 2026 - booked' with info icon."
+  },
+  {
+    "file": "crop-fab-en.png",
+    "kind": "crop",
+    "route": "/",
+    "lang": "en",
+    "css_width": 199,
+    "css_height": 96,
+    "scale": 2,
+    "shows": "Floating Call-for-me button with its hover label 'Call for me' in English."
+  },
+  {
+    "file": "crop-fab-ru.png",
+    "kind": "crop",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 253,
+    "css_height": 96,
+    "scale": 2,
+    "shows": "Floating Call-for-me button (pine disc with microphone) with its hover label in Russian."
+  },
+  {
+    "file": "crop-resultcard-en.png",
+    "kind": "crop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "en",
+    "css_width": 792,
+    "css_height": 826,
+    "scale": 2,
+    "shows": "Result card of the test call in English: booked trial lesson Thursday 1 October at 14:00, summary, things to bring, details, add-to-calendar button."
+  },
+  {
+    "file": "crop-resultcard-ru.png",
+    "kind": "crop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 792,
+    "css_height": 826,
+    "scale": 2,
+    "shows": "Result card of the test call in Russian: 'booked for a trial lesson', Thursday 1 October at 14:00, summary, things to bring (German + Russian), details table, add-to-calendar button."
+  },
+  {
+    "file": "crop-transcript-ru.png",
+    "kind": "crop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 792,
+    "css_height": 620,
+    "scale": 2,
+    "shows": "End of the call transcript: read-back 'Ist das richtig?' / 'Ja, richtig', free trial, bring Hausschuhe, goodbye; German lines with Russian below, Russian UI."
+  },
+  {
+    "file": "crop-transcript-start-ru.png",
+    "kind": "crop",
+    "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
+    "lang": "ru",
+    "css_width": 792,
+    "css_height": 620,
+    "scale": 2,
+    "shows": "Start of the call transcript: the assistant's first sentence 'Guten Tag! Hier ist die KI-Assistentin von Maria Ivanova ...' (says it is an AI) with Russian below, place answers; Russian UI."
+  },
+  {
+    "file": "crop-wordmark-ru.png",
+    "kind": "crop",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 242,
+    "css_height": 72,
+    "scale": 2,
+    "shows": "Header wordmark 'Ankommen' ('An' ink + 'kommen' pine) with the tagline, Russian UI."
+  }
+]

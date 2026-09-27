@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Ankommen: how a call for a parent works",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "viewBox": [1360, 580],
+    "views": [
+      { "id": "call-path", "label": "Call for me", "focus": ["app", "requests", "brief", "relay-call", "agent", "receptionist"], "note": "The request becomes a German brief, then the assistant calls in German." },
+      { "id": "result-path", "label": "Answer comes back", "focus": ["relay-call", "store", "result", "app"], "note": "Transcript and result are saved as text and return in the parent's language." },
+      { "id": "voice-intake", "label": "Voice intake", "focus": ["app", "relay-voice", "voice-apis", "intake"], "note": "The parent speaks in their language; n8n 04 turns it into a task draft." }
+    ]
+  },
+  "components": [
+    { "id": "relay-voice", "type": "backend", "label": "Relay /listen /speak", "sublabel": "voice intake", "pos": [40, 70], "size": [160, 64] },
+    { "id": "voice-apis", "type": "cloud", "label": "Deepgram + ElevenLabs", "sublabel": "STT nova-3 · TTS", "pos": [320, 70], "size": [160, 64] },
+    { "id": "claude", "type": "cloud", "label": "Claude", "sublabel": "think model", "brand": "claude", "pos": [1160, 70], "size": [160, 64] },
+
+    { "id": "app", "type": "frontend", "label": "Ankommen app", "sublabel": "parent's browser", "tag": "Lovable · TanStack SSR", "pos": [40, 260], "size": [160, 64] },
+    { "id": "requests", "type": "database", "label": "call_requests", "sublabel": "Supabase Postgres", "tag": "anon insert + RLS", "brand": "supabase", "pos": [320, 260], "size": [160, 64] },
+    { "id": "brief", "type": "backend", "label": "n8n 01 brief", "sublabel": "German call brief", "tag": "Claude", "pos": [600, 260], "size": [160, 64] },
+    { "id": "relay-call", "type": "backend", "label": "Voice relay /call", "sublabel": "Node WebSocket", "tag": "local :8787", "pos": [880, 260], "size": [160, 64] },
+    { "id": "agent", "type": "cloud", "label": "Deepgram Voice Agent", "sublabel": "aura-2-viktoria-de", "pos": [1160, 260], "size": [160, 64] },
+
+    { "id": "intake", "type": "backend", "label": "n8n 04 intake", "sublabel": "speech to task draft", "tag": "Claude", "pos": [40, 450], "size": [160, 64] },
+    { "id": "result", "type": "backend", "label": "n8n 05 + 06", "sublabel": "subtitles + result", "tag": "Claude", "pos": [320, 450], "size": [160, 64] },
+    { "id": "store", "type": "database", "label": "calls + transcript", "sublabel": "Supabase · events", "brand": "supabase", "pos": [880, 450], "size": [160, 64] },
+    { "id": "receptionist", "type": "external", "label": "Receptionist", "sublabel": "browser role-play", "tag": "no phone line yet", "pos": [1160, 450], "size": [160, 64] }
+  ],
+  "connections": [
+    { "id": "insert-request", "from": "app", "to": "requests", "label": "insert request", "variant": "emphasis" },
+    { "id": "trigger-brief", "from": "requests", "to": "brief", "label": "pg_net trigger", "variant": "emphasis" },
+    { "id": "brief-to-relay", "from": "brief", "to": "relay-call", "label": "German brief", "variant": "emphasis" },
+    { "id": "relay-to-agent", "from": "relay-call", "to": "agent", "label": "audio + brief", "variant": "emphasis" },
+    { "id": "german-call", "from": "agent", "to": "receptionist", "label": "German call", "variant": "emphasis", "labelAt": [1240, 338] },
+    { "id": "save-transcript", "from": "relay-call", "to": "store", "label": "transcript + result", "variant": "emphasis", "labelAt": [960, 338] },
+    { "id": "trigger-result", "from": "store", "to": "result", "label": "pg_net trigger", "variant": "emphasis" },
+    { "id": "result-to-app", "from": "result", "to": "app", "label": "Realtime, parent's language", "variant": "emphasis" },
+    { "id": "agent-think", "from": "agent", "to": "claude", "label": "think" },
+    { "id": "app-voice", "from": "app", "to": "relay-voice", "label": "mic + playback", "variant": "dashed" },
+    { "id": "voice-providers", "from": "relay-voice", "to": "voice-apis", "label": "STT + TTS", "variant": "dashed" },
+    { "id": "app-intake", "from": "app", "to": "intake", "label": "task draft", "variant": "dashed", "labelAt": [120, 338] }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Honest call", "items": ["Says it is an AI in the first sentence", "Agrees only to times the parent approved", "Reads the answer back before booking"] },
+    { "dot": "amber", "title": "Data and keys", "items": ["Browser holds only the Supabase anon key", "Relay keeps Deepgram, ElevenLabs and service keys", "No audio stored, only text"] },
+    { "dot": "slate", "title": "Today", "items": ["App live on Lovable, GitHub two-way sync", "Relay runs locally; receptionist is a role-play", "4 n8n workflows: 01, 04, 05, 06"] }
+  ]
+}

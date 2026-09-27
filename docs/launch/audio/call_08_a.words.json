@@ -1,0 +1,57 @@
+[
+  {
+    "w": "Wunderbar,",
+    "start": 0.0,
+    "end": 0.88
+  },
+  {
+    "w": "ich",
+    "start": 1.12,
+    "end": 1.28
+  },
+  {
+    "w": "notiere",
+    "start": 1.28,
+    "end": 1.84
+  },
+  {
+    "w": "das.",
+    "start": 1.84,
+    "end": 2.48
+  },
+  {
+    "w": "Vielen",
+    "start": 2.48,
+    "end": 2.8
+  },
+  {
+    "w": "Dank,",
+    "start": 2.8,
+    "end": 3.04
+  },
+  {
+    "w": "Herr",
+    "start": 3.04,
+    "end": 3.28
+  },
+  {
+    "w": "Böhme,",
+    "start": 3.28,
+    "end": 3.76
+  },
+  {
+    "w": "und",
+    "start": 3.76,
+    "end": 4.0
+  },
+  {
+    "w": "auf",
+    "start": 4.0,
+    "end": 4.32
+  },
+  {
+    "w": "Wiederhören!",
+    "start": 4.32,
+    "end": 4.96
+  }
+]

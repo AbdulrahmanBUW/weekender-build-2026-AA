@@ -1,0 +1,72 @@
+[
+  {
+    "w": "Before",
+    "start": 0.0,
+    "end": 0.24
+  },
+  {
+    "w": "anything",
+    "start": 0.284,
+    "end": 0.64
+  },
+  {
+    "w": "happens,",
+    "start": 0.7,
+    "end": 1.44
+  },
+  {
+    "w": "she",
+    "start": 1.5,
+    "end": 1.68
+  },
+  {
+    "w": "sees",
+    "start": 1.728,
+    "end": 1.92
+  },
+  {
+    "w": "what",
+    "start": 1.952,
+    "end": 2.08
+  },
+  {
+    "w": "the",
+    "start": 2.1,
+    "end": 2.16
+  },
+  {
+    "w": "assistant",
+    "start": 2.216,
+    "end": 2.72
+  },
+  {
+    "w": "will",
+    "start": 2.736,
+    "end": 2.8
+  },
+  {
+    "w": "say",
+    "start": 2.88,
+    "end": 3.12
+  },
+  {
+    "w": "in",
+    "start": 3.147,
+    "end": 3.2
+  },
+  {
+    "w": "German.",
+    "start": 3.269,
+    "end": 3.76
+  },
+  {
+    "w": "She",
+    "start": 3.98,
+    "end": 4.64
+  },
+  {
+    "w": "approves.",
+    "start": 4.711,
+    "end": 5.504
+  }
+]

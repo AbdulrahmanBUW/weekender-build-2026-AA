@@ -1,0 +1,37 @@
+[
+  {
+    "w": "Courses,",
+    "start": 0.0,
+    "end": 0.56
+  },
+  {
+    "w": "events",
+    "start": 0.64,
+    "end": 1.12
+  },
+  {
+    "w": "and",
+    "start": 1.16,
+    "end": 1.28
+  },
+  {
+    "w": "help,",
+    "start": 1.344,
+    "end": 1.68
+  },
+  {
+    "w": "in",
+    "start": 1.787,
+    "end": 2.0
+  },
+  {
+    "w": "six",
+    "start": 2.1,
+    "end": 2.4
+  },
+  {
+    "w": "languages.",
+    "start": 2.464,
+    "end": 3.12
+  }
+]

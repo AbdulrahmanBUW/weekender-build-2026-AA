@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Ankommen: one call, end to end",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      671
+    ],
+    "views": [
+      {
+        "id": "ask",
+        "label": "Ask and approve",
+        "focus": [
+          "parent",
+          "app",
+          "db",
+          "n8n"
+        ],
+        "note": "The parent speaks her language, sees the German opening line and approves."
+      },
+      {
+        "id": "call",
+        "label": "The German call",
+        "focus": [
+          "relay",
+          "agent",
+          "receptionist"
+        ],
+        "note": "The assistant says it is an AI and agrees only to approved times."
+      },
+      {
+        "id": "result",
+        "label": "Answer comes back",
+        "focus": [
+          "db",
+          "n8n",
+          "app",
+          "parent"
+        ],
+        "note": "Text only: the result returns in the parent's language via Realtime."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "parent",
+      "type": "external",
+      "label": "Parent",
+      "sublabel": "speaks Russian"
+    },
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "Ankommen",
+      "sublabel": "app · Lovable"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "Supabase",
+      "sublabel": "Postgres + Realtime",
+      "brand": "supabase"
+    },
+    {
+      "id": "n8n",
+      "type": "backend",
+      "label": "n8n",
+      "sublabel": "Claude · 01 04 05 06"
+    },
+    {
+      "id": "relay",
+      "type": "backend",
+      "label": "Relay",
+      "sublabel": "voice /call"
+    },
+    {
+      "id": "agent",
+      "type": "cloud",
+      "label": "Deepgram",
+      "sublabel": "Voice Agent · Claude"
+    },
+    {
+      "id": "receptionist",
+      "type": "external",
+      "label": "Place",
+      "sublabel": "receptionist role-play"
+    }
+  ],
+  "segments": [
+    {
+      "from": 160,
+      "to": 276,
+      "label": "Ask"
+    },
+    {
+      "from": 286,
+      "to": 338,
+      "label": "Brief"
+    },
+    {
+      "from": 348,
+      "to": 456,
+      "label": "Call"
+    },
+    {
+      "from": 466,
+      "to": 576,
+      "label": "Result"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m-request",
+      "from": "parent",
+      "to": "app",
+      "y": 180,
+      "label": "request in Russian",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-intake",
+      "from": "app",
+      "to": "n8n",
+      "y": 208,
+      "label": "04 intake",
+      "variant": "default"
+    },
+    {
+      "id": "m-draft",
+      "from": "n8n",
+      "to": "app",
+      "y": 236,
+      "label": "German line to approve",
+      "variant": "return"
+    },
+    {
+      "id": "m-insert",
+      "from": "app",
+      "to": "db",
+      "y": 264,
+      "label": "approved request",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-brief-trigger",
+      "from": "db",
+      "to": "n8n",
+      "y": 298,
+      "label": "pg_net: 01 brief",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-brief",
+      "from": "n8n",
+      "to": "db",
+      "y": 326,
+      "label": "German brief",
+      "variant": "return"
+    },
+    {
+      "id": "m-settings",
+      "from": "relay",
+      "to": "agent",
+      "y": 360,
+      "label": "brief + audio",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-intro",
+      "from": "agent",
+      "to": "receptionist",
+      "y": 388,
+      "label": "says it is an AI",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-offer",
+      "from": "receptionist",
+      "to": "agent",
+      "y": 416,
+      "label": "offers times",
+      "variant": "return"
+    },
+    {
+      "id": "m-save",
+      "from": "relay",
+      "to": "db",
+      "y": 444,
+      "label": "transcript + booked",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-result-trigger",
+      "from": "db",
+      "to": "n8n",
+      "y": 480,
+      "label": "pg_net: 05 + 06",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-result",
+      "from": "n8n",
+      "to": "db",
+      "y": 508,
+      "label": "result in Russian",
+      "variant": "return"
+    },
+    {
+      "id": "m-realtime",
+      "from": "db",
+      "to": "app",
+      "y": 536,
+      "label": "Realtime",
+      "variant": "return"
+    },
+    {
+      "id": "m-answer",
+      "from": "app",
+      "to": "parent",
+      "y": 564,
+      "label": "answer in Russian",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "n8n",
+      "from": 202,
+      "to": 242,
+      "type": "backend"
+    },
+    {
+      "participant": "n8n",
+      "from": 292,
+      "to": 332,
+      "type": "backend"
+    },
+    {
+      "participant": "relay",
+      "from": 354,
+      "to": 450,
+      "type": "backend"
+    },
+    {
+      "participant": "agent",
+      "from": 354,
+      "to": 422,
+      "type": "cloud"
+    },
+    {
+      "participant": "n8n",
+      "from": 474,
+      "to": 514,
+      "type": "backend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Honest by design",
+      "items": [
+        "First sentence: it is an AI assistant",
+        "Only times the parent approved"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Text only",
+      "items": [
+        "No audio stored, only transcript text",
+        "n8n 05 subtitles, n8n 06 the result"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Today",
+      "items": [
+        "Receptionist is a browser role-play",
+        "No phone line yet"
+      ]
+    }
+  ]
+}
