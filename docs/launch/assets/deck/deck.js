@@ -223,6 +223,136 @@
     else if (document.exitFullscreen) document.exitFullscreen();
   }
 
+
+  // ------------------------------------------------------------------ pixel band (DEC-004)
+  // Vanilla port of the essentials of hallotermin-paper src/components/pixel/PixelScene.tsx: one lane with stops,
+  // walkers pause at stops (sometimes step "into" a door), respawn at the edges, 4-frame walk cycle, the tram
+  // shuttling on the Augustusbruecke. Values from scenes.data.ts (HOME) and people.data.ts (PEOPLE).
+  // Whole-number scale only, aria-hidden, runs only while its slide is active, static under reduced motion.
+  var PX_HOME = { src: 'assets/pixel/home.png', w: 960, h: 128, lanes: [{ y: 122, x0: 44, x1: 916, stops: [248, 440, 628, 754, 848, 898] }], walkers: 5,
+    tram: { src: 'assets/pixel/tram.png', frameW: 64, frameH: 20, frames: 2, y: 64, x0: 382, x1: 529, speed: 18 } };
+  var PX_PEOPLE = { src: 'assets/pixel/people.png', cell: 32, rows: { down: 0, up: 1, right: 2 }, cycle: [1, 0, 1, 2], speed: 14,
+    chars: [[0, 0], [1, 0], [2, 0], [3, 0], [0, 1], [1, 1], [2, 1], [3, 1], [0, 2], [1, 2], [2, 2], [3, 2]] };
+  var PX_REDUCE = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  function PixelBand(host, o) {
+    var S = (o.scale | 0) || 2, sc = PX_HOME, P = PX_PEOPLE, C = P.cell, off = o.offset || 0;
+    var W = sc.w * S, H = sc.h * S, FPS = 8, TRAM_FPS = 4, EDGE = 12, GAP = 28;
+    var vis = [off, Math.min(sc.w, off + o.width / S)];
+    host.setAttribute('aria-hidden', 'true'); host.classList.add('pxband');
+    host.style.width = o.width + 'px'; host.style.height = H + 'px';
+    var layer = el('div', 'pxlayer');
+    layer.style.cssText = 'left:' + (-off * S) + 'px;width:' + W + 'px;height:' + H + 'px;background-image:url(' + sc.src + ');background-size:' + W + 'px ' + H + 'px';
+    host.appendChild(layer);
+    var walkers = [], tram = null, raf = 0, last = 0, running = false;
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    function range(l) { return [Math.max(l.x0, vis[0] - EDGE), Math.min(l.x1, vis[1] + EDGE)]; }
+    function sprite(src, w, h, sheetW) {
+      var e = el('div', 'pxsprite'); e.style.width = w * S + 'px'; e.style.height = h * S + 'px';
+      var i = el('div', 'pxinner'); i.style.backgroundImage = 'url(' + src + ')'; i.style.backgroundSize = sheetW * S + 'px auto';
+      e.appendChild(i); layer.appendChild(e); return { el: e, inner: i, last: '' };
+    }
+    function drawW(w, frame, op) {
+      var ch = P.chars[w.ch], px = Math.round(w.x) - C / 2, py = w.lane.y - (C - 1) + Math.round(w.yOff);
+      var row = w.face === 'down' ? P.rows.down : w.face === 'up' ? P.rows.up : P.rows.right;
+      var bx = (ch[0] * 3 + frame) * C, by = (ch[1] * 3 + row) * C; op = Math.round(op * 20) / 20;
+      var key = px + ',' + py + ',' + bx + ',' + by + ',' + w.face + ',' + op; if (key === w.last) return; w.last = key;
+      w.el.style.transform = 'translate(' + (px * S) + 'px,' + (py * S) + 'px)'; w.el.style.opacity = op;
+      w.inner.style.backgroundPosition = '-' + (bx * S) + 'px -' + (by * S) + 'px';
+      w.inner.style.transform = w.face === 'left' ? 'scaleX(-1)' : '';
+    }
+    function drawT(frame) {
+      var d = tram.def, key = Math.round(tram.x) + ',' + frame + ',' + tram.dir; if (key === tram.last) return; tram.last = key;
+      tram.el.style.transform = 'translate(' + (Math.round(tram.x) * S) + 'px,' + (d.y * S) + 'px)'; tram.el.style.opacity = 1;
+      tram.inner.style.backgroundPosition = '-' + (frame * d.frameW * S) + 'px 0px'; tram.inner.style.transform = tram.dir < 0 ? 'scaleX(-1)' : '';
+    }
+    function freeCh(ex) {
+      var used = walkers.filter(function (w) { return w !== ex && w.state !== 'gone'; }).map(function (w) { return w.ch; });
+      var pool = P.chars.map(function (_, i) { return i; }).filter(function (i) { return used.indexOf(i) < 0; });
+      return pool.length ? pool[Math.floor(Math.random() * pool.length)] : 0;
+    }
+    function spawn(w, atEdge) {
+      var lane = sc.lanes[0], r = range(lane), a = r[0], b = r[1];
+      w.lane = lane; w.ch = -1; w.ch = freeCh(w); w.dir = Math.random() < 0.5 ? 1 : -1;
+      var crowded = function (x) { return walkers.some(function (q) { return q !== w && q.state !== 'gone' && Math.abs(q.x - x) < GAP; }); };
+      if (atEdge) { if (crowded(w.dir > 0 ? a : b)) w.dir = -w.dir; w.x = w.dir > 0 ? a : b; }
+      else { w.x = rand(a + 8, b - 8); for (var i = 0; i < 5 && crowded(w.x); i++) w.x = rand(a + 8, b - 8); }
+      w.face = w.dir > 0 ? 'right' : 'left'; w.yOff = 0; w.state = 'walk'; w.anim = Math.random(); w.born = atEdge ? 0 : 1; w.lastStop = null; w.last = '';
+    }
+    function stepW(w, dt) {
+      var r = range(w.lane), a = r[0], b = r[1], frame = P.cycle[0], op;
+      w.anim += dt; w.born = Math.min(1, w.born + dt * 2); op = w.born;
+      if (w.state === 'walk') {
+        var prev = w.x; w.x += w.dir * P.speed * dt;
+        frame = P.cycle[Math.floor(w.anim * FPS) % P.cycle.length];
+        for (var i = 0; i < w.lane.stops.length; i++) {
+          var s = w.lane.stops[i], crossed = (prev < s && w.x >= s) || (prev > s && w.x <= s);
+          if (!crossed || s === w.lastStop) continue;
+          w.lastStop = s;
+          var taken = walkers.some(function (q) { return q !== w && q.state === 'stop' && Math.abs(q.x - s) < 10; });
+          if (!taken && Math.random() < 0.45) { w.x = s; w.state = 'stop'; w.face = 'down'; w.t = rand(1.5, 4); frame = P.cycle[0]; }
+          break;
+        }
+        if (w.x < a - 1 || w.x > b + 1) { spawn(w, true); return; }
+        op = Math.min(op, Math.max(0, Math.min(w.x - a, b - w.x) / 8));
+      } else if (w.state === 'stop') {
+        w.t -= dt;
+        if (w.t <= 0) {
+          if (Math.random() < 0.3) { w.state = 'enter'; w.face = 'up'; w.t = 0.8; }
+          else { if (Math.random() < 0.3) w.dir = -w.dir; w.state = 'walk'; w.face = w.dir > 0 ? 'right' : 'left'; }
+        }
+      } else if (w.state === 'enter') {
+        w.t -= dt; w.yOff -= 5 * dt; frame = P.cycle[Math.floor(w.anim * FPS) % P.cycle.length]; op = Math.max(0, w.t / 0.8);
+        if (w.t <= 0) { w.state = 'gone'; w.t = rand(0.8, 2.5); op = 0; }
+      } else { w.t -= dt; op = 0; if (w.t <= 0) { spawn(w, true); return; } }
+      drawW(w, frame, op);
+    }
+    function stepT(dt) {
+      var d = tram.def, frame = 0; tram.anim += dt;
+      if (tram.state === 'run') {
+        tram.x += tram.dir * d.speed * dt; frame = Math.floor(tram.anim * TRAM_FPS) % d.frames;
+        if ((tram.dir > 0 && tram.x >= d.x1) || (tram.dir < 0 && tram.x <= d.x0)) { tram.x = tram.dir > 0 ? d.x1 : d.x0; tram.state = 'wait'; tram.t = rand(2, 4); }
+      } else { tram.t -= dt; if (tram.t <= 0) { tram.dir = -tram.dir; tram.state = 'run'; } }
+      drawT(frame);
+    }
+    function clear() { walkers.forEach(function (w) { w.el.remove(); }); walkers = []; if (tram) tram.el.remove(); tram = null; }
+    function mkWalker() { var w = sprite(P.src, C, C, 12 * C); w.lane = sc.lanes[0]; w.x = 0; w.yOff = 0; w.ch = 0; walkers.push(w); return w; }
+    function mkTram(t) { var d = sc.tram, sp = sprite(d.src, d.frameW, d.frameH, d.frameW * d.frames); sp.def = d; sp.x = d.x0; sp.dir = 1; sp.state = 'wait'; sp.t = t; sp.anim = 0; tram = sp; drawT(0); }
+    function buildStatic() {
+      var lane = sc.lanes[0], r = range(lane), spots = lane.stops.filter(function (s) { return s >= r[0] + 8 && s <= r[1] - 8; });
+      var count = Math.min(3, spots.length), step = Math.max(1, Math.floor(spots.length / Math.max(1, count))), fixed = [0, 3, 8];
+      for (var i = 0; i < count; i++) { var w = mkWalker(); w.x = spots[i * step]; w.face = 'down'; w.state = 'stop'; w.ch = fixed[i]; drawW(w, P.cycle[0], 1); }
+      mkTram(0);
+    }
+    function tick(now) {
+      raf = 0; if (!running) return;
+      var dt = Math.min(0.1, Math.max(0, (now - last) / 1000)); last = now;
+      walkers.forEach(function (w) { stepW(w, dt); }); if (tram) stepT(dt);
+      raf = requestAnimationFrame(tick);
+    }
+    var api = {
+      host: host,
+      start: function () {
+        api.stop(); clear();
+        if (PX_REDUCE.matches) { buildStatic(); return; }
+        for (var i = 0; i < sc.walkers; i++) { var w = mkWalker(); spawn(w, i > 0 && Math.random() < 0.3); }
+        mkTram(rand(1, 3));
+        walkers.forEach(function (w) { stepW(w, 0); });
+        running = true; last = performance.now(); raf = requestAnimationFrame(tick);
+      },
+      stop: function () { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; },
+      running: function () { return running; }
+    };
+    return api;
+  }
+  // Attach a band to a slide: created once, (re)started in init on every entry or redraw, stopped when the slide is left.
+  function bandFor(S, sel, o) {
+    if (!S.band) S.band = PixelBand($(sel, S.el), o);
+    S.band.start();
+    S.stops.push(function () { S.band.stop(); });
+    return S.band;
+  }
+  window.__pxBands = function () { return SL.filter(function (S) { return S.band; }).map(function (S) { return { id: S.id, running: S.band.running() }; }); };
+
   // =================================================================== SLIDES
   // helpers to split a wordmark into letters
   function splitChars(root) {
@@ -237,7 +367,7 @@
 
   // 1 · Title -----------------------------------------------------------
   slide('s-title', 'Title', {
-    notes: '<b>3-minute slot route:</b> 1, then <b>5</b> (live demo, run-sheet 3.3), then <b>13</b> (pilot ask), then <b>14</b>. Use 6 and 7 only if the live call fails (type 6, Enter, then Right 3 times to reach the 63 s call). Slides 2-4 and 8-12 are for a longer slot or questions. Jump: type the slide number, then Enter.<br>' +
+    notes: '<b>3-minute slot route:</b> 1, then <b>6</b> (live demo, run-sheet 3.3), then <b>14</b> (pilot ask), then <b>15</b>. Use 7 and 8 only if the live call fails (type 7, Enter, then Right 3 times to reach the 63 s call). Slides 2-5 and 9-13 are for a longer slot or questions. Jump: type the slide number, then Enter.<br>' +
       '<b>Say:</b> Hello, we are Abdul and Anastasia. This is <b>Ankommen</b>, your guide to starting in Germany. We built it this weekend here in Dresden. It is live at ankommen-dresden.lovable.app.',
     init: function (S) {
       var ch = splitChars($('.wordmark', S.el));
@@ -245,12 +375,15 @@
       gsap.set($('.tagline', S.el), { opacity: 0, y: 18 });
       gsap.set($$('.meta, .site', S.el), { opacity: 0, y: 14 });
       gsap.set($('.peek', S.el), { opacity: 0, x: 90 });
+      bandFor(S, '.pxhost', { scale: 2, width: 1920 });
+      gsap.set($('.pxhost', S.el), { opacity: 0 });
     },
     builds: [
       function (c) {
         var tl = c.tl();
         tl.to($$('.ch', c.S.el), { yPercent: 0, opacity: 1, rotation: 0, duration: 0.95, stagger: 0.055, ease: 'expo.out' })
-          .to($('.tagline', c.S.el), { opacity: 1, y: 0, duration: 0.7 }, '-=0.45');
+          .to($('.tagline', c.S.el), { opacity: 1, y: 0, duration: 0.7 }, '-=0.45')
+          .to($('.pxhost', c.S.el), { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.4);
       },
       function (c) {
         var tl = c.tl();
@@ -408,7 +541,54 @@
     });
   })();
 
-  // 4 · Six languages ----------------------------------------------------
+  // 4 · Arriving in Dresden (pixel art, DEC-004) ------------------------------------
+  (function () {
+    var PEOPLE_CAP = ['Suitcase', 'Stroller', 'Holding a child\u2019s hand', 'Wheelchair', 'Folder', 'Violin case', 'Toddler in a sling',
+      'White cane', 'Backpack and book', 'Walking with a child', 'Bag from the bakery', 'Phone'];
+    var SCN = [['courses', 'Courses & activities'], ['events', 'Events'], ['communities', 'Communities'], ['services', 'Health & services'], ['library', 'Library']];
+    var built = false;
+    slide('s-arrive', 'Arriving in Dresden', {
+      notes: '<b>Say:</b> The site now greets people with Dresden: the skyline across the Elbe, the tram on the Augustusbr\u00fccke, and newcomers walking by. ' +
+        '<b>[click]</b> Twelve newcomers, each carrying something from a first week: a suitcase, a stroller, a folder of documents. ' +
+        '<b>[click]</b> Every pillar page has its own small scene. The skyline, tram and scenes were drawn in code this weekend; the people are recoloured open-source sprites (MIT) with our own props. It pauses on request and does not move for people who turn motion off.<br>' +
+        '<i>Credit:</i> character sprites based on Pixel Agents (github.com/pixel-agents-hq/pixel-agents), Copyright (c) 2026 Pablo De Lucca, MIT License; based on MetroCity by JIK-A-4 (CC0). Skyline, tram and scenes drawn by the team (scripts/pixel).',
+      init: function (S) {
+        if (!built) {
+          built = true;
+          var pp = $('.people', S.el), C3 = 96;
+          PX_PEOPLE.chars.forEach(function (ch, i) {
+            var f = el('div', 'person');
+            var fig = el('div', 'fig'); fig.setAttribute('aria-hidden', 'true');
+            fig.style.backgroundImage = 'url(' + PX_PEOPLE.src + ')';
+            fig.style.backgroundPosition = '-' + ((ch[0] * 3 + 1) * C3) + 'px -' + ((ch[1] * 3) * C3) + 'px';
+            f.appendChild(fig); f.appendChild(el('div', 'cap', esc(PEOPLE_CAP[i]))); pp.appendChild(f);
+          });
+          var sb = $('.scenes', S.el);
+          SCN.forEach(function (x) {
+            var f = el('figure', 'scene');
+            f.innerHTML = '<img aria-hidden="true" alt="" src="assets/screens/crop-scene-' + x[0] + '-en.png"><figcaption class="nm">' + esc(x[1]) + '</figcaption>';
+            sb.appendChild(f);
+          });
+        }
+        gsap.set($$('.h-slide', S.el), { opacity: 0 });
+        gsap.set($('.pxhost', S.el), { opacity: 0 });
+        gsap.set($$('.person', S.el), { opacity: 0, y: 16 });
+        gsap.set($$('.scene', S.el), { opacity: 0, y: 16 });
+        gsap.set($('.pxfoot', S.el), { opacity: 0 });
+        bandFor(S, '.pxhost', { scale: 3, width: 1920, offset: 0 });
+      },
+      builds: [
+        function (c) { var tl = c.tl(); titleIn(tl, c.S); tl.to($('.pxhost', c.S.el), { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.1); },
+        function (c) { var tl = c.tl(); tl.to($$('.person', c.S.el), { opacity: 1, y: 0, stagger: 0.06, duration: 0.45 }); },
+        function (c) {
+          var tl = c.tl();
+          tl.to($$('.scene', c.S.el), { opacity: 1, y: 0, stagger: 0.1, duration: 0.5 }).to($('.pxfoot', c.S.el), { opacity: 1, duration: 0.5 }, 0.4);
+        }
+      ]
+    });
+  })();
+
+  // 5 · Six languages ----------------------------------------------------
   (function () {
     var L = [
       { code: 'en', name: 'English', clip: function () { return EN_CLIP; }, gloss: '' },
@@ -421,7 +601,8 @@
     var EN_NAMES = { en: 'English', de: 'German', ru: 'Russian', uk: 'Ukrainian', ar: 'Arabic (right to left)', tr: 'Turkish' };
     var built = false;
     function setShot(S, code, c, tl) {
-      var file = 'desktop-home-' + code + '.png';
+      // home scrolled so the whole Dresden pixel band (DEC-004) is in view; falls back to the top-of-page shot
+      var file = hasShot('desktop-homeband-' + code + '.png') ? 'desktop-homeband-' + code + '.png' : 'desktop-home-' + code + '.png';
       if (!hasShot(file)) return;
       var base = $('.shot img.base', S.el), alt = $('.shot img.alt', S.el);
       $('.lname', S.el).textContent = EN_NAMES[code];
@@ -431,7 +612,7 @@
     }
     slide('s-langs', 'Six languages', {
       notes: '<b>Say:</b> Everything is in six languages: English, German, Russian, Ukrainian, Arabic from right to left, and Turkish. ' +
-        'Each click plays the app assistant in that language. (6 clicks; you can skip ahead with 5 + Enter.)',
+        'Each click plays the app assistant in that language. (6 clicks; you can skip ahead with 6 + Enter.)',
       init: function (S) {
         var box = $('.tiles', S.el);
         if (!built) {
@@ -448,7 +629,7 @@
         gsap.set($('.browser', S.el), { opacity: 0, y: 30 });
         gsap.set($('.shotcap', S.el), { opacity: 0 });
         $('.say .who', S.el).textContent = ''; $('.say .line', S.el).innerHTML = ''; $('.say .gloss', S.el).textContent = '';
-        $('.shot img.base', S.el).src = 'assets/screens/desktop-home-ru.png'; $('.lname', S.el).textContent = 'Russian';
+        $('.shot img.base', S.el).src = 'assets/screens/' + (hasShot('desktop-homeband-ru.png') ? 'desktop-homeband-ru.png' : 'desktop-home-ru.png'); $('.lname', S.el).textContent = 'Russian';
         gsap.set($('.shot img.alt', S.el), { opacity: 0 });
       },
       builds: [
@@ -480,11 +661,11 @@
     });
   })();
 
-  // 5 · Live demo ---------------------------------------------------------
+  // 6 · Live demo ---------------------------------------------------------
   slide('s-live', 'Live demo', {
     notes: '<b>Switch to the app tab</b> (interface in Русский). Path: Courses (age 3–6, music, Russian) · Olgas Musikstudio · <b>Call for me</b> · approval card · Call now · brief (about 10 s) · the call · result. ' +
       '<b>Say:</b> "Before anything happens, she sees exactly what it will say, including KI-Assistentin. She approves." During the call: "Listen to the first sentence." After the Saturday offer: "It said no. Maria did not approve Saturday." ' +
-      '<b>If the live voice part fails:</b> "The live voice part failed. Here is a recording from this morning." For the call beat alone, go to slide 6 (type 6, Enter, then Right 3 times: the 63 s call). <b>V</b> plays the full 2:29 recording, which is almost the whole 3-minute slot.',
+      '<b>If the live voice part fails:</b> "The live voice part failed. Here is a recording from this morning." For the call beat alone, go to slide 7 (type 7, Enter, then Right 3 times: the 63 s call). <b>V</b> plays the full 2:29 recording, which is almost the whole 3-minute slot.',
     init: function (S) {
       gsap.set($$('.big, .site, .actions, .backup, .flow', S.el), { opacity: 0, y: 18 });
       gsap.set($('.phone', S.el), { opacity: 0, y: 40 });
@@ -498,7 +679,7 @@
     ]
   });
 
-  // 6 · Call for me, step by step ------------------------------------------
+  // 7 · Call for me, step by step ------------------------------------------
   (function () {
     var GLOSS = {
       intake_ru_1: 'Hello! I’ll call Olgas Musikstudio for you. What should I ask them?',
@@ -663,7 +844,7 @@
     }
   })();
 
-  // 7 · Result -------------------------------------------------------------
+  // 8 · Result -------------------------------------------------------------
   (function () {
     var spans = null, words = null;
     slide('s-result', 'The answer, in her language', {
@@ -714,7 +895,7 @@
     });
   })();
 
-  // 8 · Architecture ---------------------------------------------------------
+  // 9 · Architecture ---------------------------------------------------------
   (function () {
     var A = D.arch;
     var CAP = {
@@ -795,7 +976,7 @@
     });
   })();
 
-  // 9 · n8n --------------------------------------------------------------------
+  // 10 · n8n --------------------------------------------------------------------
   (function () {
     var ORDER = ['04', '01', '05', '06'];
     var wfs = ORDER.map(function (p) { return D.n8n.filter(function (w) { return (w.file || '').indexOf(p) === 0; })[0]; }).filter(Boolean);
@@ -888,7 +1069,7 @@
     });
   })();
 
-  // 10 · Lovable ---------------------------------------------------------------
+  // 11 · Lovable ---------------------------------------------------------------
   (function () {
     var STOPS = [
       ['P1b', 'Shell, 6 languages, RTL'], ['P2', 'Courses directory'], ['P3', 'Course page, button'], ['P4', 'Events'],
@@ -950,7 +1131,7 @@
     });
   })();
 
-  // 11 · Numbers ----------------------------------------------------------------
+  // 12 · Numbers ----------------------------------------------------------------
   (function () {
     var N = [
       { v: 162, l: 'places', s: 'in the directory' },
@@ -992,7 +1173,7 @@
     });
   })();
 
-  // 12 · Trust ----------------------------------------------------------------
+  // 13 · Trust ----------------------------------------------------------------
   (function () {
     var T = [
       ['The AI says it is an AI, in its first sentence.', 'EU AI Act, Article 50'],
@@ -1026,7 +1207,7 @@
     });
   })();
 
-  // 13 · Monday ----------------------------------------------------------------
+  // 14 · Monday ----------------------------------------------------------------
   slide('s-monday', 'Monday-Morning Plan', {
     notes: '<b>Say:</b> What happens on Monday. <b>This week:</b> user accounts and owner-only data access instead of demo mode, rate limits, data processing agreements and EU endpoints. <b>Next:</b> a German +49 number, a public relay with signed per-call tokens, a legal check of live transcription under §201 StGB, and native speakers review Russian, Ukrainian and Arabic. <b>Friday goal:</b> one real call, with consent, to a friendly provider. <b>[click]</b> We are looking for pilot partners: TU Dresden International Office, the Welcome Center Dresden, and employers who hire skilled workers.',
     init: function (S) {
@@ -1047,7 +1228,7 @@
     ])
   });
 
-  // 14 · Thanks -----------------------------------------------------------------
+  // 15 · Thanks -----------------------------------------------------------------
   slide('s-thanks', 'Thank you', {
     notes: '<b>Say:</b> Thank you. Try Call for me: the link and the QR code open the live app. We are happy to take questions. <i>Jury answers: Pitch Kit v2 section 4.</i>',
     init: function (S) {
@@ -1057,13 +1238,16 @@
       gsap.set(ch, { yPercent: 70, opacity: 0, rotation: 6, transformOrigin: '50% 100%' });
       gsap.set($$('.ty, .site, .try, .team', S.el), { opacity: 0, y: 14 });
       gsap.set($('.qr', S.el), { opacity: 0, scale: 0.96 });
+      bandFor(S, '.pxhost', { scale: 2, width: 1920 });
+      gsap.set($('.pxhost', S.el), { opacity: 0 });
     },
     builds: [
       function (c) {
         var tl = c.tl();
         tl.to($$('.ch', c.S.el), { yPercent: 0, opacity: 1, rotation: 0, duration: 0.9, stagger: 0.05, ease: 'expo.out' })
           .to($$('.ty, .site, .try, .team', c.S.el), { opacity: 1, y: 0, stagger: 0.1 }, 0.5)
-          .to($('.qr', c.S.el), { opacity: 1, scale: 1, duration: 0.7, ease: 'expo.out' }, 0.7);
+          .to($('.qr', c.S.el), { opacity: 1, scale: 1, duration: 0.7, ease: 'expo.out' }, 0.7)
+          .to($('.pxhost', c.S.el), { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.6);
       }
     ]
   });
@@ -1105,13 +1289,13 @@
   })();
   (function () {
     var G = [
-      ['mobile-home-ru.png', 'Home, Russian'], ['mobile-home-ar.png', 'Home, Arabic, right to left'], ['mobile-provider-ru.png', 'Course page'],
+      ['mobile-home-band-ru.png', 'Home, Russian: the Dresden band'], ['mobile-home-ar.png', 'Home, Arabic, right to left'], ['mobile-provider-ru.png', 'Course page'],
       ['mobile-ask-ru.png', 'Call for me: speak'], ['mobile-result-card-ru.png', 'Result of the real test call (RUN-026)']
     ];
     var built = false;
     slide('s-a3', 'A3 · The app on a phone', {
       appendix: 'A3',
-      notes: 'Mobile screenshots of the live app at 390 px width. The last one is the real end-to-end test call from 26 Sep (booked 14:00).',
+      notes: 'Mobile screenshots of the live app at 390 px width. The first one is the home page scrolled to the Dresden pixel band under the hero. The last one is the real end-to-end test call from 26 Sep (booked 14:00).',
       init: function (S) {
         var g = $('.gallery', S.el);
         if (!built) {

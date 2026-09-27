@@ -1,5 +1,15 @@
 [
   {
+    "file": "desktop-404-en.png",
+    "kind": "desktop",
+    "route": "/this-page-does-not-exist",
+    "lang": "en",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "404 page in English for a missing URL: pixel scene (DEC-004) with the message and a way back home."
+  },
+  {
     "file": "desktop-ask-approval-ru.png",
     "kind": "desktop",
     "route": "/ask?resource=ae0ae23b-0dd7-4f82-adf8-6fd78aa3456d&type=course_enquiry",
@@ -170,6 +180,66 @@
     "shows": "Home page in Ukrainian: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button bottom-right."
   },
   {
+    "file": "desktop-homeband-ar.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "ar",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Arabic (RTL) scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion)."
+  },
+  {
+    "file": "desktop-homeband-de.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "de",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in German scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion)."
+  },
+  {
+    "file": "desktop-homeband-en.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "en",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in English scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion)."
+  },
+  {
+    "file": "desktop-homeband-ru.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Russian scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion)."
+  },
+  {
+    "file": "desktop-homeband-tr.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "tr",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Turkish scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion)."
+  },
+  {
+    "file": "desktop-homeband-uk.png",
+    "kind": "desktop",
+    "route": "/",
+    "lang": "uk",
+    "css_width": 1440,
+    "css_height": 900,
+    "scale": 2,
+    "shows": "Home page in Ukrainian scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion)."
+  },
+  {
     "file": "desktop-library-ru.png",
     "kind": "desktop",
     "route": "/library",
@@ -255,7 +325,7 @@
     "route": "/",
     "lang": "ru",
     "css_width": 1440,
-    "css_height": 4256,
+    "css_height": 4632,
     "scale": 2,
     "shows": "Full home page in Russian, top to footer: hero with age chart, 'what is here' pillars with counts, this week's events, guides, footer."
   },
@@ -298,6 +368,16 @@
     "css_height": 844,
     "scale": 2,
     "shows": "Home page on a phone in Arabic, right-to-left: headline, buttons, age card; Call-for-me mic button bottom-left."
+  },
+  {
+    "file": "mobile-home-band-ru.png",
+    "kind": "mobile",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 390,
+    "css_height": 844,
+    "scale": 2,
+    "shows": "Home page on a phone in Russian scrolled to the Dresden pixel band (DEC-004) under the hero: skyline across the Elbe cropped around the Frauenkirche, newcomers standing at their stops (reduced motion), then the 'what is here' pillars."
   },
   {
     "file": "mobile-home-ru.png",
@@ -420,6 +500,16 @@
     "shows": "Floating Call-for-me button (pine disc with microphone) with its hover label in Russian."
   },
   {
+    "file": "crop-pixelband-ru.png",
+    "kind": "crop",
+    "route": "/",
+    "lang": "ru",
+    "css_width": 1440,
+    "css_height": 256,
+    "scale": 2,
+    "shows": "Home pixel band (DEC-004), full viewport width at 2x: Dresden skyline across the Elbe with newcomers standing at their stops and the tram on the bridge (reduced motion, static)."
+  },
+  {
     "file": "crop-resultcard-en.png",
     "kind": "crop",
     "route": "/r/fb99c45e-660b-4882-affa-1a71505f8f02",
@@ -438,6 +528,56 @@
     "css_height": 826,
     "scale": 2,
     "shows": "Result card of the test call in Russian: 'booked for a trial lesson', Thursday 1 October at 14:00, summary, things to bring (German + Russian), details table, add-to-calendar button."
+  },
+  {
+    "file": "crop-scene-communities-en.png",
+    "kind": "crop",
+    "route": "/communities",
+    "lang": "en",
+    "css_width": 640,
+    "css_height": 192,
+    "scale": 2,
+    "shows": "Pixel scene (DEC-004) on the communities page, English UI, reduced motion (walkers stand at their stops)."
+  },
+  {
+    "file": "crop-scene-courses-en.png",
+    "kind": "crop",
+    "route": "/courses",
+    "lang": "en",
+    "css_width": 640,
+    "css_height": 192,
+    "scale": 2,
+    "shows": "Pixel scene (DEC-004) on the courses page, English UI, reduced motion (walkers stand at their stops)."
+  },
+  {
+    "file": "crop-scene-events-en.png",
+    "kind": "crop",
+    "route": "/events",
+    "lang": "en",
+    "css_width": 640,
+    "css_height": 192,
+    "scale": 2,
+    "shows": "Pixel scene (DEC-004) on the events page, English UI, reduced motion (walkers stand at their stops)."
+  },
+  {
+    "file": "crop-scene-library-en.png",
+    "kind": "crop",
+    "route": "/library",
+    "lang": "en",
+    "css_width": 640,
+    "css_height": 192,
+    "scale": 2,
+    "shows": "Pixel scene (DEC-004) on the library page, English UI, reduced motion (walkers stand at their stops)."
+  },
+  {
+    "file": "crop-scene-services-en.png",
+    "kind": "crop",
+    "route": "/services",
+    "lang": "en",
+    "css_width": 640,
+    "css_height": 192,
+    "scale": 2,
+    "shows": "Pixel scene (DEC-004) on the services page, English UI, reduced motion (walkers stand at their stops)."
   },
   {
     "file": "crop-transcript-ru.png",

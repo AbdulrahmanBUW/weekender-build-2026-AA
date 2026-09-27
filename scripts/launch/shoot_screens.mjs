@@ -198,6 +198,8 @@ function shots() {
   const fab = (l) => (l === "ar" ? "bottom-left" : "bottom-right");
   for (const l of ["ru", "en", "de", "ar", "uk", "tr"])
     add("desktop", "home", l, "/", `Home page in ${LANG_NAME[l]}: header with wordmark and nav, hero headline 'Courses, events and help for your family in Dresden', two buttons (browse courses, upcoming events), age card with a bar chart of courses per age (22 for age 4); round Call-for-me mic button ${fab(l)}.`);
+  for (const l of ["ru", "en", "de", "ar", "uk", "tr"])
+    add("desktop", "homeband", l, "/", `Home page in ${LANG_NAME[l]} scrolled so the whole Dresden pixel band (DEC-004) under the hero sits at the bottom of the view: hero headline, buttons and age card above, skyline across the Elbe with the tram and newcomers standing at their stops (reduced motion).`, { bandEnd: true });
   add("desktop", "courses", "ru", COURSES_FILTERED, "Courses page in Russian filtered to age 3-6, music and Russian: active filter chips, result count and the matching listings (Musikschule Adagio, Olgas Musikstudio with the 'checked by phone' badge at the bottom edge).", { fallback: "/courses?age=3-6&act=music" });
   add("desktop", "courses-all", "ru", "/courses", "Courses and activities page in Russian, unfiltered: view switch (all / courses / places), age buttons, filter dropdowns and the first listings.");
   for (const l of ["ru", "en", "ar"])
@@ -220,7 +222,9 @@ function shots() {
   add("mobile", "provider", "ru", `/p/${PROVIDER}`, "Olgas Musikstudio page on a phone in Russian: name, demo-listing mark, description and the Call-for-me box in the page flow.");
   add("mobile", "result", "ru", `/r/${RESULT}`, "Result page on a phone in Russian, top: title 'Live call', 4-step stepper done, 'your task' summary (goal, time windows, allowed facts); the booked result card is further down, see mobile-result-card-ru.");
   add("mobile", "result-card", "ru", `/r/${RESULT}`, "Result page on a phone in Russian scrolled to the result card: 'booked for a trial lesson, Thursday 1 October at 14:00', summary and things to bring.", { scrollTo: () => document.querySelector("div.min-w-0.space-y-6 > section") });
+  add("mobile", "home-band", "ru", "/", "Home page on a phone in Russian scrolled to the Dresden pixel band (DEC-004) under the hero: skyline across the Elbe cropped around the Frauenkirche, newcomers standing at their stops (reduced motion), then the 'what is here' pillars.", { scrollTo: () => document.querySelector("[data-pixel-scene='home']") });
   add("mobile", "home", "ar", "/", "Home page on a phone in Arabic, right-to-left: headline, buttons, age card; Call-for-me mic button bottom-left.");
+  add("desktop", "404", "en", "/this-page-does-not-exist", "404 page in English for a missing URL: pixel scene (DEC-004) with the message and a way back home.", { expect404: true });
   add("mobile", "ask", "ru", ASK, "Call-for-me page on a phone in Russian: step 1 of 4, 'where we will call' card, title, big round 'Speak' mic button.");
   return list;
 }
@@ -287,6 +291,16 @@ const CROPS = [
     pick: () => [...document.querySelectorAll("section")].find((s) => s.style.viewTransitionName === "dmk-call-card"),
     shows: "Call card of the test call: Olgas Musikstudio, phone, timer 01:38, call ended, assistant and course organiser tiles, 'at the start the assistant said it is an AI'; Russian UI.",
   },
+  {
+    file: "crop-pixelband-ru.png", route: "/", lang: "ru", pad: 0,
+    pick: () => document.querySelector("[data-pixel-scene='home']"),
+    shows: "Home pixel band (DEC-004), full viewport width at 2x: Dresden skyline across the Elbe with newcomers standing at their stops and the tram on the bridge (reduced motion, static).",
+  },
+  ...["services", "courses", "events", "communities", "library"].map((id) => ({
+    file: `crop-scene-${id}-en.png`, route: `/${id}`, lang: "en", pad: 0,
+    pick: () => document.querySelector("[data-pixel-scene]"),
+    shows: `Pixel scene (DEC-004) on the ${id} page, English UI, reduced motion (walkers stand at their stops).`,
+  })),
 ];
 
 async function expandCall(page) {
@@ -319,7 +333,7 @@ async function runShot(browser, s) {
     }
     const info = await pageInfo(page, s.lang);
     log(`  html lang=${info.htmlLang} dir=${info.dir} h1="${info.h1.slice(0, 60)}"`);
-    if (info.errorPage) problems.push(`${s.file}: error/404 page (${info.h1})`);
+    if (info.errorPage && !s.expectFound404 && !s.expect404) problems.push(`${s.file}: error/404 page (${info.h1})`);
     if (!info.langOk) problems.push(`${s.file}: html lang/dir mismatch (${info.htmlLang}/${info.dir})`);
     if (s.expandCall) await expandCall(page);
     if (s.scrollTo) {
@@ -333,6 +347,18 @@ async function runShot(browser, s) {
       await handle.dispose();
       if (!ok) problems.push(`${s.file}: scroll target not found`);
       await sleep(700);
+    }
+    if (s.bandEnd) {
+      // Scroll so the whole home pixel band (DEC-004) sits at the bottom edge of the viewport.
+      const ok = await page.evaluate(() => {
+        const e = document.querySelector("[data-pixel-scene='home']");
+        if (!e) return false;
+        e.scrollIntoView({ block: "end" });
+        window.scrollBy(0, 12);
+        return true;
+      });
+      if (!ok) problems.push(`${s.file}: pixel band not found`);
+      await sleep(900);
     }
     if (s.full) {
       await scrollThrough(page);

@@ -123,8 +123,8 @@ h1, h2, h3, .serif { font-family: var(--serif); font-weight: 600; font-variation
 #s-title .wordmark { position: absolute; left: 120px; top: 300px; font-size: 200px; }
 #s-title .tagline { position: absolute; left: 128px; top: 540px; font-size: 48px; color: var(--muted); font-family: var(--serif);
   font-weight: 400; font-variation-settings: "SOFT" 50; }
-#s-title .meta { position: absolute; left: 128px; top: 850px; font-size: 28px; color: var(--ink); }
-#s-title .site { position: absolute; left: 128px; top: 900px; font-size: 34px; color: var(--pine); font-weight: 600; }
+#s-title .meta { position: absolute; left: 128px; top: 680px; font-size: 28px; color: var(--ink); }
+#s-title .site { position: absolute; left: 128px; top: 730px; font-size: 34px; color: var(--pine); font-weight: 600; }
 #s-title .peek { left: 1240px; top: 150px; width: 1180px; }
 
 /* ---------------------------------------------------------------- slide 2 problem */
@@ -377,7 +377,7 @@ h1, h2, h3, .serif { font-family: var(--serif); font-weight: 600; font-variation
 #s-thanks .ty { position: absolute; left: 128px; top: 470px; font-size: 64px; font-family: var(--serif); font-weight: 400; font-variation-settings: "SOFT" 50; }
 #s-thanks .site { position: absolute; left: 128px; top: 600px; font-size: 46px; color: var(--pine); font-weight: 600; text-decoration: none; }
 #s-thanks .try { position: absolute; left: 128px; top: 690px; font-size: 32px; color: var(--ink); }
-#s-thanks .team { position: absolute; left: 128px; top: 900px; font-size: 26px; color: var(--muted); }
+#s-thanks .team { position: absolute; left: 128px; top: 770px; font-size: 26px; color: var(--muted); }
 #s-thanks .qr { position: absolute; left: 1290px; top: 230px; width: 520px; padding: 30px 30px 22px; }
 #s-thanks .qr svg { width: 460px; height: 460px; display: block; }
 #s-thanks .qr .cap { text-align: center; margin-top: 12px; }
@@ -393,3 +393,21 @@ h1, h2, h3, .serif { font-family: var(--serif); font-weight: 600; font-variation
 .gallery figure { margin: 0; width: 310px; }
 .gallery .phone { position: relative; width: 310px; }
 .gallery figcaption { margin-top: 14px; }
+
+/* pixel band + newcomers (DEC-004): whole-number scale, pixelated, aria-hidden */
+.pxband { position: absolute; overflow: hidden; pointer-events: none; }
+.pxlayer { position: absolute; top: 0; background-repeat: no-repeat; image-rendering: pixelated; }
+.pxsprite { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform; }
+.pxinner { width: 100%; height: 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+#s-title .pxhost, #s-thanks .pxhost { left: 0; bottom: 0; }
+#s-title .peek .shot { height: 600px; overflow: hidden; }
+#s-arrive .pxhost { left: 0; top: 196px; }
+#s-arrive .people { position: absolute; left: 60px; top: 604px; width: 1800px; display: flex; }
+#s-arrive .person { width: 150px; text-align: center; }
+#s-arrive .person .fig { width: 96px; height: 96px; margin: 0 auto; background-repeat: no-repeat; background-size: 1152px auto; image-rendering: pixelated; }
+#s-arrive .person .cap { font-size: 20px; line-height: 1.2; margin-top: 8px; color: var(--ink); }
+#s-arrive .scenes { position: absolute; left: 120px; top: 790px; width: 1680px; display: flex; justify-content: space-between; }
+#s-arrive .scene { margin: 0; }
+#s-arrive .scene img { display: block; width: 320px; height: 96px; image-rendering: pixelated; }
+#s-arrive .scene .nm { font-size: 22px; margin-top: 10px; color: var(--ink); font-weight: 600; }
+#s-arrive .pxfoot { position: absolute; left: 120px; top: 990px; font-size: 22px; }
